@@ -280,9 +280,12 @@ namespace Elin_AutoExplore
 			public string name;
 			public string rawName;
 			public string category;
+			public bool isHarvested;
 		}
 
 		List<AIAct> _FindHarvestBase(List<AIAct> tasks, System.Func<TaskHarvest, HarvestData, bool> checkInclude) {
+
+			string tmp = "";
 			currentBounds.ForeachPoint((Action<Point>)delegate (Point point) {
 				if (!point.IsInBounds)
 					return;
@@ -296,6 +299,7 @@ namespace Elin_AutoExplore
 					return;
 
 				HarvestData dat = new HarvestData();
+				dat.isHarvested = point.cell.isHarvested;
 
 				if (val.IsObj) {
 					var obj = point.cell.sourceObj;
@@ -329,6 +333,8 @@ namespace Elin_AutoExplore
 				}
 			});
 
+//			ExUtil.DumpText("D:\\tmp.csv", tmp);
+
 			return tasks;
 		}
 
@@ -360,6 +366,9 @@ namespace Elin_AutoExplore
 			}
 
 			_FindHarvestBase(tasks, (task, dat) => {
+
+				if (dat.isHarvested)
+					return false;
 
 				// –q‘—p‰ñ”ğ.
 				bool isPasture = (dat.rawName == "pasture" || dat.rawName == "silver grass");
