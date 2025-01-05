@@ -379,6 +379,7 @@ namespace Elin_AutoExplore
 					case "fruit":
 					case "vegi":
 					case "nuts":
+					case "foodstuff_raw":
 						return true;
 					default:
 						return false;
