@@ -1,127 +1,118 @@
+﻿using System.Net;
+using System.Collections.Generic;
+
 namespace Elin_AutoExplore
 {
 
 	public static class Translations
 	{
-		public const string HarvestingMode = "Harvesting mode";
+		static Dictionary<string, string[]> s_Texts;
+		static bool s_IsInitialized;
+		public static bool IsInitialized() {
+			return s_IsInitialized;
+		}
 
-		public const string MiningMode = "Mining mode";
+		public static void Initialize() {
+			if (s_IsInitialized)
+				return;
+			s_IsInitialized = true;
 
-		public const string HarvestingAndMiningMode = "Harvesting and mining mode";
+			s_Texts?.Clear();
+			s_Texts = new Dictionary<string, string[]>(10);
 
-		public const string ExploringMode = "Exploring mode";
+			string[] text = new string[(int)eModText.MAX];
+			text[(int)eModText.Text_AutoExploreSettings] = "オートエクスプローラー設定";
+			text[(int)eModText.Handle_Fighting] = "オートエクスプローラーは戦闘を処理するべきですか？";
+			text[(int)eModText.Handle_Harvestables] = "オートエクスプローラーは収穫物を処理するべきですか？";
+			text[(int)eModText.Handle_Mineables] = "オートエクスプローラーは壁を処理するべきですか？";
+			text[(int)eModText.Handle_Traps] = "オートエクスプローラーは罠を処理するべきですか？";
+			text[(int)eModText.Handle_Shrines] = "オートエクスプローラーは神殿を処理するべきですか？";
+			text[(int)eModText.Handle_Meditation] = "オートエクスプローラーは瞑想を処理するべきですか？";
+			text[(int)eModText.Handle_Hunger] = "オートエクスプローラーは食事を処理するべきですか？";
+			text[(int)eModText.Handle_Vegetables] = "オートエクスプローラーは野菜を処理するべきですか？";
+			text[(int)eModText.Text_MinHP] = "瞑想を開始する最小HP";
+			text[(int)eModText.Text_MinMP] = "瞑想を開始する最小MP";
+			text[(int)eModText.Mode_Harvesting] = "収穫モード";
+			text[(int)eModText.Mode_Mining] = "鉱業モード";
+			text[(int)eModText.Mode_Exploring] = "探索モード";
+			text[(int)eModText.Mode_Vegetables] = "野菜モード";
+			text[(int)eModText.Mode_MineOreOnly] = "鉱石のみモード";
+			text[(int)eModText.Error] = "error";
+			s_Texts.Add("JP", text);
 
-		public static string GetTranslation(string id) {
+			text = new string[(int)eModText.MAX];
+			text[(int)eModText.Error] = "error";
+			text[(int)eModText.Text_AutoExploreSettings] = "自动探索设置";
+			text[(int)eModText.Handle_Fighting] = "自动探索是否应处理战斗？";
+			text[(int)eModText.Handle_Harvestables] = "自动探索是否应处理可收获物？";
+			text[(int)eModText.Handle_Mineables] = "自动探索是否应处理可挖掘物？";
+			text[(int)eModText.Handle_Traps] = "自动探索是否应处理陷阱？";
+			text[(int)eModText.Handle_Shrines] = "自动探索是否应处理神殿？";
+			text[(int)eModText.Handle_Meditation] = "自动探索是否应使用冥想？";
+			text[(int)eModText.Handle_Hunger] = "自动探索是否应吃食物？";
+			text[(int)eModText.Handle_Vegetables] = "自动探索是否应处理野菜？";
+			text[(int)eModText.Text_MinHP] = "开始冥想的最低HP";
+			text[(int)eModText.Text_MinMP] = "开始冥想的最低MP";
+			text[(int)eModText.Mode_Harvesting] = "收获模式";
+			text[(int)eModText.Mode_Mining] = "采矿模式";
+			text[(int)eModText.Mode_Exploring] = "探索模式";
+			text[(int)eModText.Mode_Vegetables] = "野菜模式";
+			text[(int)eModText.Mode_MineOreOnly] = "鉱石模式";
+			s_Texts.Add("CN", text);
+
+			text = new string[(int)eModText.MAX];
+			text[(int)eModText.Error] = "error";
+			text[(int)eModText.Text_AutoExploreSettings] = "自動探索設置";
+			text[(int)eModText.Handle_Fighting] = "自動探索是否應處理戰鬥？";
+			text[(int)eModText.Handle_Harvestables] = "自動探索是否應處理可收穫物？";
+			text[(int)eModText.Handle_Mineables] = "自動探索是否應處理可挖掘物？";
+			text[(int)eModText.Handle_Traps] = "自動探索是否應處理陷阱？";
+			text[(int)eModText.Handle_Shrines] = "自動探索是否應處理神殿？";
+			text[(int)eModText.Handle_Meditation] = "自動探索是否應使用冥想？";
+			text[(int)eModText.Handle_Hunger] = "自動探索是否應吃食物？";
+			text[(int)eModText.Handle_Vegetables] = "自動探索是否應處理野菜？";
+			text[(int)eModText.Text_MinHP] = "開始冥想的最低MP";
+			text[(int)eModText.Text_MinMP] = "開始冥想的最低MP";
+			text[(int)eModText.Mode_Harvesting] = "收获模式";
+			text[(int)eModText.Mode_Mining] = "采矿模式";
+			text[(int)eModText.Mode_Exploring] = "探索模式";
+			text[(int)eModText.Mode_Vegetables] = "野菜模式";
+			text[(int)eModText.Mode_MineOreOnly] = "鉱石模式";
+			s_Texts.Add("ZHTW", text);
+
+
+			text = new string[(int)eModText.MAX];
+			text[(int)eModText.Error] = "error";
+			text[(int)eModText.Text_AutoExploreSettings] = "AutoExplore Settings";
+			text[(int)eModText.Handle_Fighting] = "Should AutoExplore handle fighting？";
+			text[(int)eModText.Handle_Harvestables] = "Should AutoExplore handle harvestables？";
+			text[(int)eModText.Handle_Mineables] = "Should AutoExplore handle mineables？";
+			text[(int)eModText.Handle_Traps] = "Should AutoExplore handle traps？";
+			text[(int)eModText.Handle_Shrines] = "Should AutoExplore handle shrines？";
+			text[(int)eModText.Handle_Meditation] = "Should AutoExplore use meditation？";
+			text[(int)eModText.Handle_Hunger] = "Should AutoExplore eat food？";
+			text[(int)eModText.Handle_Vegetables] = "Should AutoExplore handle vegetables？";
+			text[(int)eModText.Text_MinHP] = "Minimum HP to start meditation";
+			text[(int)eModText.Text_MinMP] = "Minimum MP to start meditation";
+			text[(int)eModText.Mode_Harvesting] = "Harvesting mode";
+			text[(int)eModText.Mode_Mining] = "Mining mode";
+			text[(int)eModText.Mode_Exploring] = "Exploring mode";
+			text[(int)eModText.Mode_Vegetables] = "Vegetables mode";
+			text[(int)eModText.Mode_MineOreOnly] = "MineOreOnly mode";
+			s_Texts.Add("EN", text);
+		}
+
+
+
+		public static string GetTranslation(eModText id) {
+			if (!s_IsInitialized)
+				Initialize();
+
 			string lang = EClass.core.config.lang;
-			if (1 == 0) {
-			}
-			string result;
-			switch (lang) {
-				case "JP": {
-						switch ( id ) {
-							case "AutoExplore Settings" : result = "オートエクスプローラー設定"; break;
-							case "HandleFighting" : result = "オートエクスプローラーは戦闘を処理するべきですか？"; break;
-							case "HandleHarvestables" : result = "オートエクスプローラーは収穫物を処理するべきですか？"; break;
-							case "HandleMineables" : result = "オートエクスプローラーは鉱石を処理するべきですか？"; break;
-							case "HandleTraps" : result = "オートエクスプローラーは罠を処理するべきですか？"; break;
-							case "HandleShrines" : result = "オートエクスプローラーは神殿を処理するべきですか？"; break;
-							case "UseMeditation" : result = "オートエクスプローラーは瞑想を使用するべきですか？"; break;
-							case "HandleHunger" : result = "オートエクスプローラーは食事を摂るべきですか？"; break;
-							case "MinMP" : result = "瞑想を開始する最小MP"; break;
-							case "MinHP" : result = "瞑想を開始する最小HP"; break;
-							case "Harvesting mode" : result = "収穫モード"; break;
-							case "Mining mode" : result = "鉱業モード"; break;
-							case "Harvesting and mining mode" : result = "収穫と鉱業モード"; break;
-							case "Exploring mode" : result = "探索モード"; break;
-
-
-
-							case "HandleMineOreOnly" : result = "鉱石のみモード"; break;
-							case "HandleVegetables" : result = "野菜モード"; break;
-
-
-							default : result = "error"; break;
-						};
-						break;
-					}
-				case "CN": {
-						switch ( id )
-						{
-							case "AutoExplore Settings" : result = "自动探索设置"; break;
-							case "HandleFighting" : result = "自动探索是否应处理战斗？"; break;
-							case "HandleHarvestables" : result = "自动探索是否应处理可收获物？"; break;
-							case "HandleMineables" : result = "自动探索是否应处理可挖掘物？"; break;
-							case "HandleTraps" : result = "自动探索是否应处理陷阱？"; break;
-							case "HandleShrines" : result = "自动探索是否应处理神殿？"; break;
-							case "UseMeditation" : result = "自动探索是否应使用冥想？"; break;
-							case "HandleHunger" : result = "自动探索是否应吃食物？"; break;
-							case "MinMP" : result = "开始冥想的最低MP"; break;
-							case "MinHP" : result = "开始冥想的最低HP"; break;
-							case "Harvesting mode" : result = "收获模式"; break;
-							case "Mining mode" : result = "采矿模式"; break;
-							case "Harvesting and mining mode" : result = "收获和采矿模式"; break;
-							case "Exploring mode" : result = "探索模式"; break;
-								 
-							case "HandleMineOreOnly" : result = "鉱石"; break;
-							case "HandleVegetables" : result = "野菜"; break;
-
-
-							default : result = "error"; break;
-						};
-						break;
-					}
-				case "ZHTW": {
-					switch (id )
-					{
-							case "AutoExplore Settings" : result = "自動探索設置"; break;
-							case "HandleFighting" : result = "自動探索是否應處理戰鬥？"; break;
-							case "HandleHarvestables" : result = "自動探索是否應處理可收穫物？"; break;
-							case "HandleMineables" : result = "自動探索是否應處理可挖掘物？"; break;
-							case "HandleTraps" : result = "自動探索是否應處理陷阱？"; break;
-							case "HandleShrines" : result = "自動探索是否應處理神殿？"; break;
-							case "UseMeditation" : result = "自動探索是否應使用冥想？"; break;
-							case "HandleHunger" : result = "自動探索是否應吃食物？"; break;
-							case "MinMP" : result = "開始冥想的最低MP"; break;
-							case "MinHP" : result = "開始冥想的最低HP"; break;
-							case "Harvesting mode" : result = "收穫模式"; break;
-							case "Mining mode" : result = "採礦模式"; break;
-							case "Harvesting and mining mode" : result = "收穫和採礦模式"; break;
-							case "Exploring mode" : result = "探索模式"; break;
-
-							case "HandleMineOreOnly" : result = "鉱石"; break;
-							case "HandleVegetables" : result = "野菜"; break;
-						   
-							default : result = "error"; break;
-						};
-						break;
-					}
-				default: {
-						switch (id)
-							{
-							case "AutoExplore Settings" : result = "AutoExplore Settings"; break;
-							case "HandleFighting" : result = "Should AutoExplore handle fighting?"; break;
-							case "HandleHarvestables" : result = "Should AutoExplore handle harvestables?"; break;
-							case "HandleMineables" : result = "Should AutoExplore handle mineables?"; break;
-							case "HandleTraps" : result = "Should AutoExplore handle traps?"; break;
-							case "HandleShrines" : result = "Should AutoExplore handle shrines?"; break;
-							case "UseMeditation" : result = "Should AutoExplore use meditation?"; break;
-							case "HandleHunger" : result = "Should AutoExplore eat food?"; break;
-							case "MinMP" : result = "Minimum MP to start meditation"; break;
-							case "MinHP" : result = "Minimum HP to start meditation"; break;
-							case "Harvesting mode" : result = "Harvesting mode"; break;
-							case "Mining mode" : result = "Mining mode"; break;
-							case "Harvesting and mining mode" : result = "Harvesting and mining mode"; break;
-							case "Exploring mode" : result = "Exploring mode"; break;
-
-							case "HandleMineOreOnly" : result = "HandleMineOreOnly"; break;
-							case "HandleVegetables" : result = "HandleVegetables"; break;
-
-							default : result = "error"; break;
-						};
-						break;
-					}
-			}
-			return result;
+			string[] texts = null;
+			if (!s_Texts.TryGetValue(lang, out texts))
+				s_Texts.TryGetValue("EN", out texts);
+			return texts[(int)id];
 		}
 	}
 }

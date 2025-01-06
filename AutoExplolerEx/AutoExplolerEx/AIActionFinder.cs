@@ -1,4 +1,4 @@
-using B83.Win32;
+ï»¿using B83.Win32;
 
 using System;
 using System.Collections.Generic;
@@ -24,34 +24,28 @@ namespace Elin_AutoExplore
 		public List<AIAct> FindPotentialActions() {
 
 			if (((Spatial)ELayer._zone).IsPlayerFaction) {
+				// ãƒ›ãƒ¼ãƒ ã®ã¿.
 				var vegetables = Ex_FindVegetables();
-				if (vegetables.Count > 0) {
-					return vegetables;
-				}
+
+				return vegetables;	//< ç¾çŠ¶ã¯é‡Žèœã ã‘.
 
 			} else {
 
 				var vegetables = Ex_FindVegetables();
-				if ( vegetables.Count > 0 ) {
-					return vegetables;
-				}
-				var ores = Ex_FindOres();
-				if ( ores.Count > 0 ) {
-					return ores;
-				}
-
 				List<AIAct> unexplored = FindUnexploredPoints();
 				List<AIAct> loot = FindLoot();
 				List<AIAct> harvestables = FindHarvestables();
 				List<AIAct> mineables = FindMineables();
 				List<AIAct> shrines = FindShrines();
-				return (from p in unexplored.Concat(loot).Concat(harvestables).Concat(mineables)
+				return (from p in unexplored
+						.Concat(loot)
+						.Concat(harvestables)
+						.Concat(mineables)
 						.Concat(shrines)
+						.Concat(vegetables)
 						orderby currentPos.RealDistance(p.GetDestinationPoint())
 						select p).ToList();
 			}
-
-			return new List<AIAct>();
 		}
 
 		public List<AIAct> FindUnexploredPoints() {
@@ -108,10 +102,37 @@ namespace Elin_AutoExplore
 
 		public List<AIAct> FindMineables() {
 			List<AIAct> tasks = new List<AIAct>();
-			if (!config.HandleMineables.Value) {
+			if (config.HandleMineables.Value == AutoExplorerConfig.eMineMode.Ignore) {
 				return tasks;
 			}
-			return _FindMinerBase(tasks, null);
+
+			switch (config.HandleMineables.Value) {
+				case AutoExplorerConfig.eMineMode.All:
+					_FindMinerBase(tasks, null);
+					_Ex_FindOres(tasks);
+					break;
+				case AutoExplorerConfig.eMineMode.OreOnly:
+					_Ex_FindOres(tasks);
+					break;
+			}
+
+			return tasks;
+		}
+
+		List<AIAct> _Ex_FindOres(List<AIAct> tasks) {
+			_FindHarvestBase(tasks, (task, dat) => {
+
+				switch (dat.rawName) {
+					case "crystal":     //< ã‚¯ãƒªã‚¹ã‚¿ãƒ«.
+					case "sulfur rock": //< ç¡«é»„.
+					case "ore": //< é‰±è„ˆ.
+					case "gem ore": //< è²´çŸ³.
+						return true;
+					default:
+						return false;
+				}
+			});
+			return tasks;
 		}
 
 		public AIAct FindStairs(bool down = true) {
@@ -281,11 +302,11 @@ namespace Elin_AutoExplore
 			public string rawName;
 			public string category;
 			public bool isHarvested;
+			public bool isCanReapSeed;
 		}
 
 		List<AIAct> _FindHarvestBase(List<AIAct> tasks, System.Func<TaskHarvest, HarvestData, bool> checkInclude) {
 
-			string tmp = "";
 			currentBounds.ForeachPoint((Action<Point>)delegate (Point point) {
 				if (!point.IsInBounds)
 					return;
@@ -300,18 +321,20 @@ namespace Elin_AutoExplore
 
 				HarvestData dat = new HarvestData();
 				dat.isHarvested = point.cell.isHarvested;
-
+				
 				if (val.IsObj) {
 					var obj = point.cell.sourceObj;
 					dat.name = obj.GetName();
 					dat.rawName = obj.name;
 					dat.category = obj.category;
 					if (obj.growth != null) {
+						dat.isCanReapSeed = point.cell.CanReapSeed();
 						var harvestID = obj.growth.idHarvestThing;
 						if (harvestID != null && !harvestID.StartsWith("#")) {
 							CardRow s = EClass.sources?.cards?.map?.TryGetValue(harvestID);
 							if (s != null) {
 								dat.category = s.category;
+								
 							}
 						}
 					}
@@ -333,31 +356,12 @@ namespace Elin_AutoExplore
 				}
 			});
 
-//			ExUtil.DumpText("D:\\tmp.csv", tmp);
 
 			return tasks;
 		}
 
 
-		public List<AIAct> Ex_FindOres() {
-			List<AIAct> tasks = new List<AIAct>();
-			if (!config.HandleMineOreOnly.Value) {
-				return tasks;
-			}
-			_FindHarvestBase(tasks, (task, dat) => {
 
-				switch (dat.rawName) {
-					case "crystal":     //< ƒNƒŠƒXƒ^ƒ‹.
-					case "sulfur rock": //< —°‰©.
-					case "ore": //< z–¬.
-					case "gem ore": //< ‹MÎ.
-						return true;
-					default:
-						return false;
-				}
-			});
-			return tasks;
-		}
 
 		public List<AIAct> Ex_FindVegetables() {
 			List<AIAct> tasks = new List<AIAct>();
@@ -367,10 +371,13 @@ namespace Elin_AutoExplore
 
 			_FindHarvestBase(tasks, (task, dat) => {
 
-				if (dat.isHarvested)
+				if (dat.isHarvested)	//< åŽç©«çŠ¶æ…‹ã«ã‚ã‚‹ã‹.
 					return false;
 
-				// –q‘—p‰ñ”ð.
+				if (!dat.isCanReapSeed)	//< ç¨®åŽç©«å¯èƒ½ã‹.
+					return false;
+
+				// ç‰§è‰ç”¨å›žé¿.
 				bool isPasture = (dat.rawName == "pasture" || dat.rawName == "silver grass");
 				if (isPasture)
 					return true;

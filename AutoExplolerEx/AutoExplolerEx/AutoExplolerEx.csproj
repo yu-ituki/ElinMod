@@ -100,6 +100,7 @@
     <Compile Include="AIActionFinder.cs" />
     <Compile Include="AutoExploreConfigUi.cs" />
     <Compile Include="AutoExplorerConfig.cs" />
+    <Compile Include="Const.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ExUtil.cs" />
     <Compile Include="HookUserInteraction.cs" />

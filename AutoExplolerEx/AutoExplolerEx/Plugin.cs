@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using BepInEx;
@@ -48,6 +48,8 @@ namespace Elin_AutoExplore
 			Harmony val = new Harmony("yuof.elin.autoExplore.mod");
 			val.PatchAll();
 			Instance = this;
+			Translations.Initialize();
+
 			AutoExplorerConfig = new AutoExplorerConfig(((BaseUnityPlugin)this).Config);
 			IgnoreList = new IgnoreList(AutoExplorerConfig.GatheringRestrictionList, AutoExplorerConfig.MiningRestrictionList);
 			actionFinder = new AIActionFinder();
@@ -111,8 +113,6 @@ namespace Elin_AutoExplore
 				return;
 			}
 
-
-			
 			if (!EClass.core.IsGameStarted || playerCharacter == null || playerCharacter.isDead) {
 				isEnable = false;
 				return;
@@ -223,13 +223,13 @@ namespace Elin_AutoExplore
 			if (EInput.isInputFieldActive) {
 				return;
 			}
-			KeyboardShortcut value = AutoExplorerConfig.ToggleHarvestingAndMiningMode.Value;
+			KeyboardShortcut value = AutoExplorerConfig.Key_ToggleChangeMode.Value;
 			if (((KeyboardShortcut)(value)).IsDown()) {
 				Logger.LogInfo((object)"Toggle Harvesting and Mining mode key pressed");
 				AutoExplorerConfig.SetNextMode();
 				return;
 			}
-			if (Input.GetKeyDown(AutoExplorerConfig.ActivationKey.Value)) {
+			if (Input.GetKeyDown(AutoExplorerConfig.Key_Activation.Value)) {
 				Logger.LogInfo((object)"L key pressed");
 				if (isEnable) {
 					isEnable = false;
@@ -279,7 +279,7 @@ namespace Elin_AutoExplore
 		}
 
 		private void HandleFood() {
-			if (AutoExplorerConfig.HandleHunger.Value == Elin_AutoExplore.AutoExplorerConfig.HungerMode.StopAutoExplore || ((Card)playerCharacter).things.Find((Func<Thing, bool>)((Thing a) => playerCharacter.CanEat(a, false)), true) == null) {
+			if (AutoExplorerConfig.HandleHunger.Value == Elin_AutoExplore.AutoExplorerConfig.eHungerMode.StopAutoExplore || ((Card)playerCharacter).things.Find((Func<Thing, bool>)((Thing a) => playerCharacter.CanEat(a, false)), true) == null) {
 				Logger.LogWarning((object)"Hungry. Stopping autoExplore.");
 				isEnable = false;
 				Msg.Say("regionAbortMove");
