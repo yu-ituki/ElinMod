@@ -18,6 +18,12 @@
 
 ---
 
+# おすすめ設定
+自分的にはこれが一番おすすめです。
+
+![](recommend_cfg.png)
+
+---
 
 # ソースコード上の拡張説明
 * AutoActionFinder.cs に Ex_FindVegetables() と Ex_FindOres() を追加しました
