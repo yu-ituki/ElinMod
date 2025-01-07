@@ -79,6 +79,9 @@ namespace Elin_AutoExplore
 
 
 		public ConfigEntry<bool> HandleVegetables { get; set; }
+		public ConfigEntry<bool> HandleQuest_War { get; set; }
+		public ConfigEntry<bool> HandleQuest_Harvest { get; set; }
+
 
 
 
@@ -109,6 +112,8 @@ namespace Elin_AutoExplore
 			MiningRestrictionList = config.Bind<string>("Restrictions", "MiningRestrictionList", "metal block(copper),soil block(soil),soil block covered with vines (soil)", "Comma separated list of things to ignore when mining.");
 
 			HandleVegetables = config.Bind<bool>("Toggles", "HandleVegetables", false, "Should autoexplore Vegetable?");
+			HandleQuest_Harvest = config.Bind<bool>("Toggles", "HandleQuest_Harvest", false, "Should autoexplore Quest by Harvest?");
+			HandleQuest_War = config.Bind<bool>("Toggles", "HandleQuest_War", false, "Should autoexplore Quest by War?");
 			m_ModeIndex = 0;
 
 			if (s_Modes == null) {
@@ -147,7 +152,7 @@ namespace Elin_AutoExplore
 			HandleHarvestables.Value = false;
 			HandleMineables.Value = eMineMode.Ignore;
 			HandleVegetables.Value = false;
-
+		
 			switch (currentMode) {
 				case eMode.Explore:
 					break;

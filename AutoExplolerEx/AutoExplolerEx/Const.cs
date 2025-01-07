@@ -21,6 +21,8 @@ namespace Elin_AutoExplore
 		Handle_Meditation,		//< "オートエクスプローラーは瞑想を使用するべきですか？";
 		Handle_Hunger,			//< "オートエクスプローラーは食事を摂るべきですか？"; break;
 		Handle_Vegetables,      //< "オートエクスプローラーは野菜を処理するべきですか？"; break;
+		Handle_Quest_War,      //< "オートエクスプローラーはクエスト戦争を処理するべきですか？"; break;
+		Handle_Quest_Harvest,      //< "オートエクスプローラーはクエスト収穫を処理するべきですか？"; break;
 
 		Text_MinMP,					//< "瞑想を開始する最小MP"; break;
 		Text_MinHP,					//< "瞑想を開始する最小HP"; break;

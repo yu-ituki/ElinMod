@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 using UnityEngine;
 
@@ -21,35 +23,194 @@ namespace Elin_AutoExplore
 
 		private MapBounds currentBounds => ELayer._map.bounds;
 
-		public List<AIAct> FindPotentialActions() {
+		List<AIAct> m_TmpFindQuestHarvestTasks;
+		List<TmpQuestHarvestData> m_TmpFindQuestHarvestTasks2;
+		List<(int, int)> m_TmpFindQuestHarvestTaskDist;
 
-			if (((Spatial)ELayer._zone).IsPlayerFaction) {
-				// ホームのみ.
-				var vegetables = Ex_FindVegetables();
+		class TmpQuestHarvestData
+		{
+			public AIAct m_Act;
+			public int m_X;
+			public int m_Z;
+			public int m_Weight;
+			public int m_Dist;
+			public int m_PriorityScore;
 
-				return vegetables;	//< 現状は野菜だけ.
+			public static TmpQuestHarvestData Create(TaskHarvest task, Point currentPos, int weight) {
+				var ret =  new TmpQuestHarvestData() {
+					m_Act = task,
+					m_X = task.pos.x,
+					m_Z = task.pos.z,
+					m_Weight = weight,
+					m_Dist = currentPos.Distance(task.pos)
+				};
 
-			} else {
+				// 適当に距離で重み付けする.
+				const int c_DistScore = 100;
+				ret.m_PriorityScore = ret.m_Weight - (ret.m_Dist * c_DistScore);
 
-				var vegetables = Ex_FindVegetables();
-				List<AIAct> unexplored = FindUnexploredPoints();
-				List<AIAct> loot = FindLoot();
-				List<AIAct> harvestables = FindHarvestables();
-				List<AIAct> mineables = FindMineables();
-				List<AIAct> shrines = FindShrines();
-				return (from p in unexplored
-						.Concat(loot)
-						.Concat(harvestables)
-						.Concat(mineables)
-						.Concat(shrines)
-						.Concat(vegetables)
-						orderby currentPos.RealDistance(p.GetDestinationPoint())
-						select p).ToList();
+				return ret;
 			}
 		}
 
-		public List<AIAct> FindUnexploredPoints() {
-			List<AIAct> tasks = new List<AIAct>();
+
+
+
+		public void FindPotentialActions( ref List<AIAct> list ) {
+
+			// ホームのみ.
+			if (((Spatial)ELayer._zone).IsPlayerFaction) {
+				Ex_FindVegetables(list);
+
+			} else {
+				// ホーム外の処理.
+				Ex_FindQuest_Harvest(list);
+				if (list.Count > 0)
+					return;	//< 収穫クエストはなによりも優先とする.
+
+				Ex_FindVegetables(list);
+				FindUnexploredPoints(list);
+				FindLoot(list);
+				FindHarvestables(list);
+				FindMineables(list);
+				FindShrines(list);
+			}
+
+			list.Sort((a, b) => {
+				var bDist = currentPos.RealDistance(b.GetDestinationPoint());
+				var aDist = currentPos.RealDistance(a.GetDestinationPoint());
+				if (aDist > bDist)
+					return 1;
+				if (bDist > aDist)
+					return -1;
+				return 0;
+			});
+		}
+
+	
+
+
+		public void OnEndxplore() {
+		}
+
+
+
+		public List<AIAct> Ex_FindQuest_Harvest(List<AIAct> tasks) {
+			if (!config.HandleQuest_Harvest.Value) {
+				return tasks;
+			}
+			if (!ExUtil.IsPlayingQuest_Harvest())
+				return tasks;
+
+			if (m_TmpFindQuestHarvestTasks==null)
+				m_TmpFindQuestHarvestTasks = new List<AIAct>();
+			if (m_TmpFindQuestHarvestTasks2 == null)
+				m_TmpFindQuestHarvestTasks2 = new List<TmpQuestHarvestData>();
+			if (m_TmpFindQuestHarvestTaskDist == null)
+				m_TmpFindQuestHarvestTaskDist = new List<(int, int)>();
+
+			m_TmpFindQuestHarvestTasks.Clear();
+			m_TmpFindQuestHarvestTasks2.Clear();
+			m_TmpFindQuestHarvestTaskDist.Clear();
+			Ex_FindVegetables(m_TmpFindQuestHarvestTasks);
+			var playerPos = playerCharacter.pos;
+
+#if false
+			// 一度チェック済み状態だったら.
+			if ( m_LastQuestHarvestData != null ) {
+				// 座標の近いものを探してみる.
+
+				for ( int i = 0; i < m_TmpFindQuestHarvestTasks.Count; ++i ) {
+					var tmpTask = m_TmpFindQuestHarvestTasks[i] as TaskHarvest;
+					int dist = Fov.Distance(
+						m_LastQuestHarvestData.m_X,
+						m_LastQuestHarvestData.m_Z,
+						tmpTask.pos.x,
+						tmpTask.pos.z
+					);
+					m_TmpFindQuestHarvestTaskDist.Add((i,dist));
+				}
+				m_TmpFindQuestHarvestTaskDist.Sort( (a,b) => {
+					return a.Item2 - b.Item2;
+				});
+
+				m_LastQuestHarvestData = null;
+				const int c_MaxCheckDist = 5;
+				for ( int i = 1; i < c_MaxCheckDist; ++i ) {
+					(int,int)? item = m_TmpFindQuestHarvestTaskDist.Find(v => ( v.Item2 <= i ) );
+					if ( item != null ) {
+						var tmpTask = m_TmpFindQuestHarvestTasks[item.Value.Item1] as TaskHarvest;
+						m_LastQuestHarvestData = TmpQuestHarvestData.Create(tmpTask, currentPos, 0);
+						break;
+					}
+				}
+			} 
+
+			// まだチェック済みではない or 近いのが見つからなかったら.
+			if ( m_LastQuestHarvestData == null ) 
+#endif
+			{ 
+			
+				// 全ての重さ期待値を計算.
+				int sumWeight = 0;
+				for (int i = 0; i < m_TmpFindQuestHarvestTasks.Count; ++i) {
+
+					var tmpTask = m_TmpFindQuestHarvestTasks[i] as TaskHarvest;
+					int currentWeight = _CalcHarvestObjWeight(tmpTask);
+					var tmpData = TmpQuestHarvestData.Create(tmpTask, currentPos, currentWeight);
+					sumWeight += currentWeight;
+					m_TmpFindQuestHarvestTasks2.Add(tmpData);
+				}
+				m_TmpFindQuestHarvestTasks.Clear();
+
+
+
+				// 重さ期待値&距離でソート.
+				m_TmpFindQuestHarvestTasks2.Sort((a, b) => {
+					if (a.m_PriorityScore > b.m_PriorityScore)
+						return -1;
+					if (b.m_PriorityScore > a.m_PriorityScore)
+						return 1;
+					return 0;
+				});
+
+				// 詰めていく.
+				//	foreach (var itr in m_TmpFindQuestHarvestTasks2) {
+				//		tasks.Add(itr.m_Act);
+				//	}
+
+				//一番重くて近いいものだけ選択.
+				//		m_LastQuestHarvestData = m_TmpFindQuestHarvestTasks2[0];
+
+				tasks.Add(m_TmpFindQuestHarvestTasks2[0].m_Act);
+			}
+
+			// なにか居たらとりあえずそれを追加.
+		//	if (m_LastQuestHarvestData != null)
+		//		tasks.Add(m_LastQuestHarvestData.m_Act);
+
+			m_TmpFindQuestHarvestTasks2.Clear();
+
+			// おわり.
+			return tasks;
+		}
+
+		int _CalcHarvestObjWeight(TaskHarvest task ) {
+			var plantData = EClass._map.TryGetPlant(task.pos.cell);
+			if (plantData == null)
+				return 0;
+
+			var growth = task.pos.growth;
+			int num = growth.source._growth[4].ToInt();
+			CardRow s = EClass.sources?.cards?.map?.TryGetValue(growth.idHarvestThing);
+			int baseWeight = 1;
+			if (s != null)
+				baseWeight = s.model.SelfWeight;
+
+			return plantData.size * num * baseWeight;
+		}
+
+		public List<AIAct> FindUnexploredPoints(List<AIAct> tasks) {
 			currentBounds.ForeachPoint((Action<Point>)delegate (Point point) {
 				//IL_0030: Unknown result type (might be due to invalid IL or missing references)
 				//IL_003a: Expected O, but got Unknown
@@ -60,8 +221,7 @@ namespace Elin_AutoExplore
 			return tasks;
 		}
 
-		public List<AIAct> FindLoot() {
-			List<AIAct> tasks = new List<AIAct>();
+		public List<AIAct> FindLoot(List<AIAct> tasks) {
 			currentBounds.ForeachPoint((Action<Point>)delegate (Point point) {
 				//IL_004e: Unknown result type (might be due to invalid IL or missing references)
 				//IL_0075: Unknown result type (might be due to invalid IL or missing references)
@@ -78,8 +238,7 @@ namespace Elin_AutoExplore
 			return tasks;
 		}
 
-		public List<AIAct> FindHarvestables() {
-			List<AIAct> tasks = new List<AIAct>();
+		public List<AIAct> FindHarvestables(List<AIAct> tasks) {
 			if (!config.HandleHarvestables.Value) {
 				return tasks;
 			}
@@ -100,8 +259,7 @@ namespace Elin_AutoExplore
 			return tasks;
 		}
 
-		public List<AIAct> FindMineables() {
-			List<AIAct> tasks = new List<AIAct>();
+		public List<AIAct> FindMineables(List<AIAct> tasks) {
 			if (config.HandleMineables.Value == AutoExplorerConfig.eMineMode.Ignore) {
 				return tasks;
 			}
@@ -158,8 +316,7 @@ namespace Elin_AutoExplore
 			return action;
 		}
 
-		public List<AIAct> FindShrines() {
-			List<AIAct> tasks = new List<AIAct>();
+		public List<AIAct> FindShrines(List<AIAct> tasks) {
 			if (!config.HandleShrines.Value) {
 				return tasks;
 			}
@@ -363,8 +520,7 @@ namespace Elin_AutoExplore
 
 
 
-		public List<AIAct> Ex_FindVegetables() {
-			List<AIAct> tasks = new List<AIAct>();
+		public List<AIAct> Ex_FindVegetables(List<AIAct> tasks) {
 			if (!config.HandleVegetables.Value) {
 				return tasks;
 			}

@@ -32,5 +32,27 @@ namespace Elin_AutoExplore
 		//		s_Logger.Log(LogLevel.Info, text);
 		}
 
+
+
+		public static bool IsPlayingQuest_War() {
+			return EClass._zone?.events?.GetEvent<ZoneEventDefenseGame>() != null;
+		}
+
+		public static bool IsPlayingQuest_Harvest() {
+			return EClass._zone?.events?.GetEvent<ZoneEventHarvest>() != null;
+		}
+
+		public static List<ZoneEvent> GetZoneEvents() {
+			var events = EClass._zone?.events;
+			if (events == null)
+				return null;
+			return events.list;
+		}
+
+		public static string GetZoneName() {
+			return EClass._zone?.Name;
+		}
+
+
 	}
 }

@@ -30,6 +30,8 @@ namespace Elin_AutoExplore
 			text[(int)eModText.Handle_Meditation] = "オートエクスプローラーは瞑想を処理するべきですか？";
 			text[(int)eModText.Handle_Hunger] = "オートエクスプローラーは食事を処理するべきですか？";
 			text[(int)eModText.Handle_Vegetables] = "オートエクスプローラーは野菜を処理するべきですか？";
+			text[(int)eModText.Handle_Quest_Harvest] = "オートエクスプローラーはクエスト収穫を処理するべきですか？";
+			text[(int)eModText.Handle_Quest_War] = "オートエクスプローラーはクエスト戦争を処理するべきですか？";
 			text[(int)eModText.Text_MinHP] = "瞑想を開始する最小HP";
 			text[(int)eModText.Text_MinMP] = "瞑想を開始する最小MP";
 			text[(int)eModText.Mode_Harvesting] = "収穫モード";
@@ -51,6 +53,9 @@ namespace Elin_AutoExplore
 			text[(int)eModText.Handle_Meditation] = "自动探索是否应使用冥想？";
 			text[(int)eModText.Handle_Hunger] = "自动探索是否应吃食物？";
 			text[(int)eModText.Handle_Vegetables] = "自动探索是否应处理野菜？";
+			text[(int)eModText.Handle_Quest_Harvest] = "自动探索是否应处理Quest野菜？";
+			text[(int)eModText.Handle_Quest_War] = "自动探索是否应处理Quest戦争？";
+
 			text[(int)eModText.Text_MinHP] = "开始冥想的最低HP";
 			text[(int)eModText.Text_MinMP] = "开始冥想的最低MP";
 			text[(int)eModText.Mode_Harvesting] = "收获模式";
@@ -71,6 +76,9 @@ namespace Elin_AutoExplore
 			text[(int)eModText.Handle_Meditation] = "自動探索是否應使用冥想？";
 			text[(int)eModText.Handle_Hunger] = "自動探索是否應吃食物？";
 			text[(int)eModText.Handle_Vegetables] = "自動探索是否應處理野菜？";
+			text[(int)eModText.Handle_Quest_Harvest] = "自動探索是否應處理Quest野菜？";
+			text[(int)eModText.Handle_Quest_War] = "自動探索是否應處理Quest戦争？";
+
 			text[(int)eModText.Text_MinHP] = "開始冥想的最低MP";
 			text[(int)eModText.Text_MinMP] = "開始冥想的最低MP";
 			text[(int)eModText.Mode_Harvesting] = "收获模式";
@@ -92,6 +100,9 @@ namespace Elin_AutoExplore
 			text[(int)eModText.Handle_Meditation] = "Should AutoExplore use meditation？";
 			text[(int)eModText.Handle_Hunger] = "Should AutoExplore eat food？";
 			text[(int)eModText.Handle_Vegetables] = "Should AutoExplore handle vegetables？";
+			text[(int)eModText.Handle_Quest_Harvest] = "Should AutoExplore handle quest of harvest？";
+			text[(int)eModText.Handle_Quest_War] = "Should AutoExplore handle quest of war？";
+
 			text[(int)eModText.Text_MinHP] = "Minimum HP to start meditation";
 			text[(int)eModText.Text_MinMP] = "Minimum MP to start meditation";
 			text[(int)eModText.Mode_Harvesting] = "Harvesting mode";

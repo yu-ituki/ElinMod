@@ -48,6 +48,14 @@ namespace Elin_AutoExplore
 					config.HandleVegetables.Value = val;
 				});
 
+				val2.AddToggle(Translations.GetTranslation(eModText.Handle_Quest_War), config.HandleQuest_War.Value, (UnityAction<bool>)delegate (bool val) {
+					config.HandleQuest_War.Value = val;
+				});
+
+				val2.AddToggle(Translations.GetTranslation(eModText.Handle_Quest_Harvest), config.HandleQuest_Harvest.Value, (UnityAction<bool>)delegate (bool val) {
+					config.HandleQuest_Harvest.Value = val;
+				});
+
 
 				val2.AddSlider(Translations.GetTranslation(eModText.Handle_Hunger), 
 					(Func<float, string>)((float val) => ((AutoExplorerConfig.eHungerMode)val).ToString()),
