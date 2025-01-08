@@ -1,51 +1,42 @@
 # Readme
-* これは https://steamcommunity.com/sharedfiles/filedetails/?id=3365829584 の 拡張です。
-* 作者であるYuof氏には深い感謝を申し上げます。
-* 純正の物に下記機能を追加しました。
-  * 野菜収穫機能 -- 野菜/牧草のみを収穫するモードです
-  * 鉱石回収機能 -- 鉱石/貴石/クリスタルのみを回収するモードです
-  * クエスト「収穫」自動化機能 -- クエスト「収穫」をある程度自動化する機能です。
-    * そのマップ内で重さが期待でき、かつ距離が近い物から順に自動で収穫をします
-    * 距離と重さ期待値によって重み付けスコアを算出し、それをもとに収穫しています
-    * ただ自動収穫するだけなので、納品や残り時間の調整などは自分でやってください
-  * クエスト「戦争」自動化機能 -- クエスト「戦争」をある程度自動化する機能です。
-    * 拾えるもの（収穫できる物ではなく）があったらそれを最優先で拾います
-    * 拾えるものが無かったら視界内外に関係なく、最もプレイヤーに近い敵から順に攻撃しに行きます
-    * ただ拾って殴り続けるだけなので、笛は自分で処理してください
+* This is an extension of https://steamcommunity.com/sharedfiles/filedetails/?id=3365829584.
+* We would like to express our deepest thanks to the author, Mr. Yuof.
+* Added the following features to the stock one.
+  * Vegetable Harvesting -- This is a mode to harvest only vegetables/grass.
+  * Ore collection function -- only ores/precious stones/crystals can be collected.
+  * Automated quest “harvesting” function -- This function automates the quest “harvesting” to some extent.
+    * The “Harvesting” function automates the “Harvesting” to a certain extent.
+    * Calculates a weighted score based on distance and expected weight, and harvests based on that score.
+    * Just automatic harvesting, so you have to do your own delivery, remaining time adjustment, etc.
+  * Automated quest “war” function -- This function automates the quest “war” to some extent.
+    * If there is something that can be picked up (not something that can be harvested), it will be picked up with the highest priority.
+    * If there is nothing to pick up, then attack the enemies closest to the player in order, regardless of whether they are in or out of sight.
+    * Just keep picking up and hitting them, so you can handle the whistle yourself.
 
-* Lボタン押下の末尾に「野菜モード」と「鉱石のみモード」を追加しました
-* コンフィグにも項目を追加しています
-* 下記モードはホームでも使用可能です
-  * 野菜収穫モード
-
----
-
-# 使用方法
-* 事前に https://steamcommunity.com/sharedfiles/filedetails/?id=3365829584 をサブスクライブしてください。
-* ビルド、またはここからダウンロードした Elin_AutoExplore.dll を サブスクライブした純正Modのフォルダに上書きしてください。
-* 純正Modはインストールフォルダ次第ですが、通常は 「C:\Program Files (x86)\Steam\steamapps\workshop\content\2135150\3365829584」 などに保存されています。
+* Added “vegetable mode” and “ore only mode” at the end of the L button press.
+* Added an item to the config as well
+* The following modes are also available in Home
+  * Vegetable harvest mode.
 
 ---
 
-# おすすめ設定
-自分的にはこれが一番おすすめです。
+# How to use.
+* SUBSCRIBE to https://steamcommunity.com/sharedfiles/filedetails/?id=3365829584 in advance.
+* Overwrite the Elin_AutoExplore.dll you built or downloaded from here to the folder of the stock mod you subscribed to.
+* Depending on your installation folder, the stock mod is usually stored in “C:\Program Files (x86)\Steam\steamapps\workshop\content\2135150\3365829584”, etc.
+
+---
+
+# Recommended settings
+This is the best recommendation for me.
 
 ![](recommend_cfg.png)
 
----
-
-# ソースコード上の拡張説明
-* AutoActionFinder.cs に Ex_FindVegetables() と Ex_FindOres() を追加しました
-* 関連し、Translation.cs にも項目を追加し、合わせて処理を簡易化しました
-* AutoExplolerConfig.cs の SetNextMode() / SetMode() も少しいじりました
-* 鉱石/貴石の回収については従来の鉱業モードに統合する形で実装しています
-* クエスト「収穫」自動化はAIActionFinder.cs の Ex_FindQuest_Harvest() あたりを新造しています
-* クエスト「戦争」自動化はPlugin.cs に _IsHandleCombat() あたりを追加し、合わせてFindTargetEnemies()に判定を追加しています
-* 他拡張にあたり、細々としたリファクタを勝手にやっています
-
----
-
-# 補足
-* Yuof氏さん勝手にいじってすいません。乗っ取る気はありません
-* 問題あったら連絡ください
-* 可能なら拡張した機能を昇華して純正に取り込んでもらえると嬉しいです
+# Extended description in source code
+* Added Ex_FindVegetables() and Ex_FindOres() to AutoActionFinder.cs
+* Added a related entry to Translation.cs to simplify the process.
+* Also modified SetNextMode() / SetMode() in AutoExplorerConfig.cs a little.
+* Ore/precious stone recovery has been integrated into the existing mining mode.
+* Automated “Harvesting” quests are implemented by newly creating Ex_FindQuest_Harvest() in AIActionFinder.cs.
+* Quest “War” automation is implemented by adding _IsHandleCombat() in Plugin.cs, and adding a judgment to FindTargetEnemies().
+* Some refactors for other extensions
