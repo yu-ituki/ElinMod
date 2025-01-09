@@ -24,6 +24,7 @@
 * 事前に https://steamcommunity.com/sharedfiles/filedetails/?id=3365829584 をサブスクライブしてください。
 * ビルド、またはここからダウンロードした Elin_AutoExplore.dll を サブスクライブした純正Modのフォルダに上書きしてください。
 * 純正Modはインストールフォルダ次第ですが、通常は 「C:\Program Files (x86)\Steam\steamapps\workshop\content\2135150\3365829584」 などに保存されています。
+* こちらでビルドしたDLLは https://github.com/yu-ituki/ElinMod/releases にアップしてあります。
 
 ---
 

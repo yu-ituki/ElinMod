@@ -24,7 +24,8 @@
 * SUBSCRIBE to https://steamcommunity.com/sharedfiles/filedetails/?id=3365829584 in advance.
 * Overwrite the Elin_AutoExplore.dll you built or downloaded from here to the folder of the stock mod you subscribed to.
 * Depending on your installation folder, the stock mod is usually stored in “C:\Program Files (x86)\Steam\steamapps\workshop\content\2135150\3365829584”, etc.
-
+* The DLLs built here are uploaded at https://github.com/yu-ituki/ElinMod/releases.
+* 
 ---
 
 # Recommended settings
@@ -40,3 +41,9 @@ This is the best recommendation for me.
 * Automated “Harvesting” quests are implemented by newly creating Ex_FindQuest_Harvest() in AIActionFinder.cs.
 * Quest “War” automation is implemented by adding _IsHandleCombat() in Plugin.cs, and adding a judgment to FindTargetEnemies().
 * Some refactors for other extensions
+
+---
+
+# Supplemental
+* Sorry Mr. Yuof for modifying without permission, please contact me if you have any problem.
+* If possible, it would be great if you could sublimate this extension and incorporate it into the original mod!
