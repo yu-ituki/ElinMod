@@ -4,7 +4,7 @@ using BepInEx.Logging;
 namespace Elin_ModTemplate
 {
 
-	internal class DebugUtil
+	class DebugUtil
 	{
 		private static ManualLogSource s_Logger;
 
