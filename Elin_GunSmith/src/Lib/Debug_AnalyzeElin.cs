@@ -311,14 +311,19 @@ namespace Elin_Mod
 			tmp += "id,";
 			tmp += "factory,";
 			tmp += "type,";
-			tmp += "thing,";
-			tmp += "num,";
-			tmp += "sp,";
-			tmp += "time,";
-			tmp += "ing1,";
-			tmp += "ing2,";
-			tmp += "ing3,";
-			tmp += "tag,";
+			tmp += "faith,";
+			tmp += "domain,";
+			tmp += "relation,";
+			tmp += "textType_JP,";
+			tmp += "textType,";
+			tmp += "textAvatar,";
+			tmp += "detail_JP,";
+			tmp += "detail,";
+			tmp += "name_L,";
+			tmp += "detail_L,";
+			tmp += "textType_L,";
+			tmp += "textBenefit_L,";
+			tmp += "textPet_L,";
 
 			tmp += "\n";
 			foreach (var itr in dats.map) {
@@ -335,6 +340,11 @@ namespace Elin_Mod
 				tmp += $",{a.textAvatar}";
 				tmp += $",{a.detail_JP}";
 				tmp += $",{a.detail}";
+				tmp += $",{a.name_L}";
+				tmp += $",{a.detail_L}";
+				tmp += $",{a.textType_L}";
+				tmp += $",{a.textBenefit_L}";
+				tmp += $",{a.textPet_L}";
 				tmp += "\n";
 			}
 
