@@ -4,7 +4,7 @@
 :: Elinのインストールフォルダ.
 set ELIN_PATH="C:\Program Files (x86)\Steam\steamapps\common\Elin"
 :: 自身のMod名.
-set MY_MOD_NAME=Elin_SearchScrollMapTreasure
+set MY_MOD_NAME=Elin_FindTreasuresMap
 
 ::---------------.
 :: DLL参照用にシンボリックリンクを貼る.

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Meta>
-  <title>Elin_SearchMapTreasure</title>
-  <id>"yu-ituki.elin.search-map-treasure</id>
+  <title>Elin_FindTreasuresMap</title>
+  <id>"yu-ituki.elin.find_treasures_map</id>
   <author>yu-ituki</author>
   <builtin>false</builtin>
   <loadPriority>10</loadPriority>
@@ -16,7 +16,7 @@
 開きっぱなしでマップを出入りしても再表示されます。  
 
 ■ソースコード
-https://github.com/yu-ituki/ElinMod/tree/main/Elin_SearchMapTreasure
+https://github.com/yu-ituki/ElinMod/tree/main/Elin_FindTreasuresMap
 
   </description>
 </Meta>
