@@ -1,5 +1,7 @@
-﻿// This file is auto-generated...
+// This file is auto-generated...
 public enum eTextID { 
-	hoge,
-	fuga,
+	Yes,
+	No,
+	Cancel,
+	Config_Title,
 }

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using BepInEx;
 
-namespace Elin_ModTemplate
+namespace Elin_Mod
 {
 
 	public class CommonUtil
@@ -52,5 +52,6 @@ namespace Elin_ModTemplate
 		{
 			return m_ResourcePathBase + resName;
 		}
+
 	}
 }

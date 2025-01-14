@@ -7,8 +7,8 @@
     <ProjectGuid>{D686E069-BE27-4AE5-9967-BC10C23B04B6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Elin_Modtemplate</RootNamespace>
-    <AssemblyName>Elin_Modtemplate</AssemblyName>
+    <RootNamespace>Elin_Mod</RootNamespace>
+    <AssemblyName>Elin_ModTemplate</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Lib\Debug_AnalyzeElin.cs" />
     <Compile Include="ModConfigUi.cs" />
     <Compile Include="Lib\CommonUtil.cs" />
     <Compile Include="Const.cs" />

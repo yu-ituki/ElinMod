@@ -1,4 +1,4 @@
-﻿namespace Elin_ModTemplate
+﻿namespace Elin_Mod
 {
 	public enum eLanguage
 	{
@@ -12,5 +12,6 @@
 
 	public class Const
 	{
+		
 	}
 }

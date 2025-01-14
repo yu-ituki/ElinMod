@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Elin_ModTemplate
+namespace Elin_Mod
 {
 	public class ModText : SourceLang<ModText.Row>
 	{
@@ -37,6 +37,8 @@ namespace Elin_ModTemplate
 				m_TextIDs[ j ] = (id.ToString().GetHashCode(), id);
 			}
 			m_Rows = new Row[ m_TextIDs.Length ];
+
+		
 		}
 
 		public override Row CreateRow()
@@ -64,6 +66,18 @@ namespace Elin_ModTemplate
 		public override void SetRow( Row r )
 		{
 			m_Rows[ (int)r.textID ] = r;
+
+			// Generalにもつっこむ.
+			// ただし日本語と英語のみ.
+			var general = EClass.sources.langGeneral;
+			var generalRow = new LangGeneral.Row();
+			generalRow.id = r.id;
+			generalRow.text = r.text;
+			generalRow.text_JP = r.text_JP;
+			generalRow.text_L = r.text_L;
+			generalRow._index = general.rows.Count;
+			general.rows.Add(generalRow);
+			general.SetRow(generalRow);
 		}
 
 

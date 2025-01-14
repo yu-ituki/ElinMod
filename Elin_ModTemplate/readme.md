@@ -37,6 +37,8 @@ This template has the following.
 * Read in src/Lib/ModTextManager.cs
 * ModTextManager.Instance.GetText( eTextID ) automatically identifies the current language code and returns a string.
 * If you want to increase the number of languages, increase mod_texts.xlsm and eLanguage in Const.cs, and increase ModText.cs by modifying it appropriately.
+* Corresponds to in-sentence user data embedding. Corresponds to [0]-[8] in the statement and ModTextmanager.Instance.SetUserData() and is replaced according to the index.
+
 
 ## Simple mechanism to refer to the Elin installation folder and DLLs
 * Go to the DLL of the installation folder written in config.bat.

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using ReflexCLI;
+
 using UnityEngine.Events;
 
-namespace Elin_ModTemplate
+namespace Elin_Mod
 {
 	// プレイヤーをホイールクリックしたときのコンフィグUIサンプル.
 
@@ -14,11 +16,12 @@ namespace Elin_ModTemplate
 	{
 		[HarmonyPatch(typeof(ActPlan), "ShowContextMenu")]
 		[HarmonyPrefix]
-		public static void Prefix(ActPlan actPlan) {
-			// 自身をホイールクリックしているか否か.
-			if (actPlan.pos != EClass.pc.pos) {
+		public static void Prefix(ActPlan __instance) {
+
+			if (!__instance.pos.Equals(EClass.pc.pos)) {
 				return;
 			}
+
 			var textMng = ModTextManager.Instance;
 			ModConfig config = Plugin.Instance.ModConfig;
 			DynamicAct act = new DynamicAct(textMng.GetText( eTextID.ConfigTitle ), ()=>{
@@ -29,17 +32,17 @@ namespace Elin_ModTemplate
 				val2.Show();
 				return false;
 			}, false);
-			actPlan.list.Add(new ActPlan.Item { act = act });
+			((List<ActPlan.Item>)(object)__instance.list).Add(new ActPlan.Item {
+				act = (Act)(object)act
+			});
 		}
 
 		[HarmonyPatch(typeof(ActPlan.Item), "Perform")]
 		[HarmonyPrefix]
-		public static bool Prefix(ActPlan.Item planItem) {
-			Act act = planItem.act;
-			
-			DynamicAct val = (DynamicAct)(object)((act is DynamicAct) ? act : null);
-			if (val != null && val.id == ModTextManager.Instance.GetText( eTextID.ConfigTitle )) {
-				val.Perform();
+		public static bool Prefix(ActPlan.Item __instance) {
+			var val = __instance.act as DynamicAct;
+			if (val != null && val.id ==ModTextManager.Instance.GetText(eTextID.Config_Title)) {
+				((Act)val).Perform();
 				return false;
 			}
 			return true;

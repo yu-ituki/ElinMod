@@ -1,7 +1,7 @@
 ﻿using BepInEx.Configuration;
 using UnityEngine;
 
-namespace Elin_ModTemplate
+namespace Elin_Mod
 {
 	/// <summary>
 	/// Modコンフィグ用.

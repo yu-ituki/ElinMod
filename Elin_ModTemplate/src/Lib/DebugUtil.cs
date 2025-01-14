@@ -1,7 +1,10 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using BepInEx.Logging;
 
-namespace Elin_ModTemplate
+using UnityEngine;
+
+namespace Elin_Mod
 {
 
 	class DebugUtil
@@ -45,5 +48,8 @@ namespace Elin_ModTemplate
 			}
 			File.WriteAllText( path, text );
 		}
+
 	}
+
+
 }

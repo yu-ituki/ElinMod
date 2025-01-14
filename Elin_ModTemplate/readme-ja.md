@@ -37,6 +37,7 @@
 * src/Lib/ModTextManager.cs で読み込んでいます。
 * ModTextManager.Instance.GetText( eTextID ) で、現在の言語コードを自動識別して文字列を返却します。
 * 言語を増やす場合はmod_texts.xlsmおよび、Const.cs のeLanguageを増やして、ModText.cs を適当にいじって増やしてください。
+* 文中ユーザーデータ埋め込みに対応しています。文中の[0]～[8]と ModTextmanager.Instance.SetUserData() が対応していて、indexに応じて置き換わります。
 
 ## 簡易的にElinインストールフォルダとDLL参照できる仕組み
 * config.batに書かれたインストールフォルダのDLLを参照しに行きます

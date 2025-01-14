@@ -1,9 +1,9 @@
-﻿namespace Elin_ModTemplate
+﻿namespace Elin_Mod
 {
 
 	public class ModInfo
 	{
-		public const string c_ModFullName = "itukiyu.elin.mod-template.mod";
+		public const string c_ModFullName = "yu-ituki.elin.template.mod";
 
 		public const string c_ModName = "Mod Template";
 
