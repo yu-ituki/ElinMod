@@ -2,10 +2,14 @@
 ElinのModあれこれ用。   
 解析メモなどはwikiに書いてます。   
 
-# AutoExplorerEx
+## AutoExplorerEx
 既存のAutoExplorerというModを改造して機能をいくつか増やしてみました。   
 https://github.com/yu-ituki/ElinMod/tree/main/AutoExplorerEx  
 
-# Elin_ModTemplate
+## Elin_ModTemplate
 Mod量産用の簡易的なテンプレートプロジェクトです。  
 https://github.com/yu-ituki/ElinMod/tree/main/Elin_ModTemplate
+
+## Elin_GunSmith
+銃のスロットを増やしたりパーツを強化したりできるModを作ってみました。  
+https://github.com/yu-ituki/ElinMod/tree/main/Elin_GunSmith  
