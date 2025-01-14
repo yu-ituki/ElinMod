@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Meta>
+  <title>Elin_SearchMapTreasure</title>
+  <id>"yu-ituki.elin.search-map-treasure</id>
+  <author>yu-ituki</author>
+  <builtin>false</builtin>
+  <loadPriority>10</loadPriority>
+  <version>1.0.0.0</version>
+  <description>
+■概要
+宝の地図の場所を簡易的に教えてくれます。  
+
+■使用方法
+グローバルマップ上で宝の地図を開くことで、  
+ゲームログにざっくりした方向が表示されます。  
+開きっぱなしでマップを出入りしても再表示されます。  
+
+■ソースコード
+https://github.com/yu-ituki/ElinMod/tree/main/Elin_SearchMapTreasure
+
+  </description>
+</Meta>
