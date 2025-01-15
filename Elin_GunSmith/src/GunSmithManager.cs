@@ -12,6 +12,7 @@ namespace Elin_Mod
 	public class GunSmithManager : Singleton<GunSmithManager>
 	{
 		TraitGunSmith m_TraitGunSmith;
+		TraitModCombine m_TraitModCombine;
 
 		/// <summary>
 		/// 初期化.
@@ -25,6 +26,7 @@ namespace Elin_Mod
 
 			// Trait作っておく.
 			m_TraitGunSmith = _CreateTraitCrafter<TraitGunSmith>();
+			m_TraitModCombine = _CreateTraitCrafter<TraitModCombine>();
 		}
 
 		/// <summary>
@@ -41,7 +43,9 @@ namespace Elin_Mod
 			GameUtil.UseForceTraitCrafter(m_TraitGunSmith);
 		}
 
-	
+		public void Play_ModCombine() {
+			GameUtil.UseForceTraitCrafter(m_TraitModCombine);
+		}
 
 		/// <summary>
 		/// Trait生成.

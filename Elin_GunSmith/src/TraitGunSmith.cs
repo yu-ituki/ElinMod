@@ -33,10 +33,14 @@ namespace Elin_Mod
 		}
 
 		public override Thing Craft(AI_UseCrafter ai) {
+			var textMng = ModTextManager.Instance;
 			var target = ai.ings[0];
 			var targetCard = target as Card;
+			if (targetCard.encLV >= 99) {
+				Msg.SayRaw(textMng.GetText(eTextID.Error_MaxLv));
+				return null;
+			}
 
-			var textMng = ModTextManager.Instance;
 			var config = Plugin.Instance.ModConfig;
 
 			// 手持ちプラチナコイン数取得.
@@ -59,8 +63,7 @@ namespace Elin_Mod
 						// 支払いチェック.
 						if (EClass.pc.TryPay(useCost, Const.c_UseCurrencyType)) {
 							// +値操作.
-							if (targetCard.encLV < 99)
-								targetCard.ModEncLv(1);
+							targetCard.ModEncLv(1);
 						}
 					}
 				});

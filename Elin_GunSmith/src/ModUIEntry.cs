@@ -18,6 +18,7 @@ namespace Elin_Mod
 			if (c_MenuTextIDs == null) {
 				c_MenuTextIDs = new eTextID[] {
 					eTextID.MenuTitle_GunSmith,
+					eTextID.MenuTitle_ModCombine,
 				};
 			}
 		}
@@ -41,6 +42,9 @@ namespace Elin_Mod
 					switch (c_MenuTextIDs[menuIndex] ) {
 						case eTextID.MenuTitle_GunSmith:
 							GunSmithManager.Instance.Play_GunSmith();
+							break;
+						case eTextID.MenuTitle_ModCombine:
+							GunSmithManager.Instance.Play_ModCombine();
 							break;
 					}
 					return false;

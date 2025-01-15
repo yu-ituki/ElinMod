@@ -113,6 +113,7 @@
     <Compile Include="Lib\CommonUtil.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="Lib\DebugUtil.cs" />
+    <Compile Include="TraitModCombine.cs" />
     <Compile Include="TraitGunSmith.cs" />
     <Compile Include="ModUIEntry.cs" />
     <Compile Include="TextID.cs" />

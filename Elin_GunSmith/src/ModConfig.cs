@@ -10,11 +10,13 @@ namespace Elin_Mod
 	{
 		public ConfigEntry<float> AddSlotCost { get; set; }
 		public ConfigEntry<float> PowerUpModCost { get; set; }
+		public ConfigEntry<float> CombineModCost { get; set; }
 
 		public ModConfig( ConfigFile config )
 		{
 			AddSlotCost = config.Bind("Regen", "AddSlotCost", 100.0f, "Cost required to add one slot.");
 			PowerUpModCost = config.Bind("Regen", "PowerUpModCost", 2.0f, "Cost required to power up a mod by +1.");
+			CombineModCost = config.Bind("Regen", "CombineModCost", 1.0f, "Cost required for one time combination of mod.");
 		}
 	}
 }
