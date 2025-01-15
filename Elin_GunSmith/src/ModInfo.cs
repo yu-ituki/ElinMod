@@ -7,6 +7,6 @@
 
 		public const string c_ModName = "Gun Smith";
 
-		public const string c_ModVersion = "1.0.0.0";
+		public const string c_ModVersion = "1.0.1.0";
 	}
 }
