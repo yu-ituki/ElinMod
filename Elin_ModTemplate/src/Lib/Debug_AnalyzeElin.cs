@@ -137,6 +137,13 @@ namespace Elin_Mod
 			var cards = EClass.sources.elements;
 			var sb = _CreateSb(cards.map.Count, 2000);
 			
+			string AAA(string[] tmp) {
+				string ret = "";
+				for (int i = 0; i < tmp.Length; ++i)
+					ret += $"[{tmp[i]}], ";
+				return ret;
+			}
+
 			_DumpHeader( sb, "id" );
 			_DumpHeader( sb, "alias" );
 			_DumpHeader( sb, "name_JP" );
@@ -198,6 +205,11 @@ namespace Elin_Mod
 			sb.AppendLine();
 			foreach (var itr in cards.map) {
 				var a = itr.Value;
+
+				if ( a.id  == 910 || a.id == 911 ) {
+					DebugUtil.LogError( $"{a.id} ||| {a.category} ||| {a.categorySub} ||| {AAA(a.abilityType)} ||| {AAA(a.tag)} ||| {a.thing} ||| {a.eleP}" );
+				}
+
 				_Dump(sb, a.id);
 				_Dump(sb, a.alias);
 				_Dump(sb, a.name_JP);
@@ -355,10 +367,10 @@ namespace Elin_Mod
 		public static void Dump_ElinLangGeneral(string dumpPath) {
 			var cards = EClass.sources.langGeneral;
 			var sb = _CreateSb(cards.map.Count, 1000);
-			sb.Append("id");
-			sb.Append("filter");
-			sb.Append("text_JP");
-			sb.Append("text");
+			_DumpHeader( sb, "id");
+			_DumpHeader( sb, "filter");
+			_DumpHeader( sb, "text_JP");
+			_DumpHeader( sb, "text");
 
 			sb.AppendLine();
 			sb.AppendLine();
@@ -394,23 +406,40 @@ namespace Elin_Mod
 		}
 
 		static void _Dump<T>(System.Text.StringBuilder sb, T dat, bool isArrayElem=false) {
-			if (dat == null)
+			if (dat == null) {
+				sb.Append(c_ElemSeparator);
 				return;
-			if (dat.GetType().IsArray) {
+			}
+			var type = dat.GetType();
+			if (type.IsArray) {
 				var array = dat as Array;
+				bool isStrElem = type.GetElementType() == typeof(string);
+				if ( isStrElem)
+					sb.Append(c_StringEncloser);
+
 				for (int i = 0; i < array.Length; ++i) {
 					var d = array.GetValue(i);
 					if (i > 0)
 						sb.Append(c_ArraySeparator);
 					_Dump(sb, d, true);
 				}
-			} else {
-				if (!isArrayElem && dat is string )
+
+				if (isStrElem)
 					sb.Append(c_StringEncloser);
-				sb.Append(dat);
-				if (!isArrayElem && dat is string)
-					sb.Append(c_StringEncloser);
+
 				sb.Append(c_ElemSeparator);
+			} else {
+				bool isStrElem = dat is string;
+				if (!isArrayElem && isStrElem)
+					sb.Append(c_StringEncloser);
+
+				sb.Append(dat);
+
+				if (!isArrayElem && isStrElem)
+					sb.Append(c_StringEncloser);
+				
+				if (!isArrayElem)
+					sb.Append(c_ElemSeparator);
 			}
 		}
 
