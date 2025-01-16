@@ -26,30 +26,27 @@ namespace Elin_Mod
 			var config = Plugin.Instance.ModConfig;
 			DynamicAct act = new DynamicAct(textMng.GetText(eTextID.Config_Title), ()=> {
 				var val2 = EClass.ui.CreateContextMenu("ContextMenu");
-				val2.AddSlider( 
-					textMng.GetText( eTextID.Config_CostAddSocket ),
-					(v) => v.ToString(),
-					config.AddSlotCost.Value,
-					(v)=> {
-						config.AddSlotCost.Value = v;
-					},
-				0f, 500f, true, false, false);
-
-				val2.AddSlider( 
-					textMng.GetText( eTextID.Config_CostPowerUpMod ),
-					(v) => v.ToString(),
-					config.PowerUpModCost.Value,
-					(v)=> {
-						config.PowerUpModCost.Value = v;
-					},
-				0f, 10.0f, false, false, false);
-
+				_AddSlider(val2, eTextID.Config_CostAddSocket, config.AddSlotCost, 0, 500.0f, true);
+				_AddSlider(val2, eTextID.Config_CostPowerUpMod, config.PowerUpModCost, 0, 10.0f, false);
+				_AddSlider(val2, eTextID.Config_CostCombineMod, config.CombineModCost, 0, 10.0f, false);
 				val2.Show();
 				return false;
 			}, false);
 			((List<ActPlan.Item>)(object)__instance.list).Add(new ActPlan.Item {
 				act = (Act)(object)act
 			});
+		}
+
+		static void _AddSlider( UIContextMenu menu, eTextID textID, BepInEx.Configuration.ConfigEntry<float> entry, float min, float max, bool isInt ) {
+			var textMng = ModTextManager.Instance;
+			menu.AddSlider(
+					textMng.GetText(textID),
+					(v) => v.ToString(),
+					entry.Value,
+					(v) => {
+						entry.Value = v;
+					},
+				min, max, isInt, false, false);
 		}
 
 		[HarmonyPatch(typeof(ActPlan.Item), "Perform")]
