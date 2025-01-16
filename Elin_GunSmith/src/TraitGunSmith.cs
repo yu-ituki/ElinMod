@@ -32,6 +32,15 @@ namespace Elin_Mod
 			return false;
 		}
 
+		public override bool IsCraftIngredient(Card c, int idx) {
+			var ret = base.IsCraftIngredient(c, idx);
+			if ( ret ) {
+				if (c.trait is TraitThrown)
+					return false;
+			}
+			return ret;
+		}
+
 		public override Thing Craft(AI_UseCrafter ai) {
 			var textMng = ModTextManager.Instance;
 			var target = ai.ings[0];
