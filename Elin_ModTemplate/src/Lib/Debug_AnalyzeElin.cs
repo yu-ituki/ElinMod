@@ -4,264 +4,261 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using static Lang;
+
 namespace Elin_Mod
 {
 	public class Debug_AnalyzeElin
 	{
-		static string _DumpArray<T>(T[] array ) {
-			string tmp = "";
-			for ( int i = 0; i < array.Length; ++i ) {
-				if (i > 0)
-					tmp += "|";
-				tmp += array[i];
-			}
-			return tmp;
-		}
+		const string c_ElemSeparator = "\t";
+		const string c_ArraySeparator = ",";
+		const string c_StringEncloser = "\"";
+
+
 
 		public static void Dump_ElinThingAll( string dumpPath ) {
 			var cards = EClass.sources.things;
-			string tmp = "";
-			tmp += "id,";
-			tmp += "name_JP,";
-			tmp += "unknown_JP,";
-			tmp += "unit_JP,";
-			tmp += "naming,";
-			tmp += "name,";
-			tmp += "unit,";
-			tmp += "unknown,";
-			tmp += "category,";
-			tmp += "sort,";
-			tmp += "_tileType,";
-			tmp += "_idRenderData,";
-			tmp += "tiles,";
-			tmp += "altTiles,";
-			tmp += "anime,";
-			tmp += "skins,";
-			tmp += "size,";
-			tmp += "colorMod,";
-			tmp += "colorType,";
-			tmp += "recipeKey,";
-			tmp += "factory,";
-			tmp += "components,";
-			tmp += "disassemble,";
-			tmp += "defMat,";
-			tmp += "tierGroup,";
-			tmp += "value,";
-			tmp += "LV,";
-			tmp += "chance,";
-			tmp += "quality,";
-			tmp += "HP,";
-			tmp += "weight,";
-			tmp += "electricity,";
-			tmp += "trait,";
-			tmp += "elements,";
-			tmp += "range,";
-			tmp += "attackType,";
-			tmp += "offense,";
-			tmp += "substats,";
-			tmp += "defense,";
-			tmp += "lightData,";
-			tmp += "idExtra,";
-			tmp += "idToggleExtra,";
-			tmp += "idActorEx,";
-			tmp += "idSound,";
-			tmp += "tag,";
-			tmp += "workTag,";
-			tmp += "filter,";
-			tmp += "roomName_JP,";
-			tmp += "roomName,";
-			tmp += "detail_JP,";
-			tmp += "detail,";
-			tmp += "\n";
+			var sb = _CreateSb(cards.map.Count, 1000);
+			_DumpHeader( sb, "id" );
+			_DumpHeader( sb, "name_JP" );
+			_DumpHeader( sb, "unknown_JP" );
+			_DumpHeader( sb, "unit_JP" );
+			_DumpHeader( sb, "naming" );
+			_DumpHeader( sb, "name" );
+			_DumpHeader( sb, "unit" );
+			_DumpHeader( sb, "unknown" );
+			_DumpHeader( sb, "category" );
+			_DumpHeader( sb, "sort" );
+			_DumpHeader( sb, "_tileType" );
+			_DumpHeader( sb, "_idRenderData" );
+			_DumpHeader( sb, "tiles" );
+			_DumpHeader( sb, "altTiles" );
+			_DumpHeader( sb, "anime" );
+			_DumpHeader( sb, "skins" );
+			_DumpHeader( sb, "size" );
+			_DumpHeader( sb, "colorMod" );
+			_DumpHeader( sb, "colorType" );
+			_DumpHeader( sb, "recipeKey" );
+			_DumpHeader( sb, "factory" );
+			_DumpHeader( sb, "components" );
+			_DumpHeader( sb, "disassemble" );
+			_DumpHeader( sb, "defMat" );
+			_DumpHeader( sb, "tierGroup" );
+			_DumpHeader( sb, "value" );
+			_DumpHeader( sb, "LV" );
+			_DumpHeader( sb, "chance" );
+			_DumpHeader( sb, "quality" );
+			_DumpHeader( sb, "HP" );
+			_DumpHeader( sb, "weight" );
+			_DumpHeader( sb, "electricity" );
+			_DumpHeader( sb, "trait" );
+			_DumpHeader( sb, "elements" );
+			_DumpHeader( sb, "range" );
+			_DumpHeader( sb, "attackType" );
+			_DumpHeader( sb, "offense" );
+			_DumpHeader( sb, "substats" );
+			_DumpHeader( sb, "defense" );
+			_DumpHeader( sb, "lightData" );
+			_DumpHeader( sb, "idExtra" );
+			_DumpHeader( sb, "idToggleExtra" );
+			_DumpHeader( sb, "idActorEx" );
+			_DumpHeader( sb, "idSound" );
+			_DumpHeader( sb, "tag" );
+			_DumpHeader( sb, "workTag" );
+			_DumpHeader( sb, "filter" );
+			_DumpHeader( sb, "roomName_JP" );
+			_DumpHeader( sb, "roomName" );
+			_DumpHeader( sb, "detail_JP" );
+			_DumpHeader( sb, "detail" );
+			sb.AppendLine();
+			sb.AppendLine();
+			sb.AppendLine();
+
 			foreach (var itr in cards.map) {
 				var a = itr.Value;
-				tmp += itr.Key;
-				tmp += $"{a.id}";
-				tmp += $",{a.name_JP}";
-				tmp += $",{a.unknown_JP}";
-				tmp += $",{a.unit_JP}";
-				tmp += $",{a.naming}";
-				tmp += $",{a.name}";
-				tmp += $",{a.unit}";
-				tmp += $",{a.unknown}";
-				tmp += $",{a.category}";
-				tmp += $",{a.sort}";
-				tmp += $",{a._tileType}";
-				tmp += $",{a._idRenderData}";
-				tmp += $",{_DumpArray(a.tiles)}";
-				tmp += $",{_DumpArray(a.altTiles)}";
-				tmp += $",{_DumpArray(a.anime)}";
-				tmp += $",{_DumpArray(a.skins)}";
-				tmp += $",{_DumpArray(a.size)}";
-				tmp += $",{a.colorMod}";
-				tmp += $",{a.colorType}";
-				tmp += $",{_DumpArray(a.recipeKey)}";
-				tmp += $",{_DumpArray(a.factory)}";
-				tmp += $",{_DumpArray(a.components)}";
-				tmp += $",{_DumpArray(a.disassemble)}";
-				tmp += $",{a.defMat}";
-				tmp += $",{a.tierGroup}";
-				tmp += $",{a.value}";
-				tmp += $",{a.LV}";
-				tmp += $",{a.chance}";
-				tmp += $",{a.quality}";
-				tmp += $",{a.HP}";
-				tmp += $",{a.weight}";
-				tmp += $",{a.electricity}";
-				tmp += $",{_DumpArray(a.trait)}";
-				tmp += $",{_DumpArray(a.elements)}";
-				tmp += $",{a.range}";
-				tmp += $",{a.attackType}";
-				tmp += $",{_DumpArray(a.offense)}";
-				tmp += $",{_DumpArray(a.substats)}";
-				tmp += $",{_DumpArray(a.defense)}";
-				tmp += $",{a.lightData}";
-				tmp += $",{a.idExtra}";
-				tmp += $",{a.idToggleExtra}";
-				tmp += $",{a.idActorEx}";
-				tmp += $",{a.idSound}";
-				tmp += $",{_DumpArray(a.tag)}";
-				tmp += $",{a.workTag}";
-				tmp += $",{_DumpArray(a.filter)}";
-				tmp += $",{_DumpArray(a.roomName_JP)}";
-				tmp += $",{_DumpArray(a.roomName)}";
-				tmp += $",{a.detail_JP}";
-				tmp += $",{a.detail}";
-
-				tmp += "\n";
+				_Dump(sb, a.id);
+				_Dump(sb, a.name_JP);
+				_Dump(sb, a.unknown_JP);
+				_Dump(sb, a.unit_JP);
+				_Dump(sb, a.naming);
+				_Dump(sb, a.name);
+				_Dump(sb, a.unit);
+				_Dump(sb, a.unknown);
+				_Dump(sb, a.category);
+				_Dump(sb, a.sort);
+				_Dump(sb, a._tileType);
+				_Dump(sb, a._idRenderData);
+				_Dump(sb, a.tiles);
+				_Dump(sb, a.altTiles);
+				_Dump(sb, a.anime);
+				_Dump(sb, a.skins);
+				_Dump(sb, a.size);
+				_Dump(sb, a.colorMod);
+				_Dump(sb, a.colorType);
+				_Dump(sb, a.recipeKey);
+				_Dump(sb, a.factory);
+				_Dump(sb, a.components);
+				_Dump(sb, a.disassemble);
+				_Dump(sb, a.defMat);
+				_Dump(sb, a.tierGroup);
+				_Dump(sb, a.value);
+				_Dump(sb, a.LV);
+				_Dump(sb, a.chance);
+				_Dump(sb, a.quality);
+				_Dump(sb, a.HP);
+				_Dump(sb, a.weight);
+				_Dump(sb, a.electricity);
+				_Dump(sb, a.trait);
+				_Dump(sb, a.elements);
+				_Dump(sb, a.range);
+				_Dump(sb, a.attackType);
+				_Dump(sb, a.offense);
+				_Dump(sb, a.substats);
+				_Dump(sb, a.defense);
+				_Dump(sb, a.lightData);
+				_Dump(sb, a.idExtra);
+				_Dump(sb, a.idToggleExtra);
+				_Dump(sb, a.idActorEx);
+				_Dump(sb, a.idSound);
+				_Dump(sb, a.tag);
+				_Dump(sb, a.workTag);
+				_Dump(sb, a.filter);
+				_Dump(sb, a.roomName_JP);
+				_Dump(sb, a.roomName);
+				_Dump(sb, a.detail_JP);
+				_Dump(sb, a.detail);
+				sb.AppendLine();
 			}
-
-			if (System.IO.File.Exists(dumpPath))
-				System.IO.File.Delete(dumpPath);
-			System.IO.File.WriteAllText(dumpPath, tmp);
+			_Save(dumpPath, sb);
 		}
 
 
 		public static void Dump_ElinElementAll(string dumpPath) {
 			var cards = EClass.sources.elements;
-			string tmp = "";
-			tmp += "id,";
-			tmp += "alias,";
-			tmp += "name_JP,";
-			tmp += "name,";
-			tmp += "altname_JP,";
-			tmp += "altname,";
-			tmp += "aliasParent,";
-			tmp += "aliasRef,";
-			tmp += "aliasMtp,";
-			tmp += "parentFactor,";
-			tmp += "lvFactor,";
-			tmp += "encFactor,";
-			tmp += "encSlot,";
-			tmp += "mtp,";
-			tmp += "LV,";
-			tmp += "chance,";
-			tmp += "value,";
-			tmp += "cost,";
-			tmp += "geneSlot,";
-			tmp += "sort,";
-			tmp += "target,";
-			tmp += "proc,";
-			tmp += "type,";
-			tmp += "group,";
-			tmp += "category,";
-			tmp += "categorySub,";
-			tmp += "abilityType,";
-			tmp += "tag,";
-			tmp += "thing,";
-			tmp += "eleP,";
-			tmp += "cooldown,";
-			tmp += "charge,";
-			tmp += "radius,";
-			tmp += "max,";
-			tmp += "req,";
-			tmp += "idTrainer,";
-			tmp += "partySkill,";
-			tmp += "tagTrainer,";
-			tmp += "levelBonus_JP,";
-			tmp += "levelBonus,";
-			tmp += "foodEffect,";
-			tmp += "langAct,";
-			tmp += "detail_JP,";
-			tmp += "detail,";
-			tmp += "textPhase_JP,";
-			tmp += "textPhase,";
-			tmp += "textExtra_JP,";
-			tmp += "textExtra,";
-			tmp += "textInc_JP,";
-			tmp += "textInc,";
-			tmp += "textDec_JP,";
-			tmp += "textDec,";
-			tmp += "textAlt_JP,";
-			tmp += "textAlt,";
-			tmp += "adjective_JP,";
-			tmp += "adjective,";
-			tmp += "\n";
+			var sb = _CreateSb(cards.map.Count, 2000);
+			
+			_DumpHeader( sb, "id" );
+			_DumpHeader( sb, "alias" );
+			_DumpHeader( sb, "name_JP" );
+			_DumpHeader( sb, "name" );
+			_DumpHeader( sb, "altname_JP" );
+			_DumpHeader( sb, "altname" );
+			_DumpHeader( sb, "aliasParent" );
+			_DumpHeader( sb, "aliasRef" );
+			_DumpHeader( sb, "aliasMtp" );
+			_DumpHeader( sb, "parentFactor" );
+			_DumpHeader( sb, "lvFactor" );
+			_DumpHeader( sb, "encFactor" );
+			_DumpHeader( sb, "encSlot" );
+			_DumpHeader( sb, "mtp" );
+			_DumpHeader( sb, "LV" );
+			_DumpHeader( sb, "chance" );
+			_DumpHeader( sb, "value" );
+			_DumpHeader( sb, "cost" );
+			_DumpHeader( sb, "geneSlot" );
+			_DumpHeader( sb, "sort" );
+			_DumpHeader( sb, "target" );
+			_DumpHeader( sb, "proc" );
+			_DumpHeader( sb, "type" );
+			_DumpHeader( sb, "group" );
+			_DumpHeader( sb, "category" );
+			_DumpHeader( sb, "categorySub" );
+			_DumpHeader( sb, "abilityType" );
+			_DumpHeader( sb, "tag" );
+			_DumpHeader( sb, "thing" );
+			_DumpHeader( sb, "eleP" );
+			_DumpHeader( sb, "cooldown" );
+			_DumpHeader( sb, "charge" );
+			_DumpHeader( sb, "radius" );
+			_DumpHeader( sb, "max" );
+			_DumpHeader( sb, "req" );
+			_DumpHeader( sb, "idTrainer" );
+			_DumpHeader( sb, "partySkill" );
+			_DumpHeader( sb, "tagTrainer" );
+			_DumpHeader( sb, "levelBonus_JP" );
+			_DumpHeader( sb, "levelBonus" );
+			_DumpHeader( sb, "foodEffect" );
+			_DumpHeader( sb, "langAct" );
+			_DumpHeader( sb, "detail_JP" );
+			_DumpHeader( sb, "detail" );
+			_DumpHeader( sb, "textPhase_JP" );
+			_DumpHeader( sb, "textPhase" );
+			_DumpHeader( sb, "textExtra_JP" );
+			_DumpHeader( sb, "textExtra" );
+			_DumpHeader( sb, "textInc_JP" );
+			_DumpHeader( sb, "textInc" );
+			_DumpHeader( sb, "textDec_JP" );
+			_DumpHeader( sb, "textDec" );
+			_DumpHeader( sb, "textAlt_JP" );
+			_DumpHeader( sb, "textAlt" );
+			_DumpHeader( sb, "adjective_JP" );
+			_DumpHeader( sb, "adjective" );
+			sb.AppendLine();
+			sb.AppendLine();
+			sb.AppendLine();
 			foreach (var itr in cards.map) {
 				var a = itr.Value;
-				tmp += $"{a.id}";
-				tmp += $",{a.alias}";
-				tmp += $",{a.name_JP}";
-				tmp += $",{a.name}";
-				tmp += $",{a.altname_JP}";
-				tmp += $",{a.altname}";
-				tmp += $",{a.aliasParent}";
-				tmp += $",{a.aliasRef}";
-				tmp += $",{a.aliasMtp}";
-				tmp += $",{a.parentFactor}";
-				tmp += $",{a.lvFactor}";
-				tmp += $",{a.encFactor}";
-				tmp += $",{a.encSlot}";
-				tmp += $",{a.mtp}";
-				tmp += $",{a.LV}";
-				tmp += $",{a.chance}";
-				tmp += $",{a.value}";
-				tmp += $",{_DumpArray(a.cost)}";
-				tmp += $",{a.geneSlot}";
-				tmp += $",{a.sort}";
-				tmp += $",{a.target}";
-				tmp += $",{_DumpArray(a.proc)}";
-				tmp += $",{a.type}";
-				tmp += $",{a.group}";
-				tmp += $",{a.category}";
-				tmp += $",{a.categorySub}";
-				tmp += $",{_DumpArray(a.abilityType)}";
-				tmp += $",{_DumpArray(a.tag)}";
-				tmp += $",{a.thing}";
-				tmp += $",{a.eleP}";
-				tmp += $",{a.cooldown}";
-				tmp += $",{a.charge}";
-				tmp += $",{a.radius}";
-				tmp += $",{a.max}";
-				tmp += $",{_DumpArray(a.req)}";
-				tmp += $",{a.idTrainer}";
-				tmp += $",{a.partySkill}";
-				tmp += $",{a.tagTrainer}";
-				tmp += $",{a.levelBonus_JP}";
-				tmp += $",{a.levelBonus}";
-				tmp += $",{_DumpArray(a.foodEffect)}";
-				tmp += $",{_DumpArray(a.langAct)}";
-				tmp += $",{a.detail_JP}";
-				tmp += $",{a.detail}";
-				tmp += $",{a.textPhase_JP}";
-				tmp += $",{a.textPhase}";
-				tmp += $",{a.textExtra_JP}";
-				tmp += $",{a.textExtra}";
-				tmp += $",{a.textInc_JP}";
-				tmp += $",{a.textInc}";
-				tmp += $",{a.textDec_JP}";
-				tmp += $",{a.textDec}";
-				tmp += $",{_DumpArray(a.textAlt_JP)}";
-				tmp += $",{_DumpArray(a.textAlt)}";
-				tmp += $",{_DumpArray(a.adjective_JP)}";
-				tmp += $",{_DumpArray(a.adjective)}";
+				_Dump(sb, a.id);
+				_Dump(sb, a.alias);
+				_Dump(sb, a.name_JP);
+				_Dump(sb, a.name);
+				_Dump(sb, a.altname_JP);
+				_Dump(sb, a.altname);
+				_Dump(sb, a.aliasParent);
+				_Dump(sb, a.aliasRef);
+				_Dump(sb, a.aliasMtp);
+				_Dump(sb, a.parentFactor);
+				_Dump(sb, a.lvFactor);
+				_Dump(sb, a.encFactor);
+				_Dump(sb, a.encSlot);
+				_Dump(sb, a.mtp);
+				_Dump(sb, a.LV);
+				_Dump(sb, a.chance);
+				_Dump(sb, a.value);
+				_Dump(sb, a.cost);
+				_Dump(sb, a.geneSlot);
+				_Dump(sb, a.sort);
+				_Dump(sb, a.target);
+				_Dump(sb, a.proc);
+				_Dump(sb, a.type);
+				_Dump(sb, a.group);
+				_Dump(sb, a.category);
+				_Dump(sb, a.categorySub);
+				_Dump(sb, a.abilityType);
+				_Dump(sb, a.tag);
+				_Dump(sb, a.thing);
+				_Dump(sb, a.eleP);
+				_Dump(sb, a.cooldown);
+				_Dump(sb, a.charge);
+				_Dump(sb, a.radius);
+				_Dump(sb, a.max);
+				_Dump(sb, a.req);
+				_Dump(sb, a.idTrainer);
+				_Dump(sb, a.partySkill);
+				_Dump(sb, a.tagTrainer);
+				_Dump(sb, a.levelBonus_JP);
+				_Dump(sb, a.levelBonus);
+				_Dump(sb, a.foodEffect);
+				_Dump(sb, a.langAct);
+				_Dump(sb, a.detail_JP);
+				_Dump(sb, a.detail);
+				_Dump(sb, a.textPhase_JP);
+				_Dump(sb, a.textPhase);
+				_Dump(sb, a.textExtra_JP);
+				_Dump(sb, a.textExtra);
+				_Dump(sb, a.textInc_JP);
+				_Dump(sb, a.textInc);
+				_Dump(sb, a.textDec_JP);
+				_Dump(sb, a.textDec);
+				_Dump(sb, a.textAlt_JP);
+				_Dump(sb, a.textAlt);
+				_Dump(sb, a.adjective_JP);
+				_Dump(sb, a.adjective);
 
-				tmp += "\n";
+				sb.AppendLine();
 			}
 
-			if (System.IO.File.Exists(dumpPath))
-				System.IO.File.Delete(dumpPath);
-			System.IO.File.WriteAllText(dumpPath, tmp);
+			_Save(dumpPath, sb);
 		}
 
 
@@ -270,87 +267,159 @@ namespace Elin_Mod
 
 		public static void Dump_ElinRecipeAll(string dumpPath) {
 			var cards = EClass.sources.recipes;
-			string tmp = "";
-			tmp += "id,";
-			tmp += "factory,";
-			tmp += "type,";
-			tmp += "thing,";
-			tmp += "num,";
-			tmp += "sp,";
-			tmp += "time,";
-			tmp += "ing1,";
-			tmp += "ing2,";
-			tmp += "ing3,";
-			tmp += "tag,";
+			var sb = _CreateSb(cards.map.Count, 500);
+			_DumpHeader( sb, "id" );
+			_DumpHeader( sb, "factory" );
+			_DumpHeader( sb, "type" );
+			_DumpHeader( sb, "thing" );
+			_DumpHeader( sb, "num" );
+			_DumpHeader( sb, "sp" );
+			_DumpHeader( sb, "time" );
+			_DumpHeader( sb, "ing1" );
+			_DumpHeader( sb, "ing2" );
+			_DumpHeader( sb, "ing3" );
+			_DumpHeader( sb, "tag" );
 
-			tmp += "\n";
+			sb.AppendLine();
+			sb.AppendLine();
+			sb.AppendLine();
 			foreach (var itr in cards.map) {
 				var a = itr.Value;
-				tmp += $"{a.id}";
-				tmp += $",{a.factory}";
-				tmp += $",{a.type}";
-				tmp += $",{a.thing}";
-				tmp += $",{a.num}";
-				tmp += $",{a.sp}";
-				tmp += $",{a.time}";
-				tmp += $",{_DumpArray(a.ing1)}";
-				tmp += $",{_DumpArray(a.ing2)}";
-				tmp += $",{_DumpArray(a.ing3)}";
-				tmp += $",{_DumpArray(a.tag)}";
-				tmp += "\n";
+				_Dump(sb, a.id);
+				_Dump(sb, a.factory);
+				_Dump(sb, a.type);
+				_Dump(sb, a.thing);
+				_Dump(sb, a.num);
+				_Dump(sb, a.sp);
+				_Dump(sb, a.time);
+				_Dump(sb, a.ing1);
+				_Dump(sb, a.ing2);
+				_Dump(sb, a.ing3);
+				_Dump(sb, a.tag);
+				sb.AppendLine();
 			}
 
-			if (System.IO.File.Exists(dumpPath))
-				System.IO.File.Delete(dumpPath);
-			System.IO.File.WriteAllText(dumpPath, tmp);
+			_Save(dumpPath, sb);
 		}
 
 		public static void Dump_ElinFactionAll(string dumpPath) {
-			var dats = EClass.sources.factions;
-			string tmp = "";
-			tmp += "id,";
-			tmp += "factory,";
-			tmp += "type,";
-			tmp += "faith,";
-			tmp += "domain,";
-			tmp += "relation,";
-			tmp += "textType_JP,";
-			tmp += "textType,";
-			tmp += "textAvatar,";
-			tmp += "detail_JP,";
-			tmp += "detail,";
-			tmp += "name_L,";
-			tmp += "detail_L,";
-			tmp += "textType_L,";
-			tmp += "textBenefit_L,";
-			tmp += "textPet_L,";
+			var cards = EClass.sources.factions;
+			var sb = _CreateSb(cards.map.Count, 1000);
+			_DumpHeader( sb, "id" );
+			_DumpHeader( sb, "factory" );
+			_DumpHeader( sb, "type" );
+			_DumpHeader( sb, "faith" );
+			_DumpHeader( sb, "domain" );
+			_DumpHeader( sb, "relation" );
+			_DumpHeader( sb, "textType_JP" );
+			_DumpHeader( sb, "textType" );
+			_DumpHeader( sb, "textAvatar" );
+			_DumpHeader( sb, "detail_JP" );
+			_DumpHeader( sb, "detail" );
+			_DumpHeader( sb, "name_L" );
+			_DumpHeader( sb, "detail_L" );
+			_DumpHeader( sb, "textType_L" );
+			_DumpHeader( sb, "textBenefit_L" );
+			_DumpHeader( sb, "textPet_L" );
 
-			tmp += "\n";
-			foreach (var itr in dats.map) {
+			sb.AppendLine();
+			sb.AppendLine();
+			sb.AppendLine();
+			foreach (var itr in cards.map) {
 				var a = itr.Value;
-				tmp += $"{a.id}";
-				tmp += $",{a.name_JP}";
-				tmp += $",{a.name}";
-				tmp += $",{a.type}";
-				tmp += $",{a.faith}";
-				tmp += $",{a.domain}";
-				tmp += $",{a.relation}";
-				tmp += $",{a.textType_JP}";
-				tmp += $",{a.textType}";
-				tmp += $",{a.textAvatar}";
-				tmp += $",{a.detail_JP}";
-				tmp += $",{a.detail}";
-				tmp += $",{a.name_L}";
-				tmp += $",{a.detail_L}";
-				tmp += $",{a.textType_L}";
-				tmp += $",{a.textBenefit_L}";
-				tmp += $",{a.textPet_L}";
-				tmp += "\n";
+				_Dump(sb, a.id);
+				_Dump(sb, a.name_JP);
+				_Dump(sb, a.name);
+				_Dump(sb, a.type);
+				_Dump(sb, a.faith);
+				_Dump(sb, a.domain);
+				_Dump(sb, a.relation);
+				_Dump(sb, a.textType_JP);
+				_Dump(sb, a.textType);
+				_Dump(sb, a.textAvatar);
+				_Dump(sb, a.detail_JP);
+				_Dump(sb, a.detail);
+				_Dump(sb, a.name_L);
+				_Dump(sb, a.detail_L);
+				_Dump(sb, a.textType_L);
+				_Dump(sb, a.textBenefit_L);
+				_Dump(sb, a.textPet_L);
+				sb.AppendLine();
 			}
 
-			if (System.IO.File.Exists(dumpPath))
-				System.IO.File.Delete(dumpPath);
-			System.IO.File.WriteAllText(dumpPath, tmp);
+			_Save(dumpPath, sb);
+		}
+
+
+
+		public static void Dump_ElinLangGeneral(string dumpPath) {
+			var cards = EClass.sources.langGeneral;
+			var sb = _CreateSb(cards.map.Count, 1000);
+			sb.Append("id");
+			sb.Append("filter");
+			sb.Append("text_JP");
+			sb.Append("text");
+
+			sb.AppendLine();
+			sb.AppendLine();
+			sb.AppendLine();
+
+			foreach (var itr in cards.map) {
+				var a = itr.Value;
+				_Dump(sb, a.id);
+				_Dump(sb, a.filter);
+				_Dump(sb, a.text_JP);
+				_Dump(sb, a.text);
+				sb.AppendLine();
+			}
+
+			_Save(dumpPath, sb);
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+		static void _Save( string path, StringBuilder sb ) {
+			if (System.IO.File.Exists(path))
+				System.IO.File.Delete(path);
+			System.IO.File.WriteAllText(path, sb.ToString());
+		}
+
+		static void _Dump<T>(System.Text.StringBuilder sb, T dat, bool isArrayElem=false) {
+			if (dat == null)
+				return;
+			if (dat.GetType().IsArray) {
+				var array = dat as Array;
+				for (int i = 0; i < array.Length; ++i) {
+					var d = array.GetValue(i);
+					if (i > 0)
+						sb.Append(c_ArraySeparator);
+					_Dump(sb, d, true);
+				}
+			} else {
+				if (!isArrayElem && dat is string )
+					sb.Append(c_StringEncloser);
+				sb.Append(dat);
+				if (!isArrayElem && dat is string)
+					sb.Append(c_StringEncloser);
+				sb.Append(c_ElemSeparator);
+			}
+		}
+
+		static void _DumpHeader(StringBuilder sb, string label) {
+			sb.Append(label).Append(c_ElemSeparator);
+		}
+
+		static System.Text.StringBuilder _CreateSb(int elemCount, int dataSize) {
+			return new System.Text.StringBuilder(dataSize * (elemCount + 2));
 		}
 	}
 }
