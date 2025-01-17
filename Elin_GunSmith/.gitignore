@@ -134,8 +134,6 @@ DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
 
-
-
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
@@ -219,4 +217,5 @@ ModelManifest.xml
 RunLicense_WEBCS.config
 .svn*
 
-./elin_link/
+elin_link
+src/Lib
