@@ -10,7 +10,7 @@ namespace Elin_Mod
 	class DebugUtil
 	{
 		private static ManualLogSource s_Logger;
-
+		 
 		public static void Initialize( ManualLogSource body )
 		{
 			s_Logger = body;

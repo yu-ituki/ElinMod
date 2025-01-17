@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Elin_Mod</RootNamespace>
-    <AssemblyName>Elin_ModTemplate</AssemblyName>
+    <AssemblyName>Elin_FindTreasuresMap</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -112,14 +112,15 @@
     <Compile Include="Lib\CommonUtil.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="Lib\DebugUtil.cs" />
+    <Compile Include="Hook_GameEvent.cs" />
     <Compile Include="TextID.cs" />
-    <Compile Include="GameUtil.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModInfo.cs" />
     <Compile Include="Lib\ModText.cs" />
     <Compile Include="Lib\ModTextManager.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Lib\Singleton.cs" />
+    <Compile Include="Lib\GameUtil.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -130,7 +131,8 @@
 
 xcopy $(SolutionDir)data\resource\ $(TargetDir)resource\ /s /e /h /y /i
 xcopy $(SolutionDir)data\publish\* $(TargetDir) /s /e /h /y /i
-rd /s /q $(SolutionDir)\elin_link\Package\$(ProjectName)\
-xcopy $(TargetDir) $(SolutionDir)\elin_link\Package\$(ProjectName)\ /s /e /h /y /i</PostBuildEvent>
+rd /s /q $(SolutionDir)\elin_link\Package\$(SolutionName)\
+xcopy $(TargetDir) $(SolutionDir)\elin_link\Package\$(SolutionName)\ /s /e /h /y /i
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

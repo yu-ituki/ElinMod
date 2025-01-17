@@ -16,7 +16,7 @@
    1. ライブラリ的なソースコードを別フォルダ（./../Elin_Lib）に括りだしています。 
 3.  次に文字列のフォルダ以下一括置換ツールなどで「ModTemplate」および「mod-template」を自身のMod名に全文字列置換してください。
     * 置換はVSCodeや秀丸、さくらエディタ、その他なんでも大丈夫です。  
-4. そのあと「Elin_ModTemplate.sln」「src/Elin_ModTemplate.csproj」 を自身のMod名にリネームしてください。
+4. そのあと「Elin_ModTemplate.sln」を自身のMod名にリネームしてください。
 5. config.bat に自身の環境情報を記載してください
 6. 準備完了です。これでビルドできるようになっているはずです。
 

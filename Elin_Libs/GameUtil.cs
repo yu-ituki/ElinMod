@@ -8,6 +8,25 @@ namespace Elin_Mod
 
 	internal class GameUtil
 	{
+
+		/// <summary>
+		/// Trait生成.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
+		public static T CreateTraitCrafter<T>( string ownerToolID ) where T : TraitCrafter, new() {
+			var dmyOwner = ThingGen.Create(ownerToolID);
+			var ret = new T();
+			dmyOwner.trait = ret;
+			ret.SetOwner(dmyOwner);
+
+			return ret;
+		}
+
+		/// <summary>
+		/// 渡されたTrailCrafterを強制使用.
+		/// </summary>
+		/// <param name="trait"></param>
 		public static void UseForceTraitCrafter( TraitCrafter trait ) {
 			var actPlan = new ActPlan();
 
@@ -67,17 +86,28 @@ namespace Elin_Mod
 		}
 
 
+		public static Dialog OpenDialog_YesNo(string text, string yesText, string noText, System.Action<bool> onResult) {
+			Dialog d = Layer.Create<Dialog>();
+			d.textDetail.SetText(text + " ");
+			d.list.AddButton(null, yesText, () => {
+				onResult(true);
+				d.Close();
+			});
+			d.list.AddButton(null, noText, () => {
+				onResult(false);
+				d.Close();
+			});
+			ELayer.ui.AddLayer(d);
+			return d;
+		}
 
-		public static Dialog OpenDialog_YesNo( string text, string yesText, string noText, System.Action<bool> onResult )
+
+		public static Dialog OpenDialog_1Button( string text, string yesText, System.Action onResult )
 		{
 			Dialog d = Layer.Create<Dialog>();
 			d.textDetail.SetText(text + " ");
 			d.list.AddButton(null, yesText, ()=> {
-				onResult(true);
-				d.Close();
-			});
-			d.list.AddButton(null, noText, ()=>{
-				onResult(false); 
+				onResult();
 				d.Close();
 			});
 			ELayer.ui.AddLayer(d);

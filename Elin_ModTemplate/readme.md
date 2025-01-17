@@ -16,7 +16,7 @@ This template has the following.
    1. copy the library-like source code to another folder (. /... /Elin_Lib). 
 3. Next, replace “ModTemplate” and “mod-template” with your own mod name by using a tool such as a batch replacement tool under the folder of strings.
     * VSCode, Hidemaru, Sakura Editor, or any other replacement tool will do. 
-4. After that, rename “Elin_ModTemplate.sln” and “src/Elin_ModTemplate.csproj” to your own mod name.
+4. After that, rename “Elin_ModTemplate.sln” to your own mod name.
 5. Write your environment information in config.bat.
 6. preparation is complete. You should now be able to build.
 

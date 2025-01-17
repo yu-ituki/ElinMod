@@ -7,8 +7,8 @@
     <ProjectGuid>{D686E069-BE27-4AE5-9967-BC10C23B04B6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Elin_Mod</RootNamespace>
-    <AssemblyName>Elin_FindTreasuresMap</AssemblyName>
+    <RootNamespace>Elin_GunSmith</RootNamespace>
+    <AssemblyName>Elin_GunSmith</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -107,14 +107,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GunSmithManager.cs" />
     <Compile Include="Lib\Debug_AnalyzeElin.cs" />
     <Compile Include="ModConfigUi.cs" />
     <Compile Include="Lib\CommonUtil.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="Lib\DebugUtil.cs" />
-    <Compile Include="Hook_GameEvent.cs" />
+    <Compile Include="TraitModCombine.cs" />
+    <Compile Include="TraitGunSmith.cs" />
+    <Compile Include="ModUIEntry.cs" />
     <Compile Include="TextID.cs" />
-    <Compile Include="GameUtil.cs" />
+    <Compile Include="Lib\GameUtil.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModInfo.cs" />
     <Compile Include="Lib\ModText.cs" />
@@ -131,9 +134,7 @@
 
 xcopy $(SolutionDir)data\resource\ $(TargetDir)resource\ /s /e /h /y /i
 xcopy $(SolutionDir)data\publish\* $(TargetDir) /s /e /h /y /i
-rd /s /q $(SolutionDir)\elin_link\Package\$(ProjectName)\
-xcopy $(TargetDir) $(SolutionDir)\elin_link\Package\$(ProjectName)\ /s /e /h /y /i
-
-</PostBuildEvent>
+rd /s /q $(SolutionDir)\elin_link\Package\$(SolutionName)\
+xcopy $(TargetDir) $(SolutionDir)\elin_link\Package\$(SolutionName)\ /s /e /h /y /i
   </PropertyGroup>
 </Project>
