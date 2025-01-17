@@ -1,7 +1,6 @@
 # Readme
 * This is a template project for creating Elin mods.
 * It contains a basic template, basic setup files, etc.
-  
 
 # Description
 This template has the following.
@@ -13,6 +12,23 @@ This template has the following.
 
 ## Introduction
 * First, please write your environment information in config.bat.
+* Copy the library-like source code to a separate folder (. /... /Elin_Lib). 
+If you use this template, please download it as well.  
+
+## System Requirements
+* Net Framework 4.8.    
+* If you have Visual Studio 2022 and .Net Framework 4.8, it will work anyway.  
+* Unity is not required for this project, but it is necessary if you want to generate prefabs, ScriptableObjects, AssetBundle, etc.  
+  * Even if you only use C#, if you just new GameObject() and AddComponent, or use Texture2D.LoadRawTextureData() or something like that, it might work.   
+    You may not need Unity, but if you want to add a new resource, it is better to have it.   
+* Then, you just need to buy and install Elin and you have a working environment. Please buy about 10 copies for proselytizing.  
+
+## About Elin_Lib
+* This is a group of sources that can be used by all mods. 
+* There is a folder on top of this folder. 
+* By hitting config.bat, a symbolic link is created between Elin_Lib and the project's src/Lib directory. 
+* If you drop Elin_Lib together and put it in the same directory as the project folder,  
+  If you drop Elin_Lib with your project and place it in the same directory as your project folder, you can copy and paste the template and build it anyway.  
 
 ## Minimum basic projects and sources
 * Minimum projects and sources for building a Mod are included.
@@ -21,7 +37,7 @@ This template has the following.
 * ModConfig.cs and ModConfigUI.cs contain sample configurations for mods.
 * DebugUtil.Log(), LogError(), etc. using the BepInEx logger. Debug.Log()-like.
   * To view BepInEx logs, you must open the BepInEx console.
-  * Console] in the Elin installation folder/BepInEx/config/BepInEx.cfg with Enabled = true.
+  * ［Console］ in the Elin installation folder/BepInEx/config/BepInEx.cfg with Enabled = true.
 
 ## Basic material data for distribution
 * package.xml and preview.jpg are placed under data/publish
@@ -38,7 +54,6 @@ This template has the following.
 * ModTextManager.Instance.GetText( eTextID ) automatically identifies the current language code and returns a string.
 * If you want to increase the number of languages, increase mod_texts.xlsm and eLanguage in Const.cs, and increase ModText.cs by modifying it appropriately.
 * Corresponds to in-sentence user data embedding. Corresponds to [0]-[8] in the statement and ModTextmanager.Instance.SetUserData() and is replaced according to the index.
-
 
 ## Simple mechanism to refer to the Elin installation folder and DLLs
 * Go to the DLL of the installation folder written in config.bat.
