@@ -19,60 +19,58 @@ namespace Elin_Mod
 		public static void Dump_ElinThingAll( string dumpPath ) {
 			var cards = EClass.sources.things;
 			var sb = _CreateSb(cards.map.Count, 1000);
-			_DumpHeader( sb, "id" );
-			_DumpHeader( sb, "name_JP" );
-			_DumpHeader( sb, "unknown_JP" );
-			_DumpHeader( sb, "unit_JP" );
-			_DumpHeader( sb, "naming" );
-			_DumpHeader( sb, "name" );
-			_DumpHeader( sb, "unit" );
-			_DumpHeader( sb, "unknown" );
-			_DumpHeader( sb, "category" );
-			_DumpHeader( sb, "sort" );
-			_DumpHeader( sb, "_tileType" );
-			_DumpHeader( sb, "_idRenderData" );
-			_DumpHeader( sb, "tiles" );
-			_DumpHeader( sb, "altTiles" );
-			_DumpHeader( sb, "anime" );
-			_DumpHeader( sb, "skins" );
-			_DumpHeader( sb, "size" );
-			_DumpHeader( sb, "colorMod" );
-			_DumpHeader( sb, "colorType" );
-			_DumpHeader( sb, "recipeKey" );
-			_DumpHeader( sb, "factory" );
-			_DumpHeader( sb, "components" );
-			_DumpHeader( sb, "disassemble" );
-			_DumpHeader( sb, "defMat" );
-			_DumpHeader( sb, "tierGroup" );
-			_DumpHeader( sb, "value" );
-			_DumpHeader( sb, "LV" );
-			_DumpHeader( sb, "chance" );
-			_DumpHeader( sb, "quality" );
-			_DumpHeader( sb, "HP" );
-			_DumpHeader( sb, "weight" );
-			_DumpHeader( sb, "electricity" );
-			_DumpHeader( sb, "trait" );
-			_DumpHeader( sb, "elements" );
-			_DumpHeader( sb, "range" );
-			_DumpHeader( sb, "attackType" );
-			_DumpHeader( sb, "offense" );
-			_DumpHeader( sb, "substats" );
-			_DumpHeader( sb, "defense" );
-			_DumpHeader( sb, "lightData" );
-			_DumpHeader( sb, "idExtra" );
-			_DumpHeader( sb, "idToggleExtra" );
-			_DumpHeader( sb, "idActorEx" );
-			_DumpHeader( sb, "idSound" );
-			_DumpHeader( sb, "tag" );
-			_DumpHeader( sb, "workTag" );
-			_DumpHeader( sb, "filter" );
-			_DumpHeader( sb, "roomName_JP" );
-			_DumpHeader( sb, "roomName" );
-			_DumpHeader( sb, "detail_JP" );
-			_DumpHeader( sb, "detail" );
-			sb.AppendLine();
-			sb.AppendLine();
-			sb.AppendLine();
+			_AddHeader( "id", "string" );
+			_AddHeader( "name_JP" , "string" );
+			_AddHeader( "unknown_JP" , "string" );
+			_AddHeader( "unit_JP" , "string" );
+			_AddHeader( "naming" , "string" );
+			_AddHeader( "name" , "string" );
+			_AddHeader( "unit" , "string" );
+			_AddHeader( "unknown" , "string" );
+			_AddHeader( "category" , "string" );
+			_AddHeader( "sort" , "int" );
+			_AddHeader( "_tileType" , "string" );
+			_AddHeader( "_idRenderData" , "string" );
+			_AddHeader( "tiles" , "int[]" );
+			_AddHeader( "altTiles" , "int[]" );
+			_AddHeader( "anime", "int[]");
+			_AddHeader( "skins", "int[]");
+			_AddHeader( "size", "int[]");
+			_AddHeader( "colorMod", "int");
+			_AddHeader( "colorType" , "string" );
+			_AddHeader( "recipeKey" , "string[]" );
+			_AddHeader( "factory" , "string[]" );
+			_AddHeader( "components", "string[]");
+			_AddHeader( "disassemble", "string[]");
+			_AddHeader( "defMat" , "string" );
+			_AddHeader( "tierGroup" , "string" );
+			_AddHeader( "value" , "int" );
+			_AddHeader( "LV" , "int" );
+			_AddHeader( "chance", "int");
+			_AddHeader( "quality", "int");
+			_AddHeader( "HP", "int");
+			_AddHeader( "weight", "int");
+			_AddHeader( "electricity", "int");
+			_AddHeader( "trait" , "string[]" );
+			_AddHeader( "elements" , "elements" );
+			_AddHeader( "range", "int" );
+			_AddHeader( "attackType" , "string" );
+			_AddHeader( "offense" , "int[]" );
+			_AddHeader( "substats" , "int[]" );
+			_AddHeader( "defense" , "int[]" );
+			_AddHeader( "lightData" , "string" );
+			_AddHeader( "idExtra" , "string" );
+			_AddHeader( "idToggleExtra", "string");
+			_AddHeader( "idActorEx", "string");
+			_AddHeader( "idSound", "string");
+			_AddHeader( "tag", "string[]");
+			_AddHeader( "workTag", "string");
+			_AddHeader( "filter", "string[]");
+			_AddHeader( "roomName_JP", "string[]");
+			_AddHeader( "roomName", "string[]");
+			_AddHeader( "detail_JP", "string");
+			_AddHeader( "detail", "string");
+			_DumpHeader(sb);
 
 			foreach (var itr in cards.map) {
 				var a = itr.Value;
@@ -137,79 +135,67 @@ namespace Elin_Mod
 			var cards = EClass.sources.elements;
 			var sb = _CreateSb(cards.map.Count, 2000);
 			
-			string AAA(string[] tmp) {
-				string ret = "";
-				for (int i = 0; i < tmp.Length; ++i)
-					ret += $"[{tmp[i]}], ";
-				return ret;
-			}
+			_AddHeader( "id" , "int");
+			_AddHeader( "alias" , "string" );
+			_AddHeader( "name_JP" , "string" );
+			_AddHeader( "name" , "string" );
+			_AddHeader( "altname_JP" , "string" );
+			_AddHeader( "altname" , "string" );
+			_AddHeader( "aliasParent" , "string" );
+			_AddHeader( "aliasRef" , "string" );
+			_AddHeader( "aliasMtp" , "string" );
+			_AddHeader( "parentFactor" , "float" );
+			_AddHeader( "lvFactor" , "int" );
+			_AddHeader( "encFactor" , "int" );
+			_AddHeader( "encSlot" , "string" );
+			_AddHeader( "mtp" , "int" );
+			_AddHeader( "LV" , "int" );
+			_AddHeader( "chance" , "int" );
+			_AddHeader( "value" , "int" );
+			_AddHeader( "cost" , "int[]" );
+			_AddHeader( "geneSlot" , "int" );
+			_AddHeader( "sort" , "int" );
+			_AddHeader( "target" , "string" );
+			_AddHeader( "proc" , "string[]" );
+			_AddHeader( "type" , "string" );
+			_AddHeader( "group" , "string" );
+			_AddHeader( "category" , "string" );
+			_AddHeader( "categorySub" , "string" );
+			_AddHeader( "abilityType" , "string[]" );
+			_AddHeader( "tag" , "string[]" );
+			_AddHeader( "thing" , "string" );
+			_AddHeader( "eleP" , "int" );
+			_AddHeader( "cooldown" , "int" );
+			_AddHeader( "charge" , "int" );
+			_AddHeader( "radius" , "float" );
+			_AddHeader( "max" , "int" );
+			_AddHeader( "req" , "string[]" );
+			_AddHeader( "idTrainer" , "string" );
+			_AddHeader( "partySkill" , "int" );
+			_AddHeader( "tagTrainer" , "string" );
+			_AddHeader( "levelBonus_JP" , "string" );
+			_AddHeader( "levelBonus" , "string" );
+			_AddHeader( "foodEffect" , "string[]" );
+			_AddHeader("????", "?????");
+			_AddHeader( "langAct" , "string[]" );
+			_AddHeader( "detail_JP" , "string" );
+			_AddHeader( "detail" , "string" );
+			_AddHeader( "textPhase_JP" , "string" );
+			_AddHeader( "textPhase" , "string" );
+			_AddHeader( "textExtra_JP" , "string" );
+			_AddHeader( "textExtra" , "string" );
+			_AddHeader( "textInc_JP" , "string" );
+			_AddHeader( "textInc" , "string" );
+			_AddHeader( "textDec_JP" , "string" );
+			_AddHeader( "textDec" , "string" );
+			_AddHeader( "textAlt_JP" , "string[]" );
+			_AddHeader( "textAlt" , "string[]" );
+			_AddHeader( "adjective_JP" , "string[]" );
+			_AddHeader( "adjective" , "string[]" );
+			_DumpHeader(sb);
 
-			_DumpHeader( sb, "id" );
-			_DumpHeader( sb, "alias" );
-			_DumpHeader( sb, "name_JP" );
-			_DumpHeader( sb, "name" );
-			_DumpHeader( sb, "altname_JP" );
-			_DumpHeader( sb, "altname" );
-			_DumpHeader( sb, "aliasParent" );
-			_DumpHeader( sb, "aliasRef" );
-			_DumpHeader( sb, "aliasMtp" );
-			_DumpHeader( sb, "parentFactor" );
-			_DumpHeader( sb, "lvFactor" );
-			_DumpHeader( sb, "encFactor" );
-			_DumpHeader( sb, "encSlot" );
-			_DumpHeader( sb, "mtp" );
-			_DumpHeader( sb, "LV" );
-			_DumpHeader( sb, "chance" );
-			_DumpHeader( sb, "value" );
-			_DumpHeader( sb, "cost" );
-			_DumpHeader( sb, "geneSlot" );
-			_DumpHeader( sb, "sort" );
-			_DumpHeader( sb, "target" );
-			_DumpHeader( sb, "proc" );
-			_DumpHeader( sb, "type" );
-			_DumpHeader( sb, "group" );
-			_DumpHeader( sb, "category" );
-			_DumpHeader( sb, "categorySub" );
-			_DumpHeader( sb, "abilityType" );
-			_DumpHeader( sb, "tag" );
-			_DumpHeader( sb, "thing" );
-			_DumpHeader( sb, "eleP" );
-			_DumpHeader( sb, "cooldown" );
-			_DumpHeader( sb, "charge" );
-			_DumpHeader( sb, "radius" );
-			_DumpHeader( sb, "max" );
-			_DumpHeader( sb, "req" );
-			_DumpHeader( sb, "idTrainer" );
-			_DumpHeader( sb, "partySkill" );
-			_DumpHeader( sb, "tagTrainer" );
-			_DumpHeader( sb, "levelBonus_JP" );
-			_DumpHeader( sb, "levelBonus" );
-			_DumpHeader( sb, "foodEffect" );
-			_DumpHeader( sb, "langAct" );
-			_DumpHeader( sb, "detail_JP" );
-			_DumpHeader( sb, "detail" );
-			_DumpHeader( sb, "textPhase_JP" );
-			_DumpHeader( sb, "textPhase" );
-			_DumpHeader( sb, "textExtra_JP" );
-			_DumpHeader( sb, "textExtra" );
-			_DumpHeader( sb, "textInc_JP" );
-			_DumpHeader( sb, "textInc" );
-			_DumpHeader( sb, "textDec_JP" );
-			_DumpHeader( sb, "textDec" );
-			_DumpHeader( sb, "textAlt_JP" );
-			_DumpHeader( sb, "textAlt" );
-			_DumpHeader( sb, "adjective_JP" );
-			_DumpHeader( sb, "adjective" );
-			sb.AppendLine();
-			sb.AppendLine();
-			sb.AppendLine();
 			foreach (var itr in cards.map) {
 				var a = itr.Value;
-
-				if ( a.id  == 910 || a.id == 911 ) {
-					DebugUtil.LogError( $"{a.id} ||| {a.category} ||| {a.categorySub} ||| {AAA(a.abilityType)} ||| {AAA(a.tag)} ||| {a.thing} ||| {a.eleP}" );
-				}
-
 				_Dump(sb, a.id);
 				_Dump(sb, a.alias);
 				_Dump(sb, a.name_JP);
@@ -251,6 +237,7 @@ namespace Elin_Mod
 				_Dump(sb, a.levelBonus_JP);
 				_Dump(sb, a.levelBonus);
 				_Dump(sb, a.foodEffect);
+				_Dump(sb, "---");
 				_Dump(sb, a.langAct);
 				_Dump(sb, a.detail_JP);
 				_Dump(sb, a.detail);
@@ -280,21 +267,19 @@ namespace Elin_Mod
 		public static void Dump_ElinRecipeAll(string dumpPath) {
 			var cards = EClass.sources.recipes;
 			var sb = _CreateSb(cards.map.Count, 500);
-			_DumpHeader( sb, "id" );
-			_DumpHeader( sb, "factory" );
-			_DumpHeader( sb, "type" );
-			_DumpHeader( sb, "thing" );
-			_DumpHeader( sb, "num" );
-			_DumpHeader( sb, "sp" );
-			_DumpHeader( sb, "time" );
-			_DumpHeader( sb, "ing1" );
-			_DumpHeader( sb, "ing2" );
-			_DumpHeader( sb, "ing3" );
-			_DumpHeader( sb, "tag" );
+			_AddHeader( "id" , "string" );
+			_AddHeader( "factory" , "string" );
+			_AddHeader( "type" , "string" );
+			_AddHeader( "thing" , "string");
+			_AddHeader( "num" , "string" );
+			_AddHeader( "sp" , "int" );
+			_AddHeader( "time" , "int" );
+			_AddHeader( "ing1" , "string[]" );
+			_AddHeader( "ing2" , "string[]" );
+			_AddHeader( "ing3" , "string[]" );
+			_AddHeader( "tag" , "string[]" );
+			_DumpHeader(sb);
 
-			sb.AppendLine();
-			sb.AppendLine();
-			sb.AppendLine();
 			foreach (var itr in cards.map) {
 				var a = itr.Value;
 				_Dump(sb, a.id);
@@ -317,26 +302,25 @@ namespace Elin_Mod
 		public static void Dump_ElinFactionAll(string dumpPath) {
 			var cards = EClass.sources.factions;
 			var sb = _CreateSb(cards.map.Count, 1000);
-			_DumpHeader( sb, "id" );
-			_DumpHeader( sb, "factory" );
-			_DumpHeader( sb, "type" );
-			_DumpHeader( sb, "faith" );
-			_DumpHeader( sb, "domain" );
-			_DumpHeader( sb, "relation" );
-			_DumpHeader( sb, "textType_JP" );
-			_DumpHeader( sb, "textType" );
-			_DumpHeader( sb, "textAvatar" );
-			_DumpHeader( sb, "detail_JP" );
-			_DumpHeader( sb, "detail" );
-			_DumpHeader( sb, "name_L" );
-			_DumpHeader( sb, "detail_L" );
-			_DumpHeader( sb, "textType_L" );
-			_DumpHeader( sb, "textBenefit_L" );
-			_DumpHeader( sb, "textPet_L" );
-
-			sb.AppendLine();
-			sb.AppendLine();
-			sb.AppendLine();
+			_AddHeader( "id" , "string" );
+			_AddHeader("name_JP", "string" );
+			_AddHeader("name", "string" );
+			_AddHeader("type", "string");
+			_AddHeader( "faith", "string" );
+			_AddHeader( "domain" , "string" );
+			_AddHeader( "relation" , "int" );
+			_AddHeader( "textType_JP" , "string" );
+			_AddHeader( "textType" , "string" );
+			_AddHeader( "textAvatar" , "string" );
+			_AddHeader( "detail_JP" , "string" );
+			_AddHeader( "detail" , "string" );
+			_AddHeader( "name_L" , "string" );
+			_AddHeader( "detail_L" , "string" );
+			_AddHeader( "textType_L" , "string" );
+			_AddHeader( "textBenefit_L" , "string" );
+			_AddHeader( "textPet_L" , "string" );
+			_DumpHeader(sb);
+			
 			foreach (var itr in cards.map) {
 				var a = itr.Value;
 				_Dump(sb, a.id);
@@ -367,14 +351,12 @@ namespace Elin_Mod
 		public static void Dump_ElinLangGeneral(string dumpPath) {
 			var cards = EClass.sources.langGeneral;
 			var sb = _CreateSb(cards.map.Count, 1000);
-			_DumpHeader( sb, "id");
-			_DumpHeader( sb, "filter");
-			_DumpHeader( sb, "text_JP");
-			_DumpHeader( sb, "text");
+			_AddHeader( "id", "string" );
+			_AddHeader( "filter", "string" );
+			_AddHeader( "text_JP", "string" );
+			_AddHeader( "text", "string" );
 
-			sb.AppendLine();
-			sb.AppendLine();
-			sb.AppendLine();
+			_DumpHeader(sb);
 
 			foreach (var itr in cards.map) {
 				var a = itr.Value;
@@ -388,14 +370,98 @@ namespace Elin_Mod
 			_Save(dumpPath, sb);
 		}
 
+		public static void Dump_ElinLangList(string dumpPath) {
+			var cards = EClass.sources.langList;
+			var sb = _CreateSb(cards.map.Count, 1000);
+			_AddHeader("id", "string" );
+			_AddHeader("filter", "string" );
+			_AddHeader("text_JP", "string" );
+			_AddHeader("text", "string");
+			_DumpHeader(sb);
+
+			foreach (var itr in cards.map) {
+				var a = itr.Value;
+				_Dump(sb, a.id);
+				_Dump(sb, a.filter);
+				_Dump(sb, a.text_JP);
+				_Dump(sb, a.text);
+				sb.AppendLine();
+			}
+
+			_Save(dumpPath, sb);
+		}
+
+		public static void Dump_ElinLangGame(string dumpPath) {
+			var cards = EClass.sources.langGame;
+			var sb = _CreateSb(cards.map.Count, 1000);
+			_AddHeader("id", "string" );
+			_AddHeader("filter", "string" );
+			_AddHeader("group", "string" );
+			_AddHeader("color", "string" );
+			_AddHeader("logColor", "string" );
+			_AddHeader("sound", "string" );
+			_AddHeader("effect", "string" );
+			_AddHeader("text_JP", "string" );
+			_AddHeader("text", "string" );
+			_DumpHeader(sb);
+
+			foreach (var itr in cards.map) {
+				var a = itr.Value;
+				_Dump(sb, a.id);
+				_Dump(sb, a.filter);
+				_Dump(sb, a.group);
+				_Dump(sb, a.color);
+				_Dump(sb, a.logColor);
+				_Dump(sb, a.sound);
+				_Dump(sb, a.effect);
+				_Dump(sb, a.text_JP);
+				_Dump(sb, a.text);
+				sb.AppendLine();
+			}
+
+			_Save(dumpPath, sb);
+		}
+
+		public static void Dump_ElinLangWord(string dumpPath) {
+			var cards = EClass.sources.langWord;
+			var sb = _CreateSb(cards.map.Count, 1000);
+			_AddHeader("id", "string");
+			_AddHeader("group", "string");
+			_AddHeader("name_JP", "string");
+			_AddHeader("name", "string");
+			_DumpHeader(sb);
+
+			foreach (var itr in cards.map) {
+				var a = itr.Value;
+				_Dump(sb, a.id);
+				_Dump(sb, a.group);
+				_Dump(sb, a.name_JP);
+				_Dump(sb, a.name);
+				sb.AppendLine();
+			}
+
+			_Save(dumpPath, sb);
+		}
 
 
+		public static void Dump_ElinLangNote(string dumpPath) {
+			var cards = EClass.sources.langNote;
+			var sb = _CreateSb(cards.map.Count, 1000);
+			_AddHeader("id", "string");
+			_AddHeader("text_JP", "string");
+			_AddHeader("text", "string");
+			_DumpHeader(sb);
 
+			foreach (var itr in cards.map) {
+				var a = itr.Value;
+				_Dump(sb, a.id);
+				_Dump(sb, a.text_JP);
+				_Dump(sb, a.text);
+				sb.AppendLine();
+			}
 
-
-
-
-
+			_Save(dumpPath, sb);
+		}
 
 
 
@@ -443,8 +509,23 @@ namespace Elin_Mod
 			}
 		}
 
-		static void _DumpHeader(StringBuilder sb, string label) {
-			sb.Append(label).Append(c_ElemSeparator);
+		static List<(string, string)> s_Headers;
+
+		static void _AddHeader(string label, string type) {
+			if (s_Headers == null)
+				s_Headers = new List<(string, string)>();
+			s_Headers.Add((label, type));
+		}
+
+		static void _DumpHeader( StringBuilder sb ) {
+			for ( int i = 0; i < s_Headers.Count; ++i ) 
+				sb.Append(s_Headers[i].Item1).Append(c_ElemSeparator);
+			sb.AppendLine();
+			for (int i = 0; i < s_Headers.Count; ++i)
+				sb.Append(s_Headers[i].Item2).Append(c_ElemSeparator);
+			sb.AppendLine();
+			sb.AppendLine();
+			s_Headers.Clear();
 		}
 
 		static System.Text.StringBuilder _CreateSb(int elemCount, int dataSize) {

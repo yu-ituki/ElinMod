@@ -16,7 +16,7 @@ namespace Elin_Mod
 			s_Logger = body;
 		}
 
-		public static void Log( string message )
+		public static void Log(object message )
 		{
 			if (s_Logger != null)
 			{
@@ -24,7 +24,7 @@ namespace Elin_Mod
 			}
 		}
 
-		public static void LogError( string message )
+		public static void LogError( object message )
 		{
 			if (s_Logger != null)
 			{
@@ -32,7 +32,7 @@ namespace Elin_Mod
 			}
 		}
 
-		public static void LogWarning( string message )
+		public static void LogWarning(object message )
 		{
 			if (s_Logger != null)
 			{
