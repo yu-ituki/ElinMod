@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Meta>
-  <title>Elin_Template</title>
-  <id>yu-ituki.elin.template</id>
+  <title>Elin_ModTemplate</title>
+  <id>yu-ituki.elin.mod-template</id>
   <author>yu-ituki</author>
   <builtin>false</builtin>
   <loadPriority>10</loadPriority>

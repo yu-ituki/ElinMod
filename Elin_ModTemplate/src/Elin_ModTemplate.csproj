@@ -130,9 +130,7 @@
 
 xcopy $(SolutionDir)data\resource\ $(TargetDir)resource\ /s /e /h /y /i
 xcopy $(SolutionDir)data\publish\* $(TargetDir) /s /e /h /y /i
-
-xcopy $(TargetDir) $(SolutionDir)\elin_link\Package\Mod_Test\ /s /e /h /y /i
-
-</PostBuildEvent>
+rd /s /q $(SolutionDir)\elin_link\Package\$(ProjectName)\
+xcopy $(TargetDir) $(SolutionDir)\elin_link\Package\$(ProjectName)\ /s /e /h /y /i</PostBuildEvent>
   </PropertyGroup>
 </Project>

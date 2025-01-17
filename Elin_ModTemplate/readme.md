@@ -10,10 +10,15 @@ This template has the following.
 * Simple Elin installation folder and DLL reference mechanism
 * Automatic copying of deliverables to Elin's Package folder (jump to Mod_Test folder)
 
-## Introduction
-* First, please write your environment information in config.bat.
-* Copy the library-like source code to a separate folder (. /... /Elin_Lib). 
-If you use this template, please download it as well.  
+## How to use
+1. First, copy this folder. 
+2. Next, copy the Elin_Lib folder that exists in this repository. 
+   1. copy the library-like source code to another folder (. /... /Elin_Lib). 
+3. Next, replace “ModTemplate” and “mod-template” with your own mod name by using a tool such as a batch replacement tool under the folder of strings.
+    * VSCode, Hidemaru, Sakura Editor, or any other replacement tool will do. 
+4. After that, rename “Elin_ModTemplate.sln” and “src/Elin_ModTemplate.csproj” to your own mod name.
+5. Write your environment information in config.bat.
+6. preparation is complete. You should now be able to build.
 
 ## System Requirements
 * Net Framework 4.8.    
