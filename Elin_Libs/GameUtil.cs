@@ -85,6 +85,16 @@ namespace Elin_Mod
 			return ELayer._zone.IsPlayerFaction;
 		}
 
+		public static Dialog OpenDialog_1Button(string text, string yesText, System.Action onResult) {
+			Dialog d = Layer.Create<Dialog>();
+			d.textDetail.SetText(text + " ");
+			d.list.AddButton(null, yesText, () => {
+				onResult();
+				d.Close();
+			});
+			ELayer.ui.AddLayer(d);
+			return d;
+		}
 
 		public static Dialog OpenDialog_YesNo(string text, string yesText, string noText, System.Action<bool> onResult) {
 			Dialog d = Layer.Create<Dialog>();
@@ -100,19 +110,7 @@ namespace Elin_Mod
 			ELayer.ui.AddLayer(d);
 			return d;
 		}
-
-
-		public static Dialog OpenDialog_1Button( string text, string yesText, System.Action onResult )
-		{
-			Dialog d = Layer.Create<Dialog>();
-			d.textDetail.SetText(text + " ");
-			d.list.AddButton(null, yesText, ()=> {
-				onResult();
-				d.Close();
-			});
-			ELayer.ui.AddLayer(d);
-			return d;
-		}
+	
 
 		public static Dialog OpenDialog_3Button(string text, string text1, string text2, string text3, System.Action<int> onResult) {
 			Dialog d = Layer.Create<Dialog>();
