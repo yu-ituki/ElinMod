@@ -18,10 +18,21 @@ namespace Elin_Mod
 		int[] m_ElemIndexToAliasHashes;
 		int[] m_ElemIndexToIDs;
 
-		Dictionary<int,SourceElement.Row> m_NewModRows;
+		Dictionary<int,SourceElement.Row> m_NewModElemRows;
+		NewRangedModBase[] m_NewMods;
+
+
+
+
+
 
 
 		public void Initialize() {
+			m_NewMods = new NewRangedModBase[] {
+				new NewRangedMod_Elements(),
+				new NewRangedMod_Scope()
+			};
+
 			var elems = EClass.sources.elements;
 			var elemsMap = elems.map;
 			m_ElemIndexToAliasHashes = new int[elemsMap.Count];
@@ -36,14 +47,19 @@ namespace Elin_Mod
 			ElemIDStart = GetElement(c_ElemName_ElemIDStart).id;
 			ElemIDEnd = GetElement(c_ElemName_ElemIDEnd).id;
 
-			m_NewModRows = new Dictionary<int, SourceElement.Row>();
+			m_NewModElemRows = new Dictionary<int, SourceElement.Row>();
 			foreach ( var itr in elemsMap) {
 				if (itr.Key < ElemIDStart)
 					continue;
 				if (itr.Key > ElemIDEnd)
 					continue;
-				m_NewModRows.Add(itr.Key, itr.Value);
+				m_NewModElemRows.Add(itr.Key, itr.Value);
 			}
+
+
+			foreach (var itr in m_NewMods)
+				itr.Initialize();
+			
 		}
 
 
@@ -61,6 +77,20 @@ namespace Elin_Mod
 
 		public SourceElement.Row GetElement( int id ) {
 			return EClass.sources.elements.map[id];
+		}
+
+		public bool IsNewRangeModIDBand( int id ) {
+			if (id < ElemIDStart)
+				return false;
+			if (id > ElemIDEnd)
+				return false;
+			return true;
+		}
+
+		public bool IsNewRangeModID( int id ) {
+			if (!IsNewRangeModIDBand(id))
+				return false;
+			return m_NewModElemRows.ContainsKey(id);
 		}
 
 
@@ -107,13 +137,13 @@ namespace Elin_Mod
 				var mod = thing.trait as TraitModRanged;
 				if (mod != null) {
 					// こちらで追加したパーツだったら削除.
-					bool isNewMod = m_NewModRows.ContainsKey(mod.source.id);
+					bool isNewMod = m_NewModElemRows.ContainsKey(mod.source.id);
 					if (isNewMod)
 						thing.Destroy();
 					return isNewMod;
 				} else {
 					// 装備かもしれないのでソケットとエンチャントを調べ、こちらの追加した物が入ってたら取り除く.
-					foreach (var itr in m_NewModRows) {
+					foreach (var itr in m_NewModElemRows) {
 						if (thing.sockets != null) {
 							for (int i = 0; i < thing.sockets.Count; ++i) {
 								int elemID = thing.sockets[i] / 100;

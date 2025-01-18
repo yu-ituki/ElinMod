@@ -10,37 +10,51 @@ using UnityEngine;
 
 namespace Elin_Mod
 {
-	public class RangedModData_Elements
-	{
-		public const int c_BaseElementID = 1000000;
-
-		public int eleID;
-		public int sourceEleID;
-		
-
-		public static readonly RangedModData_Elements[] c_Datas = new RangedModData_Elements[] {
-			new RangedModData_Elements(){ eleID = 1000910, sourceEleID = 910},
-			new RangedModData_Elements(){ eleID = 1000911, sourceEleID = 911},
-			new RangedModData_Elements(){ eleID = 1000912, sourceEleID = 912},
-			new RangedModData_Elements(){ eleID = 1000913, sourceEleID = 913},
-			new RangedModData_Elements(){ eleID = 1000914, sourceEleID = 914},
-			new RangedModData_Elements(){ eleID = 1000915, sourceEleID = 915},
-			new RangedModData_Elements(){ eleID = 1000916, sourceEleID = 916},
-			new RangedModData_Elements(){ eleID = 1000917, sourceEleID = 917},
-			new RangedModData_Elements(){ eleID = 1000918, sourceEleID = 918},
-			new RangedModData_Elements(){ eleID = 1000919, sourceEleID = 919},
-			new RangedModData_Elements(){ eleID = 1000920, sourceEleID = 920},
-			new RangedModData_Elements(){ eleID = 1000921, sourceEleID = 921},
-			new RangedModData_Elements(){ eleID = 1000922, sourceEleID = 922},
-			new RangedModData_Elements(){ eleID = 1000923, sourceEleID = 923},
-			new RangedModData_Elements(){ eleID = 1000924, sourceEleID = 924},
-			new RangedModData_Elements(){ eleID = 1000925, sourceEleID = 925},
-		};
-	}
-
 	[HarmonyPatch]
-	class NewRangedMod_Elements
+	class NewRangedMod_Elements : NewRangedModBase
 	{
+		public class Data : BaseData
+		{
+			public int sourceEleID;
+
+			public static readonly Data[] c_Datas = new Data[] {
+				new Data(){ alias = "itukiyu_modEX_eleFire",  sourceEleID = 910},
+				new Data(){ alias = "itukiyu_modEX_eleCold",  sourceEleID = 911},
+				new Data(){ alias = "itukiyu_modEX_eleLightning",  sourceEleID = 912},
+				new Data(){ alias = "itukiyu_modEX_eleDarkness",  sourceEleID = 913},
+				new Data(){ alias = "itukiyu_modEX_eleMind",  sourceEleID = 914},
+				new Data(){ alias = "itukiyu_modEX_elePoison",  sourceEleID = 915},
+				new Data(){ alias = "itukiyu_modEX_eleNether",  sourceEleID = 916},
+				new Data(){ alias = "itukiyu_modEX_eleSound",  sourceEleID = 917},
+				new Data(){ alias = "itukiyu_modEX_eleNerve",  sourceEleID = 918},
+				new Data(){ alias = "itukiyu_modEX_eleHoly",  sourceEleID = 919},
+				new Data(){ alias = "itukiyu_modEX_eleChaos",  sourceEleID = 920},
+				new Data(){ alias = "itukiyu_modEX_eleMagic",  sourceEleID = 921},
+				new Data(){ alias = "itukiyu_modEX_eleEther",  sourceEleID = 922},
+				new Data(){ alias = "itukiyu_modEX_eleAcid",  sourceEleID = 923},
+				new Data(){ alias = "itukiyu_modEX_eleCut",  sourceEleID = 924},
+				new Data(){ alias = "itukiyu_modEX_eleImpact",  sourceEleID = 925},
+			};
+
+		}
+
+
+		public override void Initialize() {
+			base.Initialize();
+			for (int i = 0; i < Data.c_Datas.Length; ++i) {
+				Data.c_Datas[i].Load();
+			}
+		}
+
+		public int GetElementModDataIndex( int id ) {
+			for (int i = 0; i < Data.c_Datas.Length; ++i) {
+				if (Data.c_Datas[i].id != id)
+					continue;
+				return i;
+			}
+			return -1;
+		}
+
 		/// <summary>
 		/// CardのDamageHPをハック.
 		/// </summary>
@@ -51,22 +65,18 @@ namespace Elin_Mod
 		[HarmonyPrefix]
 		public static bool Prefix(Card __instance, int dmg, ref int ele, int eleP = 100, AttackSource attackSource = AttackSource.None, Card origin = null, bool showEffect = true) {
 
-			DebugUtil.LogWarning($"!!!!!! --> {dmg} : {ele} : {eleP} : {attackSource} : {showEffect}" );
-
 			// ダメージ計算時に属性IDだけ変換して.
 			// あとは元の処理にバイパスしてやる.
-			if ( ele >= RangedModData_Elements.c_BaseElementID ) {
-				var datas = RangedModData_Elements.c_Datas;
+			// そのためにeleをrefにしておく.
+			if ( NewRangedModManager.Instance.IsNewRangeModIDBand(ele)) {
+				var datas = Data.c_Datas;
 				for (int i = 0; i < datas.Length; ++i) {
-					if (datas[i].eleID != ele)
+					if (datas[i].id != ele)
 						continue;
 					ele = datas[i].sourceEleID;
 					break;
 				}
 			}
-
-			//	__instance.DamageHP(dmg, ele, eleP, attackSource, origin, showEffect);
-			//	return false; //< こっちで呼び出しているのでfalseで終了.
 			return true;
 		}
 	}

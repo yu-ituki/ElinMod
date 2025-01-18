@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,42 +11,79 @@ using UnityEngine;
 
 namespace Elin_Mod
 {
-	public class RangedModData_Scope
-	{
-		public int bestDist;
-		public int eleID;
-
-		public static readonly RangedModData_Scope[] c_Datas = new RangedModData_Scope[] {
-			new RangedModData_Scope(){ eleID = 1000001, bestDist = 1},
-			new RangedModData_Scope(){ eleID = 1000002, bestDist = 2},
-			new RangedModData_Scope(){ eleID = 1000003, bestDist = 3},
-			new RangedModData_Scope(){ eleID = 1000004, bestDist = 4},
-			new RangedModData_Scope(){ eleID = 1000005, bestDist = 5},
-			new RangedModData_Scope(){ eleID = 1000006, bestDist = 6},
-		};
-	}
-
 	[HarmonyPatch]
-	class NewRangedMod_Scope
+	class NewRangedMod_Scope : NewRangedModBase
 	{
+		public class Data : BaseData
+		{
+			public int bestDist;
+			
+			public static readonly Data[] c_Datas = new Data[] {
+				new Data(){ alias ="itukiyu_modEX_scope1", bestDist = 1},
+				new Data(){ alias ="itukiyu_modEX_scope2", bestDist = 2},
+				new Data(){ alias ="itukiyu_modEX_scope3", bestDist = 3},
+				new Data(){ alias ="itukiyu_modEX_scope4", bestDist = 4},
+				new Data(){ alias ="itukiyu_modEX_scope5", bestDist = 5},
+				new Data(){ alias ="itukiyu_modEX_scope6", bestDist = 6},
+			};
+		}
+
+		public override void Initialize() {
+			base.Initialize();
+			for ( int i = 0; i < Data.c_Datas.Length; ++i ) {
+				Data.c_Datas[i].Load();
+			}
+		}
+
+
 		/// <summary>
-		/// TraittoolRangeのBestDistプロパティをハック.
+		/// TraittoolRangeのBestDistプロパティをフック.
 		/// </summary>
 		/// <param name="__instance"></param>
 		/// <param name="__result"></param>
 		[HarmonyPatch(typeof(TraitToolRange), "get_BestDist")]
 		[HarmonyPostfix]
 		public static void Postfix(TraitToolRange __instance, ref int __result) {
-			// スコープ検索.
+			// スコープは最適距離を変更する.
 			var things = __instance.owner.Thing;
 			if (things == null)
 				return;
-			var datas = RangedModData_Scope.c_Datas;
+			var datas = Data.c_Datas;
 			for (int i = 0; i < datas.Length; ++i) {
-				var elem = things.elements.GetElement(datas[i].eleID);
+				var elem = things.elements.GetElement(datas[i].id);
 				if (elem == null)
 					continue;
 				__result = Mathf.Max(__result, datas[i].bestDist);
+			}
+		}
+
+		/// <summary>
+		/// CardのEvalueをフック.
+		/// </summary>
+		/// <param name="__instance"></param>
+		/// <param name="__result"></param>
+		[HarmonyPatch(typeof(Card), "Evalue", new Type[] { typeof(int) })]
+		[HarmonyPostfix]
+		public static void Postfix(Card __instance, int ele, ref int __result) {
+			// スコープを付けていたら少しだけ距離減衰補正を強化する...
+			if (ele != 605)
+				return;
+
+			// 最も高レベルのものを選択.
+			// TODO: バカスカ呼ばれる場所だからできればCardのどこかにキャッシュしたほうが良い...
+			var datas = Data.c_Datas;
+			var elemDict = __instance.elements.dict;
+			int valMax = 0;
+			for (int i = 0; i < datas.Length; ++i) {
+				Element elem = null;
+				if (!elemDict.TryGetValue(datas[i].id, out elem))
+					continue;
+				valMax = Mathf.Max(valMax, elem.Value);
+			}
+
+			if ( valMax > 0 ) {
+				var addScopeValue = Mathf.CeilToInt((float)valMax * 0.5f);
+				__result += addScopeValue;
 			}
 		}
 	}

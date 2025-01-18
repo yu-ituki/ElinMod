@@ -113,6 +113,7 @@
     <Compile Include="Lib\CommonUtil.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="Lib\DebugUtil.cs" />
+    <Compile Include="NewRangedModBase.cs" />
     <Compile Include="NewRangedModManager.cs" />
     <Compile Include="NewRangedMod_Elements.cs" />
     <Compile Include="NewRangedMod_Scope.cs" />
