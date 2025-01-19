@@ -6,12 +6,9 @@
 		JP,
 		CN,
 		ZHTW,
+		KR,
 		MAX
 	}
 
 
-	public class Const
-	{
-		
-	}
 }

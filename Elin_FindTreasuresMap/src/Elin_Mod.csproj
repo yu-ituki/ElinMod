@@ -115,7 +115,7 @@
     <Compile Include="Lib\Debug_AnalyzeElin.cs" />
     <Compile Include="ModConfigUi.cs" />
     <Compile Include="Lib\CommonUtil.cs" />
-    <Compile Include="Const.cs" />
+    <Compile Include="Lib\eLanguage.cs" />
     <Compile Include="Lib\DebugUtil.cs" />
     <Compile Include="Hook_GameEvent.cs" />
     <Compile Include="TextID.cs" />

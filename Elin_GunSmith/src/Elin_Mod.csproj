@@ -112,11 +112,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Const.cs" />
     <Compile Include="GunSmithManager.cs" />
     <Compile Include="Lib\Debug_AnalyzeElin.cs" />
     <Compile Include="ModConfigUi.cs" />
     <Compile Include="Lib\CommonUtil.cs" />
-    <Compile Include="Const.cs" />
     <Compile Include="Lib\DebugUtil.cs" />
     <Compile Include="TraitModCombine.cs" />
     <Compile Include="TraitGunSmith.cs" />
@@ -129,6 +129,7 @@
     <Compile Include="Lib\ModTextManager.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Lib\Singleton.cs" />
+    <Compile Include="Lib\eLanguage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
