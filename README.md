@@ -18,7 +18,7 @@ https://github.com/yu-ituki/ElinMod/tree/main/Elin_FindTreasuresMap
 銃のスロットを増やしたりパーツを強化したりできるModを作ってみました。  
 https://github.com/yu-ituki/ElinMod/tree/main/Elin_GunSmith  
 
-## Elin_GunSmith
+## Elin_ExGunMods
 Elin_GunSmithで増やしたスロットに入れるものが少なくて寂しかったので、   
 入れるものを増やすModを作ってみました。 
 https://github.com/yu-ituki/ElinMod/tree/main/Elin_ExGunMods  
