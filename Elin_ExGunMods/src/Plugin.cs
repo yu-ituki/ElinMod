@@ -66,13 +66,6 @@ namespace Elin_Mod
 
 
 
-		/// <summary>
-		/// Modのアンインストール.
-		/// </summary>
-		public void Uninstall() {
-			NewRangedModManager.Instance.Uninstall();
-		}
-
 
 		public void Update() {
 
@@ -98,7 +91,6 @@ namespace Elin_Mod
 					return;
 				}
 			}
-
 
 		}
 	}

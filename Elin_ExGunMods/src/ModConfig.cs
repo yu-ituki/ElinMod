@@ -8,11 +8,13 @@ namespace Elin_Mod
 	/// </summary>
 	public class ModConfig
 	{
-		//public ConfigEntry<KeyCode> ActiveKey { get; set; }
+		public ConfigEntry<float> ModElement_DmgFactor { get; set; }
+		public ConfigEntry<float> ModBarrel_DistReductionFactor { get; set; }
 
 		public ModConfig( ConfigFile config )
 		{
-			//ActiveKey = config.Bind( "General", "Key_Activation", (KeyCode)108, "Key to start and stop autoexplore." );
+			ModElement_DmgFactor = config.Bind( "General", "ModElement_DmgFactor", 1.0f, "Coefficient of Element Damage");
+			ModBarrel_DistReductionFactor = config.Bind("General", "ModBarrel_DistReductionFactor", 0.5f, "Correction factor for the effect of distance attenuation due to scope");
 		}
 	}
 }

@@ -55,6 +55,7 @@ namespace Elin_Mod
 			return -1;
 		}
 
+
 		/// <summary>
 		/// CardのDamageHPをハック.
 		/// </summary>
@@ -73,6 +74,7 @@ namespace Elin_Mod
 				for (int i = 0; i < datas.Length; ++i) {
 					if (datas[i].id != ele)
 						continue;
+					dmg = Mathf.CeilToInt((float)dmg * Plugin.Instance.ModConfig.ModElement_DmgFactor.Value);
 					ele = datas[i].sourceEleID;
 					break;
 				}

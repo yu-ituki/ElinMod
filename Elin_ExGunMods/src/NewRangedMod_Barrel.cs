@@ -12,19 +12,23 @@ using UnityEngine;
 namespace Elin_Mod
 {
 	[HarmonyPatch]
-	class NewRangedMod_Scope : NewRangedModBase
+	class NewRangedMod_Barrel : NewRangedModBase
 	{
 		public class Data : BaseData
 		{
 			public int bestDist;
 			
 			public static readonly Data[] c_Datas = new Data[] {
-				new Data(){ alias ="itukiyu_modEX_scope1", bestDist = 1},
-				new Data(){ alias ="itukiyu_modEX_scope2", bestDist = 2},
-				new Data(){ alias ="itukiyu_modEX_scope3", bestDist = 3},
-				new Data(){ alias ="itukiyu_modEX_scope4", bestDist = 4},
-				new Data(){ alias ="itukiyu_modEX_scope5", bestDist = 5},
-				new Data(){ alias ="itukiyu_modEX_scope6", bestDist = 6},
+				new Data(){ alias ="itukiyu_modEX_barrel_plus1", bestDist = 1},
+				new Data(){ alias ="itukiyu_modEX_barrel_plus2", bestDist = 2},
+				new Data(){ alias ="itukiyu_modEX_barrel_plus3", bestDist = 3},
+				new Data(){ alias ="itukiyu_modEX_barrel_plus4", bestDist = 4},
+				new Data(){ alias ="itukiyu_modEX_barrel_plus5", bestDist = 5},
+				new Data(){ alias ="itukiyu_modEX_barrel_minus1", bestDist = -1},
+				new Data(){ alias ="itukiyu_modEX_barrel_minus2", bestDist = -2},
+				new Data(){ alias ="itukiyu_modEX_barrel_minus3", bestDist = -3},
+				new Data(){ alias ="itukiyu_modEX_barrel_minus4", bestDist = -4},
+				new Data(){ alias ="itukiyu_modEX_barrel_minus5", bestDist = -5},
 			};
 		}
 
@@ -53,7 +57,7 @@ namespace Elin_Mod
 				var elem = things.elements.GetElement(datas[i].id);
 				if (elem == null)
 					continue;
-				__result = Mathf.Max(__result, datas[i].bestDist);
+				__result = Mathf.Max(__result + datas[i].bestDist, 0 );
 			}
 		}
 
@@ -82,7 +86,7 @@ namespace Elin_Mod
 			}
 
 			if ( valMax > 0 ) {
-				var addScopeValue = Mathf.CeilToInt((float)valMax * 0.5f);
+				var addScopeValue = Mathf.CeilToInt((float)valMax * Plugin.Instance.ModConfig.ModBarrel_DistReductionFactor.Value);
 				__result += addScopeValue;
 			}
 		}

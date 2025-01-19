@@ -30,7 +30,7 @@ namespace Elin_Mod
 		public void Initialize() {
 			m_NewMods = new NewRangedModBase[] {
 				new NewRangedMod_Elements(),
-				new NewRangedMod_Scope()
+				new NewRangedMod_Barrel()
 			};
 
 			var elems = EClass.sources.elements;
@@ -94,37 +94,68 @@ namespace Elin_Mod
 		}
 
 
-		public void Uninstall() {
-			// グローバルに登録されているカード群全てに対して削除要求していく.
-			foreach ( var itr in EClass.game.cards.globalCharas )
-				_UninstallThings(itr.Value.things);
+		public bool Uninstall() {
+			Exception eTmp = null;
+			bool isError = false;
+			try {
+				// グローバルに登録されているカード群全てに対して削除要求していく.
+				foreach (var itr in EClass.game.cards.globalCharas)
+					_UninstallThings(itr.Value.things);
 
-			// 全マップの配置物も漁っていく.
-			foreach ( var itr in EClass.game.spatials.map ) {
-				_UninstallSpatial(itr.Value);
+				// 全マップの配置物も漁っていく.
+				foreach (var itr in EClass.game.spatials.map) {
+					_UninstallSpatial(itr.Value);
+				}
 			}
-
-		}
-
-		void _UninstallSpatial( Spatial spatial ) {
-			var zone = spatial as Zone;
-			if ( zone != null) {
-				var things = zone?.map?.things;
-				if ( things != null ) {
-					for (int i = 0; i < things.Count; ++i) {
-						_UninstallThing(things[i]);
-					}
+			catch ( Exception e ) {
+				isError = true;
+				eTmp = e;
+			}
+			finally {
+				if ( isError ) {
+					var textMng = ModTextManager.Instance;
+					var reportPath = CommonUtil.CreateErrorReport();
+					textMng.SetUserData(0, reportPath);
+					var bodyText = textMng.GetText(eTextID.Config_UninstallError);
+					GameUtil.OpenDialog_1Button(bodyText, textMng.GetText(eTextID.Yes), () => {
+						EClass.game.GotoTitle(false);
+					});
+				} else {
+					EClass.game.Save(true);
 				}
 			}
 
-			foreach (var child in spatial.children)
-				_UninstallSpatial(child);
+			return !isError;
+		}
+
+		void _UninstallSpatial( Spatial spatial ) {
+			try {
+				var zone = spatial as Zone;
+				if (zone != null) {
+					var things = zone?.map?.things;
+					if (things != null) {
+						for (int i = 0; i < things.Count; ++i) {
+							_UninstallThing(things[i]);
+						}
+					}
+				}
+
+				foreach (var child in spatial.children)
+					_UninstallSpatial(child);
+			}
+			catch ( Exception e) {
+				throw e;
+			}
 		}
 		
 		void _UninstallThings( ThingContainer things ) {
-			for ( int i = 0; i < things.Count; ++i ) {
-				if (_UninstallThing(things[i]))
-					--i;
+			try {
+				for (int i = 0; i < things.Count; ++i) {
+					if (_UninstallThing(things[i]))
+						--i;
+				}
+			} catch ( Exception e ) {
+				throw e;
 			}
 		}
 
@@ -164,7 +195,7 @@ namespace Elin_Mod
 					return false;
 				}
 			} catch ( Exception e) {
-				DebugUtil.LogError($"{thing.id} : {thing.sockets} : {thing.elements}");
+				throw e;
 			}
 			return false;
 		}

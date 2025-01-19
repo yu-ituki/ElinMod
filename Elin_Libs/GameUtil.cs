@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BepInEx.Configuration;
+
+using System;
 using System.Collections.Generic;
 
 using static UnityEngine.UI.GridLayoutGroup;
@@ -6,7 +8,7 @@ using static UnityEngine.UI.GridLayoutGroup;
 namespace Elin_Mod
 {
 
-	internal class GameUtil
+	public class GameUtil
 	{
 
 		/// <summary>
@@ -85,6 +87,30 @@ namespace Elin_Mod
 			return ELayer._zone.IsPlayerFaction;
 		}
 
+
+
+
+
+		public static Dialog OpenDialog_1Button(eTextID text, eTextID yesText, System.Action onResult) {
+			var textMng = ModTextManager.Instance;
+			return OpenDialog_1Button(textMng.GetText(text), textMng.GetText(yesText), onResult);
+		}
+
+		public static Dialog OpenDialog_YesNo(eTextID text, eTextID yesText, eTextID noText, System.Action<bool> onResult) {
+			var textMng = ModTextManager.Instance;
+			return OpenDialog_YesNo(textMng.GetText(text), textMng.GetText(yesText), textMng.GetText(noText), onResult);
+		}
+
+
+		public static Dialog OpenDialog_3Button(eTextID text, eTextID text1, eTextID text2, eTextID text3, System.Action<int> onResult) {
+			var textMng = ModTextManager.Instance;
+			return OpenDialog_3Button(textMng.GetText(text), textMng.GetText(text1), textMng.GetText(text2), textMng.GetText(text3), onResult);
+		}
+
+
+
+
+
 		public static Dialog OpenDialog_1Button(string text, string yesText, System.Action onResult) {
 			Dialog d = Layer.Create<Dialog>();
 			d.textDetail.SetText(text + " ");
@@ -130,5 +156,36 @@ namespace Elin_Mod
 			ELayer.ui.AddLayer(d);
 			return d;
 		}
+
+
+
+
+
+		public static UIContextMenu CreateContextMenu() {
+			return EClass.ui.CreateContextMenu("ContextMenu");
+		}
+
+		public static void ContextMenu_AddButton(UIContextMenu menu, eTextID textID, System.Action act) {
+			var textMng = ModTextManager.Instance;
+			menu.AddButton(() => textMng.GetText(textID), () => {
+				act();
+			});
+		}
+
+		public static void ContextMenu_AddSlider(UIContextMenu menu, eTextID textID, BepInEx.Configuration.ConfigEntry<float> entry, float min, float max, bool isInt) {
+			var textMng = ModTextManager.Instance;
+			menu.AddSlider(
+					textMng.GetText(textID),
+					(v) => v.ToString(),
+					entry.Value,
+					(v) => {
+						entry.Value = v;
+					},
+				min, max, isInt, false, false);
+		}
+
+
+
+
 	}
 }
