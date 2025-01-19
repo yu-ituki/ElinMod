@@ -10,10 +10,16 @@ https://github.com/yu-ituki/ElinMod/tree/main/AutoExplorerEx
 Mod量産用の簡易的なテンプレートプロジェクトです。  
 https://github.com/yu-ituki/ElinMod/tree/main/Elin_ModTemplate
 
+## Elin_FindTreasuresMap
+宝の地図を探すのが大変なので簡易化するModを作ってみました。  
+https://github.com/yu-ituki/ElinMod/tree/main/Elin_FindTreasuresMap
+
 ## Elin_GunSmith
 銃のスロットを増やしたりパーツを強化したりできるModを作ってみました。  
 https://github.com/yu-ituki/ElinMod/tree/main/Elin_GunSmith  
 
-## Elin_FindTreasuresMap
-宝の地図を探すのが大変なので簡易化するModを作ってみました。  
-https://github.com/yu-ituki/ElinMod/tree/main/Elin_FindTreasuresMap
+## Elin_GunSmith
+Elin_GunSmithで増やしたスロットに入れるものが少なくて寂しかったので、   
+入れるものを増やすModを作ってみました。 
+https://github.com/yu-ituki/ElinMod/tree/main/Elin_ExGunMods  
+

@@ -42,3 +42,46 @@ This mod may interfere with other mods and future versions of Elin itself.
 Please make sure to back up your save data before installing this mod in case of unexpected accidents.  
 In the worst case scenario, your saved data may be corrupted.  
 We are not responsible for any problems that may occur with this mod. 
+
+
+## ■Explanation of source code
+### Outline
+The following source code is the main body of the code.      
+* NewRangedModManager -- Class for managing additional parts, including ID management and initialization of each part class.
+    * Uninstallation process is also written here.
+* NewRangedModBase -- Base class for additional parts.
+* NewRangedMod_Barrel -- Class for the part “barrel”. Necessary definitions and HarmonyPatch required for implementation are placed here.
+* NewRangedMod_Elements -- Class for the part “Attribute Assignment”. Necessary definitions and HarmonyPatches for implementation are placed here.
+  * The process itself bypasses the main Card.DamageHP() and just flows to the main attribute ID.
+
+Elin attribute called Elements? This is accomplished by adding a table called Elements.    
+You can add modified parts by adding data here with the tag “modRanged”.  
+
+### ▼ Parts “gun barrel
+We just use alias to determine the attachment and hook the get property of the optimum distance to calculate the add/subtract distance for each part.   
+
+### ▼ ▼ Part “Attribute assignment
+The original attribute attack process is somewhat special, because it is hard-coded with alias, id, etc. in various places,   
+I'm trying to deal with it by just bypassing the Card.DamageHP() ele, persisting the processing change until the very last minute.   
+(This is the only way to do it, since the main body processing is all done by direct ID reference, including effects and state error calculations.)  
+All the rest of the processing is done by having the original attribute attack ride on its back.    
+Therefore, if the processing of the main body is changed, it will probably break immediately.  
+
+### Uninstallation process
+If you turn off the mod after the item has been added, the error message “ID does not exist” will appear.  
+If you turn off the mod after the item is added, an error will occur saying that the ID does not exist.  
+This may destroy your save data.    
+But you don't want your saved data to be corrupted after thousands of hours of play.    
+So I created an uninstall process.    
+The process is as follows    
+* Search the list of all saved cards in the game.
+* Search for all the “things” (objects held by cards) in the list.
+  * Delete all the things in a particular ID band.
+  * Remove all enchantments of a specific ID band if any are attached.
+* Do the same for all saved maps (zone/map)
+If you turn off the mod in this state, you will theoretically be back to a clean environment for now.    
+The only problem is that the master ID in the Element table is numeric, so no matter how strange you make the ID, there is a possibility that it will be shared by other mods.    
+And if they do, the uninstall process described above will also blow away the enchantments of the other mods that have been covered by the master ID.  
+There is probably no way to avoid this, and if the enchantment is covered by another mod, the data will be overwritten by the ID due to Elin's system, so you will be stuck when the enchantment is covered by the other mod.    
+So, we can only hope that the data will not be shared with other mods.   
+I thought about using alias, search, converter, and so on, but it is impossible unless Elin supports source bandwidth for each mod.   
