@@ -17,7 +17,7 @@ namespace Elin_Mod
 			
 			public virtual void Load() {
 				elem = NewRangedModManager.Instance.GetElement(alias);
-				id = elem.id;
+				id = elem?.id ?? -1;
 			}
 		}
 

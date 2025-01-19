@@ -6,6 +6,7 @@
 		JP,
 		CN,
 		ZHTW,
+		KR,
 		MAX
 	}
 

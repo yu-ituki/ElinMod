@@ -34,10 +34,8 @@ namespace Elin_Mod
 			CommonUtil.Initialize(Info);
 			ModTextManager.Instance.Initialize();
 
-
-			// データ読み込み.
-			ModUtil.ImportExcel(CommonUtil.GetResourcePath("tables/add_datas.xlsx"), "elements", EClass.sources.elements);
 		}
+
 
 		/// <summary>
 		/// Mod開放タイミング.
@@ -61,6 +59,9 @@ namespace Elin_Mod
 		private void _OnStartGame() {
 
 			m_IsInitialized = true;
+
+			// データ読み込み.
+			ModUtil.ImportExcel(CommonUtil.GetResourcePath("tables/add_datas.xlsx"), "elements", EClass.sources.elements);
 			NewRangedModManager.Instance.Initialize();
 		}
 
@@ -68,6 +69,7 @@ namespace Elin_Mod
 
 
 		public void Update() {
+
 
 #if false
 			if (UnityEngine.Input.GetKeyDown(KeyCode.F10)) {

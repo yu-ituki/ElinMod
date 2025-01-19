@@ -65,6 +65,18 @@
       <HintPath>.\..\elin_link\Elin_Data\Managed\Ionic.Zip.Unity.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="NPOI">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Elin\Elin_Data\Managed\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Elin\Elin_Data\Managed\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Elin\Elin_Data\Managed\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Elin\Elin_Data\Managed\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
     <Reference Include="Plugins">
       <HintPath>.\..\elin_link\Elin_Data\Managed\Plugins.dll</HintPath>
       <Private>False</Private>
