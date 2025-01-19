@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Elin_Mod</RootNamespace>
-    <AssemblyName>Elin_FindTreasuresMap</AssemblyName>
+    <AssemblyName>$(SolutionName)</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -61,6 +61,10 @@
       <HintPath>.\..\elin_link\Elin_Data\Managed\Elin.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Ionic.Zip.Unity">
+      <HintPath>.\..\elin_link\Elin_Data\Managed\Ionic.Zip.Unity.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Plugins">
       <HintPath>.\..\elin_link\Elin_Data\Managed\Plugins.dll</HintPath>
       <Private>False</Private>
@@ -83,6 +87,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
