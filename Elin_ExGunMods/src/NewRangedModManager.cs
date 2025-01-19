@@ -149,8 +149,12 @@ namespace Elin_Mod
 		}
 		
 		void _UninstallThings( ThingContainer things ) {
+			if (things == null)
+				return;
 			try {
 				for (int i = 0; i < things.Count; ++i) {
+					var childs = things[i].things;
+					_UninstallThings(childs);
 					if (_UninstallThing(things[i]))
 						--i;
 				}
@@ -197,7 +201,6 @@ namespace Elin_Mod
 			} catch ( Exception e) {
 				throw e;
 			}
-			return false;
 		}
 
 	}
