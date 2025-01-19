@@ -125,6 +125,7 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="Lib\Singleton.cs" />
     <Compile Include="Lib\GameUtil.cs" />
+    <Compile Include="Lib\eLanguage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
