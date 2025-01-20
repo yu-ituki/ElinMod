@@ -73,8 +73,11 @@ namespace Elin_Mod
 				}
 			}
 
+#if false
 			if (CommonUtil.GetKeyDown(UnityEngine.KeyCode.F10))
 				GameUtil.Cheat_AllItemJIdentify();
+#endif
+
 
 #if false
 			if (UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.F10)) {
