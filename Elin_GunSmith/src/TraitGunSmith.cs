@@ -37,6 +37,17 @@ namespace Elin_Mod
 			if ( ret ) {
 				if (c.trait is TraitThrown)
 					return false;
+
+				// ガンランスとゼフィールどうしようかなって思ったけど、まあ良いか.
+				if ( !( c.trait is TraitMod ) ) {
+					// Modでなくてかつrangedカテゴリでもない特殊物...
+					if (!c.category.IsChildOf("ranged")) {
+						ret = false;
+						// コンフィグでONになってるときだけONにする.
+						if (Plugin.Instance.ModConfig.IsEnableGunBlade.Value)
+							ret = true;
+					}
+				}
 			}
 			return ret;
 		}

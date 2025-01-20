@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 using static Lang;
 
@@ -347,6 +348,63 @@ namespace Elin_Mod
 		}
 
 
+
+		public static void Dump_ElinCategoriesAll(string dumpPath) {
+			var cards = EClass.sources.categories;
+			var sb = _CreateSb(cards.map.Count, 1000);
+			_AddHeader("id", "string");
+			_AddHeader("uid", "int");
+			_AddHeader("name_JP", "string");
+			_AddHeader("name", "string");
+			_AddHeader("_parent", "string");
+			_AddHeader("recipeCat", "string");
+			_AddHeader("slot", "element");
+			_AddHeader("skill", "element");
+			_AddHeader("maxStack", "int");
+			_AddHeader("tileDummy", "int");
+			_AddHeader("installOne", "bool");
+			_AddHeader("ignoreBless", "int");
+			_AddHeader("tag", "string[]");
+			_AddHeader("idThing", "string");
+			_AddHeader("recycle", "string[]");
+			_AddHeader("costSP", "int");
+			_AddHeader("gift", "int");
+			_AddHeader("deliver", "int");
+			_AddHeader("offer", "int");
+			_AddHeader("ticket", "int");
+			_AddHeader("sortVal", "int");
+			_AddHeader("flag", "int");
+			_DumpHeader(sb);
+
+			foreach (var itr in cards.map) {
+				var a = itr.Value;
+				_Dump(sb, a.id);
+				_Dump(sb, a.uid);
+				_Dump(sb, a.name_JP);
+				_Dump(sb, a.name);
+				_Dump(sb, a._parent);
+				_Dump(sb, a.recipeCat);
+				_Dump(sb, a.slot);
+				_Dump(sb, a.skill);
+				_Dump(sb, a.maxStack);
+				_Dump(sb, a.tileDummy);
+				_Dump(sb, a.installOne);
+				_Dump(sb, a.ignoreBless);
+				_Dump(sb, a.tag);
+				_Dump(sb, a.idThing);
+				_Dump(sb, a.recycle);
+				_Dump(sb, a.costSP);
+				_Dump(sb, a.gift);
+				_Dump(sb, a.deliver);
+				_Dump(sb, a.offer);
+				_Dump(sb, a.ticket);
+				_Dump(sb, a.sortVal);
+				_Dump(sb, a.flag);
+				sb.AppendLine();
+			}
+
+			_Save(dumpPath, sb);
+		}
 
 		public static void Dump_ElinLangGeneral(string dumpPath) {
 			var cards = EClass.sources.langGeneral;

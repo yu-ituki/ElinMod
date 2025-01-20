@@ -186,6 +186,10 @@ namespace Elin_Mod
 
 
 
-
+		public static void Cheat_AllItemJIdentify() {
+			foreach (Thing item in EClass.pc.things) {
+				item.Identify(true, IDTSource.SuperiorIdentify);
+			}
+		}
 	}
 }

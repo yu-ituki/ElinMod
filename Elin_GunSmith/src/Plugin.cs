@@ -53,7 +53,7 @@ namespace Elin_Mod
 		/// プラグインの実初期化処理.
 		/// ゲーム開始直前に呼び出される.
 		/// </summary>
-		private void _Initialize() {
+		private void _OnStartGame() {
 
 			m_IsInitialized = true;
 			ModTextManager.Instance.Initialize();
@@ -66,19 +66,19 @@ namespace Elin_Mod
 			// 初期化.
 			if ( !m_IsInitialized ) {
 				if (EClass.core.IsGameStarted) {
-					_Initialize();
+					_OnStartGame();
 				}
 				else {
 					return;
 				}
 			}
 
+			if (CommonUtil.GetKeyDown(UnityEngine.KeyCode.F10))
+				GameUtil.Cheat_AllItemJIdentify();
+
 #if false
 			if (UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.F10)) {
-				Debug_AnalyzeElin.Dump_ElinRecipeAll( "D:\\recipe.csv" );
-				Debug_AnalyzeElin.Dump_ElinFactionAll("D:\\faction.csv");
-				Debug_AnalyzeElin.Dump_ElinElementAll("D:\\element.csv");
-				Debug_AnalyzeElin.Dump_ElinThingAll("D:\\thing.csv");
+				Debug_AnalyzeElin.Dump_ElinCategoriesAll("D:\\categories.tsv");
 
 			}
 #endif
