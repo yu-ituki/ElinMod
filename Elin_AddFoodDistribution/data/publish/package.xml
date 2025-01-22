@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Meta>
+  <title>Elin_AddFoodDistribution</title>
+  <id>yu-ituki.elin.add-food-distribution</id>
+  <author>yu-ituki</author>
+  <builtin>false</builtin>
+  <loadPriority>10</loadPriority>
+  <version>1.0.0.0</version>
+  <description>
+    ■概要
+    ElinのModテンプレートプロジェクト
+
+
+  </description>
+</Meta>

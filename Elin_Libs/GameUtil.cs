@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 
+using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.UI.GridLayoutGroup;
 
 namespace Elin_Mod
@@ -182,6 +183,17 @@ namespace Elin_Mod
 						entry.Value = v;
 					},
 				min, max, isInt, false, false);
+		}
+
+		public static UIContextMenuItem ContextMenu_AddToggle(UIContextMenu menu, eTextID textID, bool isDefault, System.Action<bool> act ) {
+			var textMng = ModTextManager.Instance;
+			return menu.AddToggle(
+					textMng.GetText(textID),
+					isDefault,
+					(v) => {
+						act(v);
+					}
+				);
 		}
 
 
