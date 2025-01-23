@@ -5,11 +5,13 @@
   <author>yu-ituki</author>
   <builtin>false</builtin>
   <loadPriority>10</loadPriority>
-  <version>1.0.0.0</version>
+  <version>1.0.0.1</version>
   <description>
-    ■概要
-    ElinのModテンプレートプロジェクト
-
+■概要
+コンテナの振り分け設定に以下を追加します。
+・【不浄】は入れない
+・【人肉】は入れない
+・ 腐敗が進まないアイテムのみ入れる
 
   </description>
 </Meta>
