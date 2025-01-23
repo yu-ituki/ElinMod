@@ -23,4 +23,10 @@
   * 幸いHarmonyにはMethodInfoを入れて直にSystem.Actionなどをパッチとして呼び出す機構が存在しています。
   * 今回はそれを使ってみました。
   * AddFoodDistribution.ApplyPatch() がパッチを当てている処理になります。
-  * 
+* セーブデータ保存場所
+  * 各コンテナCard内のWindow.SaveData（Card.GetWindowSaveData()）に入ってるb1フラグ群を流用しています。
+  * まだ使われてなさそうだった＆あまり被らなさそうなindex値を使わせてもらってます。
+    * 不浄 -- 25
+    * 人肉 -- 26
+    * 腐らない -- 27
+  * 今後本家であったり、他Modがb1のこのindexを使い始めたらModが機能しなくなります。
