@@ -70,7 +70,7 @@ namespace Elin_Mod
 		[HarmonyPatch(typeof(UIInventory), "ShowDistribution")]
 		[HarmonyPostfix]
 		public static void Postfix(UIContextMenu dis, Window.SaveData data) {
-			s_LastShowDistributionWindowSaveData = null;
+	//		s_LastShowDistributionWindowSaveData = null;
 		}
 
 		/// <summary>
