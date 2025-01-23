@@ -23,3 +23,6 @@ Elin_GunSmithで増やしたスロットに入れるものが少なくて寂し�
 入れるものを増やすModを作ってみました。 
 https://github.com/yu-ituki/ElinMod/tree/main/Elin_ExGunMods  
 
+## Elin_AddFoodDistribution
+【不浄】がウザかったのでコンテナの振り分け設定を追加するModを作ってみました。    
+https://github.com/yu-ituki/ElinMod/tree/main/Elin_AddFoodDistribution    
