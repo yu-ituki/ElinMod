@@ -7,6 +7,17 @@ using UnityEngine.Windows;
 namespace Elin_Mod
 {
 
+	[HarmonyPatch]
+	class OnStartGame {
+		[HarmonyPatch(typeof(Game), "OnBeforeInstantiate")]
+		[HarmonyPostfix]
+		public static void PostFix() {
+			Plugin.Instance.OnStartGame();
+		}
+
+	}
+
+
 	/// <summary>
 	/// Modのエントリポイント.
 	/// </summary>
@@ -56,15 +67,14 @@ namespace Elin_Mod
 		/// プラグインの実初期化処理.
 		/// ゲーム開始直前に呼び出される.
 		/// </summary>
-		private void _OnStartGame() {
-
-			m_IsInitialized = true;
-
-			// データ読み込み.
-			ModUtil.ImportExcel(CommonUtil.GetResourcePath("tables/add_datas.xlsx"), "elements", EClass.sources.elements);
+		public void OnStartGame() {
+			if (Plugin.Instance.m_IsInitialized)
+				return;
+			Plugin.Instance.m_IsInitialized = true;
 			NewRangedModManager.Instance.Initialize();
 		}
 
+		
 
 
 
@@ -84,15 +94,7 @@ namespace Elin_Mod
 				Debug_AnalyzeElin.Dump_ElinLangNote("D:\\langNote.tsv");
 			}
 #endif
-			// 初期化.
-			if ( !m_IsInitialized ) {
-				if (EClass.core.IsGameStarted) {
-					_OnStartGame();
-				}
-				else {
-					return;
-				}
-			}
+		
 
 		}
 	}

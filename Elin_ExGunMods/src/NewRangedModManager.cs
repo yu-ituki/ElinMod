@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using UnityEngine;
+
 namespace Elin_Mod
 {
 	public class NewRangedModManager : Singleton<NewRangedModManager>
@@ -33,8 +35,23 @@ namespace Elin_Mod
 				new NewRangedMod_Barrel()
 			};
 
+			// データ読み込み.
 			var elems = EClass.sources.elements;
 			var elemsMap = elems.map;
+			SourceElementNew elemNews = ScriptableObject.CreateInstance<SourceElementNew>();
+			ModUtil.ImportExcel(CommonUtil.GetResourcePath("tables/add_datas.xlsx"), "elements", elemNews);
+
+
+
+			foreach ( var itr in elemNews.map) {
+				SourceElement.Row tmp = null;
+				if ( elemsMap.TryGetValue( itr.Key, out tmp )) {
+					DebugUtil.LogError( $"[Elin_ExGunMods] conlict element id!!!! --> id={itr.Key}  baseName={tmp.name}  newModName={itr.Value.name} " );
+					continue;
+				}
+				elems.SetRow(itr.Value);
+			}
+
 			m_ElemIndexToAliasHashes = new int[elemsMap.Count];
 			m_ElemIndexToIDs = new int[elemsMap.Count];
 			int idx = 0;
@@ -59,7 +76,6 @@ namespace Elin_Mod
 
 			foreach (var itr in m_NewMods)
 				itr.Initialize();
-			
 		}
 
 

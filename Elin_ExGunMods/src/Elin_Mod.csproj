@@ -121,6 +121,7 @@
     <Compile Include="NewRangedModManager.cs" />
     <Compile Include="NewRangedMod_Barrel.cs" />
     <Compile Include="NewRangedMod_Elements.cs" />
+    <Compile Include="SourceElementNew.cs" />
     <Compile Include="TextID.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModInfo.cs" />

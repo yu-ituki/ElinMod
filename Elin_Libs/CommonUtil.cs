@@ -17,7 +17,7 @@ namespace Elin_Mod
 		public void Patch( Harmony harmony ) {
 			var methods = m_TargetType.GetMethods((System.Reflection.BindingFlags)~(0));
 			var method = System.Array.Find( methods, v => Regex.IsMatch(v.Name, m_Regex));
-			DebugUtil.LogError($"{method?.Name} :  {m_Regex} ");
+		//	DebugUtil.LogError($"{method?.Name} :  {m_Regex} ");
 			if ( method == null ) 
 				return;
 			var prefix = m_Prefix != null ? new HarmonyMethod(m_Prefix) : null;

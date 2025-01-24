@@ -45,6 +45,7 @@ namespace Elin_Mod
 
 		private ModText m_TextCore;
 		private UserData[] m_UserDatas;
+		private eLanguage m_Lang;
 
 
 
@@ -58,6 +59,8 @@ namespace Elin_Mod
 			ModUtil.ImportExcel( CommonUtil.GetResourcePath( "tables/mod_texts.xlsm" ), "texts", (SourceData)(object)m_TextCore );
 
 			m_UserDatas = new UserData[c_Tags.Length];//< TODO:適当.
+
+			m_Lang = m_TextCore.GetLanguageCode();
 		}
 
 		public void Terminate() {
@@ -97,6 +100,10 @@ namespace Elin_Mod
 			for ( int i = 0; i < m_UserDatas.Length; ++i ) {
 				m_UserDatas[i].Clear();
 			}
+		}
+
+		public eLanguage GetLanguageCode() {
+			return m_Lang;
 		}
 	}
 }
