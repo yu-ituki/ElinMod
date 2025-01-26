@@ -85,3 +85,19 @@ And if they do, the uninstall process described above will also blow away the en
 There is probably no way to avoid this, and if the enchantment is covered by another mod, the data will be overwritten by the ID due to Elin's system, so you will be stuck when the enchantment is covered by the other mod.    
 So, we can only hope that the data will not be shared with other mods.   
 I thought about using alias, search, converter, and so on, but it is impossible unless Elin supports source bandwidth for each mod.   
+
+### ▼ Regarding the timing of importing additional element tables.
+For some reason, it seems to be incompatible with mods that support Korean, and importExcel() in OnStartCore overwrites the translated data.  
+So, I use a method called Game.OnBeforeInstantiate() hooked with HarmonyPatch.   
+
+### ▼ Translation of elements
+For various reasons, translation is done independently.  
+The text for translation is inserted in column 61 and after of the element addition data (element sheet in data/resource/tables/add_data.xlsx),  
+Prepare a SourceElementNew class that inherits from SourceElement only thinly,  
+CreateRow() and Reset() are hijacked, and SourceData.GetString() is used to overwrite the row name and textPhase for each language used.  
+Initialize() in NewRangedModManager.cs.
+  
+Reason ↓  
+* Import is run after the original Mod translation mechanism because of the timing of reading, and the original mechanism cannot be used.
+* The original mechanism is vulnerable to change due to the increase of folders and the increase of many excel files with the same structure.
+* I don't want to mess with multiple excel files just for translation to add one element data.

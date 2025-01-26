@@ -85,3 +85,19 @@ IDが存在しないっつってエラーが発生します。
 なので他Modと被らないことを祈るしかないです。   
 aliasで置き換えとか検索とかコンバータとか色々考えたんすけど、Modごとのsource帯域みたいなものを本体側がサポートしてくれない限りは多分無理です。   
 
+### ▼elementテーブル追加インポートのタイミングについて
+韓国語サポートのModと何故か相性が悪いらしく、そのままOnStartCoreでImportExcel()すると翻訳後データを上書きしてしまうようです。  
+ので、Game.OnBeforeInstantiate()というメソッドをHarmonyPatchでフックして使ってます。   
+
+### ▼elementの翻訳
+色々あって翻訳は独自でやってます。  
+element追加データ（data/resource/tables/add_data.xlsxのelementシート）の61列目以降に翻訳用テキストを突っ込んでおき、  
+SourceElementを薄くだけ継承したSourceElementNewクラスを用意し、  
+CreateRow() とついでに Reset() を乗っ取って、中で使用言語ごとにSourceData.GetString()でrowのnameとtextPhaseを上書きしてます。  
+NewRangedModManager.cs の Initialize() でやってます。
+  
+色々あっての色々↓  
+* 読み込みタイミング的に元のMod翻訳機構の後にインポートを走らせており、元の機構が使えないため
+* 元の機構だとフォルダが沢山増えたり同一構造のエクセルが沢山増えまくって変更に弱いので
+  * そもそもテーブルに表示テキスト直打ちにするな高校校歌　
+* 1個のelementデータ追加のために翻訳のためだけに複数のエクセルをいじりたくないため
