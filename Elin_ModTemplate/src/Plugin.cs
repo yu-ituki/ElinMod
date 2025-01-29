@@ -1,78 +1,58 @@
 ﻿using BepInEx;
 using HarmonyLib;
-
 using UnityEngine.Windows;
 
 namespace Elin_Mod
 {
-
 	/// <summary>
 	/// Modのエントリポイント.
 	/// </summary>
-	[BepInPlugin( ModInfo.c_ModFullName, ModInfo.c_ModName, ModInfo.c_ModVersion )]
+	[BepInPlugin(ModInfo.c_ModFullName, ModInfo.c_ModName, ModInfo.c_ModVersion)]
 	public class Plugin : BaseUnityPlugin
 	{
-		public ModConfig ModConfig { get; private set; } = null;
-
 		public static Plugin Instance { get; private set; }
 
-		bool m_IsInitialized = false;
+		public ModConfig ModConfig { get => NyModManager.Instance.GetConfig() as ModConfig; }
+
 
 		/// <summary>
 		/// Modのエントリポイント.
 		/// </summary>
-		private void Awake()
-		{
-			Harmony val = new Harmony( ModInfo.c_ModFullName );
-			val.PatchAll();
+		private void Awake() {
 			Instance = this;
-			m_IsInitialized = false;
-
-			ModConfig = new ModConfig(Config);
-			DebugUtil.Initialize(Logger);
-			CommonUtil.Initialize(Info);
-
-			// データ読み込み.
-			//ModUtil.ImportExcel(CommonUtil.GetResourcePath("tables/add_datas.xlsx"), "recipes", EClass.sources.recipes);
+			NyModManager.Instance.Initialize<ModConfig>(this, this.Logger, ModInfo.c_ModFullName, ModInfo.c_ModName, ModInfo.c_ModVersion);
+			NyModManager.Instance.RegisterOnStartGameAction(OnStartGame);
+			NyModManager.Instance.RegisterOnLoadTableAction(OnLoadTable);
 		}
 
 		/// <summary>
 		/// Mod開放タイミング.
 		/// </summary>
-		private void Unload()
-		{
-			m_IsInitialized = false;
-			Harmony val = new Harmony( ModInfo.c_ModFullName );
-			val.UnpatchSelf();
-
-			ModTextManager.Instance.Terminate();
-			ModTextManager.DeleteInstance();
+		void Unload() {
+			NyModManager.Instance?.Terminate();
+			NyModManager.DeleteInstance();
 		}
 
 
 		/// <summary>
-		/// プラグインの実初期化処理.
-		/// ゲーム開始直前に呼び出される.
+		/// テーブル読み込みタイミング.
+		/// 各ゲーム内テーブル読み込み完了後、かつプレイヤー等の生成直前.
 		/// </summary>
-		private void _Initialize() {
+		void OnLoadTable() {
+			//MyModManager.Instance.LoadTable( "add_data", "recipies", EClass.sources.recipes );
+		}
 
-			m_IsInitialized = true;
-			ModTextManager.Instance.Initialize();
+		/// <summary>
+		/// ゲーム開始直前.
+		/// 初期ゾーン読み込み完了直後.
+		/// </summary>
+		void OnStartGame() {
 		}
 
 
-
+#if false
 		public void Update() {
-			// 初期化.
-			if ( !m_IsInitialized ) {
-				if (EClass.core.IsGameStarted) {
-					_Initialize();
-				}
-				else {
-					return;
-				}
-			}
-
-			}
+		}
+#endif
 	}
 }

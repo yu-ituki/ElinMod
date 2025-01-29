@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Elin_Mod.Lib
+namespace Elin_Mod
 {
 	public abstract class ModConfigBase
 	{

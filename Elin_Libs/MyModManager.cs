@@ -7,7 +7,7 @@ using BepInEx;
 using HarmonyLib;
 using UnityEngine.Windows;
 
-namespace Elin_Mod.Lib
+namespace Elin_Mod
 {
 	[HarmonyPatch]
 	/// <summary>
@@ -106,6 +106,12 @@ namespace Elin_Mod.Lib
 			m_OnLoadTable += onLoadTable;
 		}
 
+		/// <summary>
+		/// テーブル読み込み.
+		/// </summary>
+		public void LoadTable( string tableName, string sheetName, SourceData dest ) {
+			ModUtil.ImportExcel(CommonUtil.GetResourcePath($"tables/{tableName}.xlsx"), sheetName, dest);
+		}
 
 
 		//------

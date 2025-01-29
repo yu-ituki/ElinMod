@@ -114,6 +114,8 @@
   <ItemGroup>
     <Compile Include="Lib\Debug_AnalyzeElin.cs" />
     <Compile Include="ModConfigUi.cs" />
+    <Compile Include="Lib\ModConfigBase.cs" />
+    <Compile Include="Lib\MyModManager.cs" />
     <Compile Include="Lib\CommonUtil.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="Lib\DebugUtil.cs" />
