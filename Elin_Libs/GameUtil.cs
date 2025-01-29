@@ -197,6 +197,19 @@ namespace Elin_Mod
 		}
 
 
+		public static int GetRand( int max ) {
+			return EClass.rnd(max);
+		}
+
+		public static float GetRand( float max ) {
+			return EClass.rndf(max);
+		}
+
+
+		public static Zone GetZone( string id ) {
+			return EClass.game.spatials.Find(id);
+		}
+
 
 		public static void Cheat_AllItemJIdentify() {
 			foreach (Thing item in EClass.pc.things) {

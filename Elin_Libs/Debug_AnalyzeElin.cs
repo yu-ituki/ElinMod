@@ -16,6 +16,178 @@ namespace Elin_Mod
 		const string c_StringEncloser = "\"";
 
 
+		public static void Dump_ElinZoneAll(string dumpPath) {
+			var cards = EClass.sources.zones;
+			var sb = _CreateSb(cards.map.Count, 1000);
+			_AddHeader("id", "String");
+			_AddHeader("parent", "String");
+			_AddHeader("name_JP", "String");
+			_AddHeader("name", "String");
+			_AddHeader("type", "String");
+			_AddHeader("LV", "Int");
+			_AddHeader("chance", "Int");
+			_AddHeader("faction", "String");
+			_AddHeader("value", "Int");
+			_AddHeader("idProfile", "String");
+			_AddHeader("idFile", "String[]");
+			_AddHeader("idBiome", "String");
+			_AddHeader("idGen", "String");
+			_AddHeader("idPlaylist", "String");
+			_AddHeader("tag", "String[]");
+			_AddHeader("cost", "Int");
+			_AddHeader("dev", "Int");
+			_AddHeader("image", "String");
+			_AddHeader("pos", "Int[]");
+			_AddHeader("questTag", "String[]");
+			_AddHeader("textFlavor_JP", "String");
+			_AddHeader("textFlavor", "String");
+			_AddHeader("detail_JP", "String");
+			_AddHeader("detail", "String");
+			_DumpHeader(sb);
+
+			foreach (var itr in cards.map) {
+				var a = itr.Value;
+				_Dump(sb, a.id);
+				_Dump(sb, a.parent);
+				_Dump(sb, a.name_JP);
+				_Dump(sb, a.name);
+				_Dump(sb, a.type);
+				_Dump(sb, a.LV);
+				_Dump(sb, a.chance);
+				_Dump(sb, a.faction);
+				_Dump(sb, a.value);
+				_Dump(sb, a.idProfile);
+				_Dump(sb, a.idFile);
+				_Dump(sb, a.idBiome);
+				_Dump(sb, a.idGen);
+				_Dump(sb, a.idPlaylist);
+				_Dump(sb, a.tag);
+				_Dump(sb, a.cost);
+				_Dump(sb, a.dev);
+				_Dump(sb, a.image);
+				_Dump(sb, a.pos);
+				_Dump(sb, a.questTag);
+				_Dump(sb, a.textFlavor_JP);
+				_Dump(sb, a.textFlavor);
+				_Dump(sb, a.detail_JP);
+				_Dump(sb, a.detail);
+
+				sb.AppendLine();
+			}
+			_Save(dumpPath, sb);
+		}
+
+		public static void Dump_ElinCharaAll( string dumpPath ) {
+			var cards = EClass.sources.charas;
+			var sb = _CreateSb(cards.map.Count, 1000);
+			_AddHeader("id", "String");
+			_AddHeader("_id", "Int");
+			_AddHeader("name_JP", "String");
+			_AddHeader("name", "String");
+			_AddHeader("aka_JP", "String");
+			_AddHeader("aka", "String");
+			_AddHeader("idActor", "String[]");
+			_AddHeader("sort", "Int");
+			_AddHeader("size", "Int[]");
+			_AddHeader("_idRenderData", "String");
+			_AddHeader("tiles", "Int[]");
+			_AddHeader("tiles_snow", "Int[]");
+			_AddHeader("colorMod", "Int");
+			_AddHeader("components", "String[]");
+			_AddHeader("defMat", "String");
+			_AddHeader("LV", "Int");
+			_AddHeader("chance", "Int");
+			_AddHeader("quality", "Int");
+			_AddHeader("hostility", "String");
+			_AddHeader("biome", "String");
+			_AddHeader("tag", "String[]");
+			_AddHeader("trait", "String[]");
+			_AddHeader("race", "String");
+			_AddHeader("job", "String");
+			_AddHeader("tactics", "String");
+			_AddHeader("aiIdle", "String");
+			_AddHeader("aiParam", "Int[]");
+			_AddHeader("actCombat", "String[]");
+			_AddHeader("mainElement", "String[]");
+			_AddHeader("elements", "element");
+			_AddHeader("equip", "String");
+			_AddHeader("loot", "String[]");
+			_AddHeader("category", "String");
+			_AddHeader("filter", "String[]");
+			_AddHeader("gachaFilter", "String[]");
+			_AddHeader("tone", "String");
+			_AddHeader("actIdle", "String[]");
+			_AddHeader("lightData", "String");
+			_AddHeader("idExtra", "String");
+			_AddHeader("bio", "String");
+			_AddHeader("faith", "String");
+			_AddHeader("works", "String[]");
+			_AddHeader("hobbies", "String[]");
+			_AddHeader("idText", "String");
+			_AddHeader("moveAnime", "String");
+			_AddHeader("factory", "String[]");
+			_AddHeader("components", "String[]");
+			_AddHeader("detail_JP", "String");
+			_AddHeader("detail", "String");
+			_DumpHeader(sb);
+
+			foreach (var itr in cards.map) {
+				var a = itr.Value;
+				_Dump(sb, a.id);
+				_Dump(sb, a._id);
+				_Dump(sb, a.name_JP);
+				_Dump(sb, a.name);
+				_Dump(sb, a.aka_JP);
+				_Dump(sb, a.aka);
+				_Dump(sb, a.idActor);
+				_Dump(sb, a.sort);
+				_Dump(sb, a.size);
+				_Dump(sb, a._idRenderData);
+				_Dump(sb, a.tiles);
+				_Dump(sb, a.tiles_snow);
+				_Dump(sb, a.colorMod);
+				_Dump(sb, a.components);
+				_Dump(sb, a.defMat);
+				_Dump(sb, a.LV);
+				_Dump(sb, a.chance);
+				_Dump(sb, a.quality);
+				_Dump(sb, a.hostility);
+				_Dump(sb, a.biome);
+				_Dump(sb, a.tag);
+				_Dump(sb, a.trait);
+				_Dump(sb, a.race);
+				_Dump(sb, a.job);
+				_Dump(sb, a.tactics);
+				_Dump(sb, a.aiIdle);
+				_Dump(sb, a.aiParam);
+				_Dump(sb, a.actCombat);
+				_Dump(sb, a.mainElement);
+				_Dump(sb, a.elements);
+				_Dump(sb, a.equip);
+				_Dump(sb, a.loot);
+				_Dump(sb, a.category);
+				_Dump(sb, a.filter);
+				_Dump(sb, a.gachaFilter);
+				_Dump(sb, a.tone);
+				_Dump(sb, a.actIdle);
+				_Dump(sb, a.lightData);
+				_Dump(sb, a.idExtra);
+				_Dump(sb, a.bio);
+				_Dump(sb, a.faith);
+				_Dump(sb, a.works);
+				_Dump(sb, a.hobbies);
+				_Dump(sb, a.idText);
+				_Dump(sb, a.moveAnime);
+				_Dump(sb, a.factory);
+				_Dump(sb, a.components);
+				_Dump(sb, a.detail_JP);
+				_Dump(sb, a.detail);
+
+				sb.AppendLine();
+			}
+			_Save(dumpPath, sb);
+		}
+
 
 		public static void Dump_ElinThingAll( string dumpPath ) {
 			var cards = EClass.sources.things;
@@ -164,7 +336,7 @@ namespace Elin_Mod
 			_AddHeader( "categorySub" , "string" );
 			_AddHeader( "abilityType" , "string[]" );
 			_AddHeader( "tag" , "string[]" );
-			_AddHeader( "thing" , "string" );
+			_AddHeader( "m_Thing" , "string" );
 			_AddHeader( "eleP" , "int" );
 			_AddHeader( "cooldown" , "int" );
 			_AddHeader( "charge" , "int" );
@@ -271,7 +443,7 @@ namespace Elin_Mod
 			_AddHeader( "id" , "string" );
 			_AddHeader( "factory" , "string" );
 			_AddHeader( "type" , "string" );
-			_AddHeader( "thing" , "string");
+			_AddHeader( "m_Thing" , "string");
 			_AddHeader( "num" , "string" );
 			_AddHeader( "sp" , "int" );
 			_AddHeader( "time" , "int" );
