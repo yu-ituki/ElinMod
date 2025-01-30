@@ -41,8 +41,6 @@ namespace Elin_Mod
 			SourceElementNew elemNews = ScriptableObject.CreateInstance<SourceElementNew>();
 			ModUtil.ImportExcel(CommonUtil.GetResourcePath("tables/add_datas.xlsx"), "elements", elemNews);
 
-
-
 			foreach ( var itr in elemNews.map) {
 				SourceElement.Row tmp = null;
 				if ( elemsMap.TryGetValue( itr.Key, out tmp )) {
@@ -50,6 +48,7 @@ namespace Elin_Mod
 					continue;
 				}
 				elems.SetRow(itr.Value);
+				elems.rows.Add(itr.Value);	//< マジ舐めんな.
 			}
 
 			m_ElemIndexToAliasHashes = new int[elemsMap.Count];
@@ -63,7 +62,6 @@ namespace Elin_Mod
 
 			ElemIDStart = GetElement(c_ElemName_ElemIDStart).id;
 			ElemIDEnd = GetElement(c_ElemName_ElemIDEnd).id;
-
 			m_NewModElemRows = new Dictionary<int, SourceElement.Row>();
 			foreach ( var itr in elemsMap) {
 				if (itr.Key < ElemIDStart)

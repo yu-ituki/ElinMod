@@ -132,6 +132,9 @@
     <Compile Include="Lib\GameUtil.cs" />
     <Compile Include="Lib\eLanguage.cs" />
     <Compile Include="ElinOverrides.cs" />
+    <Compile Include="Lib\MyModManager.cs" />
+    <Compile Include="Lib\ModConfigBase.cs" />
+    <Compile Include="Lib\SourceNoReset.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

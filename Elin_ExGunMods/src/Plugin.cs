@@ -1,101 +1,70 @@
 ﻿using BepInEx;
+
 using HarmonyLib;
 
-using UnityEngine;
 using UnityEngine.Windows;
+
+using static CoreConfig;
 
 namespace Elin_Mod
 {
-
-	[HarmonyPatch]
-	class OnStartGame {
-		[HarmonyPatch(typeof(Game), "OnBeforeInstantiate")]
-		[HarmonyPostfix]
-		public static void PostFix() {
-			Plugin.Instance.OnStartGame();
-		}
-
-	}
-
-
 	/// <summary>
 	/// Modのエントリポイント.
 	/// </summary>
-	[BepInPlugin( ModInfo.c_ModFullName, ModInfo.c_ModName, ModInfo.c_ModVersion )]
+	[BepInPlugin(ModInfo.c_ModFullName, ModInfo.c_ModName, ModInfo.c_ModVersion)]
 	public class Plugin : BaseUnityPlugin
 	{
-		public ModConfig ModConfig { get; private set; } = null;
-
 		public static Plugin Instance { get; private set; }
 
-		bool m_IsInitialized = false;
+		public ModConfig ModConfig { get => NyModManager.Instance.GetConfig() as ModConfig; }
+
+
 
 		/// <summary>
 		/// Modのエントリポイント.
 		/// </summary>
-		private void Awake()
-		{
-			Harmony val = new Harmony( ModInfo.c_ModFullName );
-			val.PatchAll();
+		private void Awake() {
 			Instance = this;
-			m_IsInitialized = false;
-
-			ModConfig = new ModConfig(Config);
-			DebugUtil.Initialize(Logger);
-			CommonUtil.Initialize(Info);
-			ModTextManager.Instance.Initialize();
-
+			NyModManager.Instance.Initialize<ModConfig>(this, this.Logger, ModInfo.c_ModFullName, ModInfo.c_ModName, ModInfo.c_ModVersion);
+			NyModManager.Instance.RegisterOnStartGameAction(OnStartGame);
+			NyModManager.Instance.RegisterOnLoadTableAction(OnLoadTable);
 		}
-
 
 		/// <summary>
 		/// Mod開放タイミング.
 		/// </summary>
-		private void Unload()
-		{
-			m_IsInitialized = false;
-			Harmony val = new Harmony( ModInfo.c_ModFullName );
-			val.UnpatchSelf();
-
-			ModTextManager.Instance.Terminate();
-			ModTextManager.DeleteInstance();
+		void Unload() {
+			NyModManager.Instance?.Terminate();
+			NyModManager.DeleteInstance();
 		}
 
-
+		void OnStartCore() {
+		}
 
 		/// <summary>
-		/// プラグインの実初期化処理.
-		/// ゲーム開始直前に呼び出される.
+		/// テーブル読み込みタイミング.
+		/// 各ゲーム内テーブル読み込み完了後、かつプレイヤー等の生成直前.
 		/// </summary>
-		public void OnStartGame() {
-			if (Plugin.Instance.m_IsInitialized)
-				return;
-			Plugin.Instance.m_IsInitialized = true;
+		void OnLoadTable() {
 			NewRangedModManager.Instance.Initialize();
 		}
 
-		
-
-
-
-		public void Update() {
+		/// <summary>
+		/// ゲーム開始直前.
+		/// 初期ゾーン読み込み完了直後.
+		/// </summary>
+		void OnStartGame() {
+		}
 
 
 #if false
-			if (UnityEngine.Input.GetKeyDown(KeyCode.F10)) {
-				Debug_AnalyzeElin.Dump_ElinFactionAll("D:\\faction.tsv");
+		public void Update() {
+			if (CommonUtil.GetKeyDown(UnityEngine.KeyCode.F10)) {
 				Debug_AnalyzeElin.Dump_ElinElementAll("D:\\elements.tsv");
-				Debug_AnalyzeElin.Dump_ElinRecipeAll("D:\\recipe.tsv");
 				Debug_AnalyzeElin.Dump_ElinThingAll("D:\\things.tsv");
-				Debug_AnalyzeElin.Dump_ElinLangGeneral("D:\\langGeneral.tsv");
-				Debug_AnalyzeElin.Dump_ElinLangList("D:\\langList.tsv");
-				Debug_AnalyzeElin.Dump_ElinLangWord("D:\\langWord.tsv");
-				Debug_AnalyzeElin.Dump_ElinLangGame("D:\\langGame.tsv");
-				Debug_AnalyzeElin.Dump_ElinLangNote("D:\\langNote.tsv");
+				Debug_AnalyzeElin.Dump_ElinRecipeAll("D:\\recipies.tsv");
 			}
-#endif
-		
-
 		}
+#endif
 	}
 }
