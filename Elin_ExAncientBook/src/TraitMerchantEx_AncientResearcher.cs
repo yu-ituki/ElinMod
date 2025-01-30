@@ -35,17 +35,22 @@ namespace Elin_Mod
 
 		static int c_CurrencyTypeIDHash;
 		
-
-
 		public static void Initialize() {
 			c_CurrencyTypeIDHash = Const.c_CurrencyType_GachaCoin.ToString().ToLower().GetHashCode();
-
-#if false
-
 			// フォールバック機構が増えたよ、やったね.
 			// とりあえずパン屋にしておこう.
 			ModUtil.RegisterSerializedTypeFallback(ModInfo.c_ModName, "TraitMerchantEx_AncientResearcher", "TraitMerchantBread");
 
+		}
+
+		public static void LoadTable() {
+			//	var addCharaTable = CommonUtil.LoadTableNoneReset<SourceChara>("add_datas.xlsx", "chara");
+			//	CommonUtil.AddElinTableData(addCharaTable.map, EClass.sources.charas.map);
+			CommonUtil.LoadTable("add_datas.xlsx", "chara", EClass.sources.charas);
+			
+		}
+
+		public static void OnGameStart() {
 			// キャラが既に登録されているかチェック.
 			var globalCharas = EClass.game.cards.globalCharas;
 			var chara = globalCharas.Find(Const.c_CharaID_AncientShop);
@@ -56,7 +61,6 @@ namespace Elin_Mod
 				var pos = Const.c_SpawnPos_AncientShop;
 				chara.SetGlobal(zone, pos.x, pos.y);
 			}
-#endif
 		}
 
 

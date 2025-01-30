@@ -39,7 +39,7 @@ namespace Elin_Mod
 		/// 各ゲーム内テーブル読み込み完了後、かつプレイヤー等の生成直前.
 		/// </summary>
 		void OnLoadTable() {
-			//MyModManager.Instance.LoadTable( "add_data", "recipies", EClass.sources.recipes );
+			CommonUtil.LoadTable( "add_data", "recipies", EClass.sources.recipes );
 		}
 
 		/// <summary>

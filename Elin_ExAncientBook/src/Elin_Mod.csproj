@@ -118,6 +118,7 @@
     <Compile Include="Lib\Debug_AnalyzeElin.cs" />
     <Compile Include="Lib\ModConfigBase.cs" />
     <Compile Include="Lib\MyModManager.cs" />
+    <Compile Include="Lib\SourceEmpty.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="TraitMerchantEx_AncientResearcher.cs" />
     <Compile Include="ModConfigUi.cs" />

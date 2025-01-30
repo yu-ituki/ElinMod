@@ -56,7 +56,7 @@ namespace Elin_Mod
 			// とりあえず現状はランタイムで生成＆読み込みする.
 			m_TextCore = ScriptableObject.CreateInstance<ModText>();
 			m_TextCore.Setup();
-			ModUtil.ImportExcel( CommonUtil.GetResourcePath( "tables/mod_texts.xlsm" ), "texts", (SourceData)(object)m_TextCore );
+			CommonUtil.LoadTable("mod_texts.xlsm", "texts", m_TextCore);
 
 			m_UserDatas = new UserData[c_Tags.Length];//< TODO:適当.
 

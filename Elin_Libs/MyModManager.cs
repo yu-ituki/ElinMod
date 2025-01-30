@@ -17,7 +17,7 @@ namespace Elin_Mod
 	{
 		public enum eState {
 			None,
-			Loading,
+			Initializing,
 			Idle,
 		}
 
@@ -54,7 +54,7 @@ namespace Elin_Mod
 		) 
 			where ModConfigType : ModConfigBase, new()
 		{
-			m_State = eState.Loading;
+			m_State = eState.Initializing;
 			m_Plugin = plugin;
 			m_ModName = modName;
 			m_ModFullName = modFullName;
@@ -106,12 +106,6 @@ namespace Elin_Mod
 			m_OnLoadTable += onLoadTable;
 		}
 
-		/// <summary>
-		/// テーブル読み込み.
-		/// </summary>
-		public void LoadTable( string tableName, string sheetName, SourceData dest ) {
-			ModUtil.ImportExcel(CommonUtil.GetResourcePath($"tables/{tableName}.xlsx"), sheetName, dest);
-		}
 
 
 		//------
@@ -121,18 +115,18 @@ namespace Elin_Mod
 		[HarmonyPatch(typeof(Game), "OnBeforeInstantiate")]
 		[HarmonyPostfix]
 		static void PostFix_OnBeforeInstantiate() {
-			if (Instance.m_State != eState.Loading)
-				return;
-			ModTextManager.Instance.Initialize();
-			Instance.m_OnLoadTable?.Invoke();
+			switch (Instance.m_State) {
+				case eState.Initializing:
+					ModTextManager.Instance.Initialize();
+					Instance.m_OnLoadTable?.Invoke();
+					break;
+			}
 		}
 
 		[HarmonyPatch(typeof(Scene), "Init")]
 		[HarmonyPostfix]
 		static void PostFix_OnScebeInit( Scene.Mode newMode) {
 			if (newMode != Scene.Mode.StartGame)
-				return;
-			if (Instance.m_State != eState.Loading)
 				return;
 			Instance.m_OnStartGame?.Invoke();
 			Instance.m_State = eState.Idle;

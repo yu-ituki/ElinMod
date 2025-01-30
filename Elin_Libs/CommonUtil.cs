@@ -5,6 +5,8 @@ using HarmonyLib;
 using Ionic.Zip;
 using System.Text.RegularExpressions;
 using System.Reflection;
+using UnityEngine;
+using System.Collections.Generic;
 
 namespace Elin_Mod
 {
@@ -78,6 +80,32 @@ namespace Elin_Mod
 		{
 			return m_ResourcePathBase + resName;
 		}
+
+		public static void LoadTable<T>(string tableName, string sheetName, T dest )
+			where T : SourceData
+		{
+			ModUtil.ImportExcel(CommonUtil.GetResourcePath($"tables/{tableName}"), sheetName, dest);
+		}
+
+		public static T LoadTableNoneReset<T>(string tableName, string sheetName )
+			where T : SourceData
+		{
+			var ret = SourceNoReset<T>.Create();
+			ModUtil.ImportExcel(CommonUtil.GetResourcePath($"tables/{tableName}"), sheetName, ret);
+			return ret.GetData();
+		}
+
+		public static void AddElinTableData<T1,T2>(Dictionary<T1,T2> src, Dictionary<T1,T2> dest)
+		{
+			foreach (var itr in src) {
+				if (dest.ContainsKey(itr.Key)) {
+					DebugUtil.LogError($"[Load Table Error!] conflict key error  key={itr.Key}");
+				} else {
+					dest.Add(itr.Key, itr.Value);
+				}
+			}
+		}
+
 
 
 		public static string GetSaveDataFolderPath() {

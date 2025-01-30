@@ -83,16 +83,20 @@ namespace Elin_Mod
 
 
 		public void Initialize( ModConfig config ) {
-			if (m_CoinDatas != null ) {
-				foreach (var itr in m_CoinDatas)
-					itr.Terminate();
-				m_CoinDatas.Clear();
-			}
 			m_CoinDatas = new List<CoinData>(4);
 			m_CoinDatas.Add(CoinData.Create("gacha_coin", () => config.Worth_GachaCoin_Copper.Value ));
 			m_CoinDatas.Add(CoinData.Create("gacha_coin_silver", () => config.Worth_GachaCoin_Silver.Value));
 			m_CoinDatas.Add(CoinData.Create("gacha_coin_gold", () => config.Worth_GachaCoin_Gold.Value));
 			m_CoinDatas.Add(CoinData.Create("gacha_coin_plat", () => config.Worth_GachaCoin_Plat.Value));
+		}
+
+		public void Terminate() {
+			if (m_CoinDatas != null) {
+				foreach (var itr in m_CoinDatas)
+					itr.Terminate();
+				m_CoinDatas.Clear();
+				m_CoinDatas = null;
+			}
 		}
 
 		public int GetHave() {
