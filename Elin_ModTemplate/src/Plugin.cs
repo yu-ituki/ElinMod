@@ -23,6 +23,7 @@ namespace Elin_Mod
 			NyModManager.Instance.Initialize<ModConfig>(this, this.Logger, ModInfo.c_ModFullName, ModInfo.c_ModName, ModInfo.c_ModVersion);
 			NyModManager.Instance.RegisterOnStartGameAction(OnStartGame);
 			NyModManager.Instance.RegisterOnLoadTableAction(OnLoadTable);
+			NyModManager.Instance.RegisterOnLoadThingCharaTableAction(OnLoadThingCharaTable);
 		}
 
 		/// <summary>
@@ -35,11 +36,17 @@ namespace Elin_Mod
 
 
 		/// <summary>
+		/// ThingとChara専用の読み込みタイミング.
+		/// </summary>
+		void OnLoadThingCharaTable() {
+		}
+
+		/// <summary>
 		/// テーブル読み込みタイミング.
 		/// 各ゲーム内テーブル読み込み完了後、かつプレイヤー等の生成直前.
 		/// </summary>
 		void OnLoadTable() {
-			CommonUtil.LoadTable( "add_data", "recipies", EClass.sources.recipes );
+		//	CommonUtil.LoadTable( "add_data", "recipies", EClass.sources.recipes );
 		}
 
 		/// <summary>

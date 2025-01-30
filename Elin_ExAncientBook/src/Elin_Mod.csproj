@@ -115,25 +115,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Lib\Debug_AnalyzeElin.cs" />
-    <Compile Include="Lib\ModConfigBase.cs" />
-    <Compile Include="Lib\MyModManager.cs" />
-    <Compile Include="Lib\SourceEmpty.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="TraitMerchantEx_AncientResearcher.cs" />
     <Compile Include="ModConfigUi.cs" />
-    <Compile Include="Lib\CommonUtil.cs" />
     <Compile Include="Const.cs" />
-    <Compile Include="Lib\DebugUtil.cs" />
     <Compile Include="TextID.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModInfo.cs" />
-    <Compile Include="Lib\ModText.cs" />
-    <Compile Include="Lib\ModTextManager.cs" />
     <Compile Include="Plugin.cs" />
-    <Compile Include="Lib\Singleton.cs" />
-    <Compile Include="Lib\GameUtil.cs" />
-    <Compile Include="Lib\eLanguage.cs" />
+    <Compile Include="Lib\*" />
     <Compile Include="WalletGachaCoin.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

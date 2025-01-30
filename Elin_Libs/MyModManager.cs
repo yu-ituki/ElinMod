@@ -18,6 +18,7 @@ namespace Elin_Mod
 		public enum eState {
 			None,
 			Initializing,
+			Initializing_AfterOnStartCore,
 			Idle,
 		}
 
@@ -31,7 +32,9 @@ namespace Elin_Mod
 		ModConfigBase m_Config;
 
 		System.Action m_OnLoadTable;
+		System.Action m_OnLoadThingCharaTable;
 		System.Action m_OnStartGame;
+		
 
 
 		/// <summary>
@@ -106,17 +109,34 @@ namespace Elin_Mod
 			m_OnLoadTable += onLoadTable;
 		}
 
+		/// <summary>
+		/// ThingおよびCharaテーブル専用の読み込みコールバック登録.
+		/// </summary>
+		/// <param name="onLoadThingCharaTable"></param>
+		public void RegisterOnLoadThingCharaTableAction(System.Action onLoadThingCharaTable) {
+			m_OnLoadThingCharaTable += onLoadThingCharaTable;
+		}
 
 
 		//------
 		// 以下コールバック群....
 		//------
+		[HarmonyPatch(typeof(SourceManager), "Init")]
+		[HarmonyPrefix]
+		static void PreFix_SourceManagerInit() {
+			switch (Instance.m_State) {
+				case eState.Initializing:
+					Instance.m_OnLoadThingCharaTable?.Invoke();
+					Instance.m_State = eState.Initializing_AfterOnStartCore;
+					break;
+			}
+		}
 
 		[HarmonyPatch(typeof(Game), "OnBeforeInstantiate")]
 		[HarmonyPostfix]
 		static void PostFix_OnBeforeInstantiate() {
 			switch (Instance.m_State) {
-				case eState.Initializing:
+				case eState.Initializing_AfterOnStartCore:
 					ModTextManager.Instance.Initialize();
 					Instance.m_OnLoadTable?.Invoke();
 					break;
