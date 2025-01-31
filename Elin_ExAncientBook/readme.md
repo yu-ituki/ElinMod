@@ -1,76 +1,107 @@
-# Readme
-* This is a template project for creating Elin mods.
-* It contains a basic template, basic setup files, etc.
+# ■Overview
+This mod adds a simple system to increase the usage of old documents.  
+It creates new uses for used and no longer needed old documents.  
+  
+Adds an “archivist” near the Lumiest fountain.  
+The archivist has the following characteristics.  
+* Buy old documents (read/unread).  
+* Sells technical books.  
+* Uses “exotic currency” for purchases and sales, respectively.  
 
-# Description
-This template has the following.
-* A minimal basic project, a set of sources (entry points, templates, etc.)
-* Basic material data for distribution
-* Simple localization functionality for Mods (for all languages)
-* Simple Elin installation folder and DLL reference mechanism
-* Automatic copying of deliverables to Elin's Package folder (jump to Mod_Test folder)
+# ■Formulas and configurations  
+This mod uses “foreign currency” as currency.  
+Each “foreign currency” has its own value, just like real currency.  
+All settings, including value and price, can be adjusted in the configurator.  
+  
+Configurations can be edited by clicking in the player or in the following file.  
+<Elin installation folder>\BepInEx\config\yu-ituki.elin.ex-ancient-book.cfg
 
-## How to use
-1. First, copy this folder. 
-2. Next, copy the Elin_Lib folder that exists in this repository. 
-   1. copy the library-like source code to another folder (. /... /Elin_Lib). 
-3. Next, replace “ExAncientBook” and “ex-ancient-book” with your own mod name by using a tool such as a batch replacement tool under the folder of strings.
-    * VSCode, Hidemaru, Sakura Editor, or any other replacement tool will do. 
-4. After that, rename “Elin_ExAncientBook.sln” to your own mod name.
-5. Write your environment information in config.bat.
-6. preparation is complete. You should now be able to build.
+## ◯Currency prices
+The config.
+Worth_GachaCoin_~” in the config file allows you to set the price of each currency.  
+The default price per coin is as follows  
+* Copper: 1
+* Silver: 10
+* Gold Coin: 50
+* Platinum coin: 200
+  
 
-## System Requirements
-* Net Framework 4.8.    
-* If you have Visual Studio 2022 and .Net Framework 4.8, it will work anyway.  
-* Unity is not required for this project, but it is necessary if you want to generate prefabs, ScriptableObjects, AssetBundle, etc.  
-  * Even if you only use C#, if you just new GameObject() and AddComponent, or use Texture2D.LoadRawTextureData() or something like that, it might work.   
-    You may not need Unity, but if you want to add a new resource, it is better to have it.   
-* Then, you just need to buy and install Elin and you have a working environment. Please buy about 10 copies for proselytizing.  
+## ◯ Price of old documents
+The sale price of ancient documents can be adjusted in the config.  
+The sale price of ancient documents can be adjusted in “Worth_AncientBook”.  
+The price is calculated as follows  
+　Sale price = (Document type ID + 1) * Worth_AncientBook
+The rarer the document type ID, the higher the price.  
+(Default: 5.0)
 
-## About Elin_Lib
-* This is a group of sources that can be used by all mods. 
-* There is a folder on top of this folder. 
-* By hitting config.bat, a symbolic link is created between Elin_Lib and the project's src/Lib directory. 
-* If you drop Elin_Lib together and put it in the same directory as the project folder,  
-  If you drop Elin_Lib with your project and place it in the same directory as your project folder, you can copy and paste the template and build it anyway.  
+## ◯Price of technical book
+Config.  
+The purchase price of technical books can be adjusted in “Worth_SkillBook”.  
+The price is calculated as follows  
+　Purchase price = (Oren's equivalent price of the technical book) * Worth_SkillBook
+(Default: 0.1)
 
-## Minimum basic projects and sources
-* Minimum projects and sources for building a Mod are included.
-* DLL references are included in the “it wouldn't hurt to have them” type.
-* Plugin.cs is the entry point.
-* ModConfig.cs and ModConfigUI.cs contain sample configurations for mods.
-* DebugUtil.Log(), LogError(), etc. using the BepInEx logger. Debug.Log()-like.
-  * To view BepInEx logs, you must open the BepInEx console.
-  * ［Console］ in the Elin installation folder/BepInEx/config/BepInEx.cfg with Enabled = true.
 
-## Basic material data for distribution
-* package.xml and preview.jpg are placed under data/publish
-* Rewrite the contents for your own mod and build it, and it will be automatically transferred to the deliverables folder (see below).
+## ◯Display of technical books
+The display of technical books is performed as follows.  
+* Draw lots to determine the number of books to be displayed.  
+* Drawing lots for the display rarity of each book.   
+* The number of books displayed is determined by the number of books in the configurations.
 
-## Simple localization function for mods (for all languages)
-* Simple localization function using Excel.
-* Includes a mechanism to synchronize IDs defined in Excel with C# enums
-  * It is made with fossilized VBA so that anyone can use it as long as they have at least Excel.
-    * If you don't even have Excel, you can't even mess with the tables themselves.
-  * data/resource/tables/mod_texts.xlsm contains table definitions and VBA.
-* When you hit the button on excel, src/TextID.cs will be output.
-* Read in src/Lib/ModTextManager.cs
-* ModTextManager.Instance.GetText( eTextID ) automatically identifies the current language code and returns a string.
-* If you want to increase the number of languages, increase mod_texts.xlsm and eLanguage in Const.cs, and increase ModText.cs by modifying it appropriately.
-* Corresponds to in-sentence user data embedding. Corresponds to [0]-[8] in the statement and ModTextmanager.Instance.SetUserData() and is replaced according to the index.
+The number of books displayed is determined by the “SalesNum_Skill_Level” in the configuration.  
+SalesNum_SkillBook_Base” (the minimum number of technical books to be sold)  
+SalesNum_SkillBook_Add” (the number of additional technical books for sale by lottery)  
+SalesNum_SkillBook_Add” (additional number of technical books to be sold by drawing lots)  
+Number of books = SalesNum_SkillBook_Base + rnd(SalesNum_SkillBook_Add);.
+  
+The display rarity is determined by drawing lots for “High,” “Medium,” and “Low.  
+The probability is set by “Config_SalesLvLotRate_SkillBook_~” in the configuration.  
+The higher the number, the higher the probability of being drawn.  
+  
+The technical books that will actually be displayed are  
+The level of the technical book that will actually be displayed is drawn based on the store's standard level based on the investment + the offset value based on the display rarity.  
+The base value of the lottery is based on the table data of Elin itself.  
+(Simply, the higher the level of the lottery, the better the item will be. (Simply, the higher the level of the lottery, the better the result will be.)  
+The offset value according to rarity is set in the configuration  
+SalesLv_SkillBook_~” in the configuration.  
+  
+# ■How to uninstall
+This mod can be uninstalled by simply turning it off.  
 
-## Simple mechanism to refer to the Elin installation folder and DLLs
-* Go to the DLL of the installation folder written in config.bat.
-* Symbolic link in config.bat and reference in csproj.
-* You can add DLL references directly, or you can add them by directly modifying csproj and copying and pasting them in as you see fit.
 
-## Mechanism for automatically copying artifacts to the Package folder of Elin's main unit
-* Copy the following into the installation folder written in config.bat
-  * DLL after build
-  * The entire data/resource folder
-  * All files under data/publish/
-* Now you can check the operation of Elin immediately by simply building -> launching it.
-* The copied files can be used as delivery data as they are.
-* The files copied can be used as delivery data.
+
+# ■ Source code description
+TraitMerchantEx_AncientResearcher.cs is almost the core of the processing.  
+Also, the process of handling GachaCoin as currency is in WalletGachaCoin.cs.  
+
+## ◯WalletGachaCoin 
+This class handles buying, selling, and change calculation for multiple currencies.  
+It is not particularly interesting as it contains popular-like processing.  
+
+## ◯TraitMerchantEx_AncientResearcher
+This class has been modified in various areas.  
+I also wrote a lot of processing around the store,  
+I also modified various parts around the process of handling gacha coins as currency.  
+I've tried to write comments as much as possible, but the following is an excerpt of the process.  
+
+### Handling of Currency
+The following is touched in HarmonyPatch to handle new currencies.  
+* Lang._currency() -- displaying “◯Yen” in the log
+* Card.GetCurrency() -- acquiring the amount of currency held
+* Card.ModCurrency() -- process of changing currency
+* Card.GetPrice() -- getting price of individual items
+* UICurrency.Build() -- UI for displaying currency holdings  
+ 
+The above functions are defined in the CurrencyType and are used to distribute the processing.  
+The above functions are hooked with Prefix and Postfix to determine the currency type and then perform their own processing.  
+
+### ▼ Shop handling process
+In adding new store types, the following are handled by HarmonyPatch.  
+* OnBarter() -- when the store menu is opened  
+* OnEndTransaction() -- when the shop is closed  
+
+At the timing of opening, we display dedicated products and at the same time set the “currently open flag”.  
+This flag is used for culling in various places so that the processing speed of normal play is not affected as much as possible.  
+The various lottery processes are as described above.  
+
 
