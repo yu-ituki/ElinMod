@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using HarmonyLib;
 using UnityEngine;
+
+using static ActPlan;
 
 namespace Elin_Mod
 {
+	[HarmonyPatch]
 	public class NewRangedModManager : Singleton<NewRangedModManager>
 	{
 		const string c_ElemName_ElemIDStart = "itukiyu_modEX_IDStart";
@@ -29,12 +34,12 @@ namespace Elin_Mod
 
 
 
-		public void Initialize() {
+		public void OnStartCore() {
 			m_NewMods = new NewRangedModBase[] {
 				new NewRangedMod_Elements(),
 				new NewRangedMod_Barrel()
 			};
-
+			
 			// データ読み込み.
 			var elems = EClass.sources.elements;
 			var elemsMap = elems.map;
@@ -47,10 +52,21 @@ namespace Elin_Mod
 					DebugUtil.LogError( $"[Elin_ExGunMods] conlict element id!!!! --> id={itr.Key}  baseName={tmp.name}  newModName={itr.Value.name} " );
 					continue;
 				}
-				elems.SetRow(itr.Value);
-				elems.rows.Add(itr.Value);	//< マジ舐めんな.
+				// マジ舐めんな.
+			//	elems.SetRow(itr.Value);
+				elems.rows.Add(itr.Value);  
+			//	elems.alias.Add(itr.Value.GetAlias, itr.Value);
 			}
+		}
 
+		/// <summary>
+		/// ゲーム開始直前に呼ばれる.
+		/// </summary>
+		public void OnLoadTable() {
+			// SourceManager::Init()後の処理はここ.
+			// ゲーム中の全Elementのハッシュテーブルを作っておく.
+			var elems = EClass.sources.elements;
+			var elemsMap = elems.map;
 			m_ElemIndexToAliasHashes = new int[elemsMap.Count];
 			m_ElemIndexToIDs = new int[elemsMap.Count];
 			int idx = 0;
@@ -60,17 +76,17 @@ namespace Elin_Mod
 				++idx;
 			}
 
+			// 追加パーツ群の管理.
 			ElemIDStart = GetElement(c_ElemName_ElemIDStart).id;
 			ElemIDEnd = GetElement(c_ElemName_ElemIDEnd).id;
 			m_NewModElemRows = new Dictionary<int, SourceElement.Row>();
-			foreach ( var itr in elemsMap) {
+			foreach (var itr in elemsMap) {
 				if (itr.Key < ElemIDStart)
 					continue;
 				if (itr.Key > ElemIDEnd)
 					continue;
 				m_NewModElemRows.Add(itr.Key, itr.Value);
 			}
-
 
 			foreach (var itr in m_NewMods)
 				itr.Initialize();
@@ -217,5 +233,62 @@ namespace Elin_Mod
 			}
 		}
 
+
+
+
+		// 保険処理.
+		// バージョンアップでthingのelements.list に値が入っていないが、
+		// ソケットには存在する、
+		// というデータが発生した際のセーフティー処理.
+		// セーブデータのロード時に該当のデータが存在したら強制的にelementを付与する.
+		static List<int> s_TmpElementsListElemIDs;
+		static List<(int,int)> s_TmpSocketElements;
+		[HarmonyPatch(typeof(Card), "_OnDeserialized")]
+		[HarmonyPostfix]
+		public static void Postfix_OnDeserialized(Card __instance, StreamingContext context) {
+			if (__instance == null)
+				return;
+			if (__instance.sockets == null || __instance.sockets.Count <= 0)
+				return;
+			if (__instance.elements == null || __instance.elements.list == null)
+				return;
+			if (s_TmpElementsListElemIDs == null) {
+				s_TmpElementsListElemIDs = new List<int>(100);
+				s_TmpSocketElements = new List<(int, int)>(100);
+			}
+			s_TmpSocketElements.Clear();
+
+			// ソケット内のこちらで追加したパーツの情報を収集.
+			for (int i = 0; i < __instance.sockets.Count; ++i) {
+				if (__instance.sockets[i] == 0)
+					continue;
+				int elemID = __instance.sockets[i] / 100;
+				if (elemID == 0)
+					continue;
+				if (!Instance.IsNewRangeModID(elemID))
+					continue;
+				int elemLv = __instance.sockets[i] % 100;
+				s_TmpSocketElements.Add((elemID, elemLv));
+			}
+
+			// 存在していないelementをチェック.
+			ElementContainer elem = __instance.elements;
+			if (elem.list != null) {
+				s_TmpElementsListElemIDs.Clear();
+				for (int i = 0; i < elem.list.Count; i += 5) {
+					s_TmpElementsListElemIDs.Add(elem.list[i]);
+				}
+				for (int i = 0; i < s_TmpSocketElements.Count; ++i) {
+					var socketElem = s_TmpSocketElements[i];
+					if (s_TmpElementsListElemIDs.Contains(socketElem.Item1))
+						continue;
+					// 存在していない場合はSetBaseで付与.
+					DebugUtil.LogWarning($"[Warning!]Parts in socket are not included in elements.list  id={socketElem.Item1}");
+					__instance.elements.SetBase(socketElem.Item1, socketElem.Item2);
+				}
+			}
+			s_TmpSocketElements.Clear();
+			s_TmpElementsListElemIDs.Clear();
+		}
 	}
 }

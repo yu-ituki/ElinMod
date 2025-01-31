@@ -12,6 +12,15 @@ namespace Elin_Mod
 			//base.Reset();
 		}
 
+		public override void OnAfterImportData() {
+			//base.OnAfterImportData();
+			Core.SetCurrent();
+			foreach (Row row in rows) {
+				map[row.id] = row;
+				alias[row.GetAlias] = row;
+			}
+		}
+
 		public override Row CreateRow() {
 			var ret = base.CreateRow();
 			switch ( ModTextManager.Instance.GetLanguageCode()) {

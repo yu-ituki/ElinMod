@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Security.Policy;
 
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.UI.GridLayoutGroup;
@@ -46,6 +47,41 @@ namespace Elin_Mod
 			}
 		}
 
+
+		/// <summary>
+		/// キャラクター新規生成.
+		/// </summary>
+		/// <typeparam name="TraitType">付与するTraitのタイプ.</typeparam>
+		/// <param name="charaID"></param>
+		/// <param name="zoneID"></param>
+		/// <param name="x"></param>
+		/// <param name="z"></param>
+		/// <returns></returns>
+		public static Chara CreateModChara<TraitType>( string charaID, string zoneID, int x, int z )
+			where TraitType : TraitChara, new()
+		{
+			var zone = EClass.game.spatials.Find(zoneID);
+			// キャラが既に登録されているかチェック.
+			var globalCharas = EClass.game.cards.globalCharas;
+			var chara = globalCharas.Find(charaID);
+			if (chara == null) {
+				// いなければ生成.
+				chara = CharaGen.Create(charaID);
+			}
+			chara.SetGlobal(zone, x, z);
+			if (!(chara.trait is TraitType)) {
+				chara.trait = new TraitType();
+				chara.trait.SetOwner(chara);
+			}
+
+			return chara;
+		}
+
+
+		/// <summary>
+		/// ゲームのプレイ中かどうか.
+		/// </summary>
+		/// <returns></returns>
 		public static bool IsPlayingGame()
 		{
 			if (!EClass.core.IsGameStarted)

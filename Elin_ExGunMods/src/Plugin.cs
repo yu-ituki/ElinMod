@@ -39,6 +39,7 @@ namespace Elin_Mod
 		}
 
 		void OnStartCore() {
+			NewRangedModManager.Instance.OnStartCore();
 		}
 
 		/// <summary>
@@ -46,7 +47,7 @@ namespace Elin_Mod
 		/// 各ゲーム内テーブル読み込み完了後、かつプレイヤー等の生成直前.
 		/// </summary>
 		void OnLoadTable() {
-			NewRangedModManager.Instance.Initialize();
+			NewRangedModManager.Instance.OnLoadTable();
 		}
 
 		/// <summary>

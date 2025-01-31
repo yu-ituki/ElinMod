@@ -15,18 +15,36 @@ namespace Elin_Mod
 		public string m_Regex;
 		public MethodInfo m_Prefix;
 		public MethodInfo m_Postfix;
+
+		HarmonyMethod m_PatchPrefix;
+		HarmonyMethod m_PatchPostfix;
+		MethodInfo m_MethodInfo;
 		
+
 		public void Patch( Harmony harmony ) {
-			var methods = m_TargetType.GetMethods((System.Reflection.BindingFlags)~(0));
-			var method = System.Array.Find( methods, v => Regex.IsMatch(v.Name, m_Regex));
-		//	DebugUtil.LogError($"{method?.Name} :  {m_Regex} ");
-			if ( method == null ) 
+			if (m_MethodInfo != null)
 				return;
-			var prefix = m_Prefix != null ? new HarmonyMethod(m_Prefix) : null;
-			var postfix = m_Postfix != null ? new HarmonyMethod(m_Postfix) : null;
-			harmony.Patch(method, prefix, postfix, null, null, null);
+			var methodInfos = m_TargetType.GetMethods((System.Reflection.BindingFlags)~(0));
+			m_MethodInfo = System.Array.Find(methodInfos, v => Regex.IsMatch(v.Name, m_Regex));
+			//	DebugUtil.LogError($"{method?.Name} :  {m_Regex} ");
+			if (m_MethodInfo == null)
+				return;
+			m_PatchPrefix = m_Prefix != null ? new HarmonyMethod(m_Prefix) : null;
+			m_PatchPostfix = m_Postfix != null ? new HarmonyMethod(m_Postfix) : null;
+			harmony.Patch(m_MethodInfo, m_PatchPrefix, m_PatchPostfix, null, null, null);
 		}
 
+		public void Unpatch( Harmony harmony ) {
+			if (m_MethodInfo == null)
+				return;
+			if ( m_PatchPostfix != null )
+				harmony.Unpatch(m_MethodInfo, m_PatchPostfix.method);
+			if (m_PatchPrefix != null)
+				harmony.Unpatch(m_MethodInfo, m_PatchPrefix.method);
+			m_MethodInfo = null;
+			m_PatchPostfix = null;
+			m_PatchPrefix = null;
+		}
 	}
 
 
@@ -185,7 +203,13 @@ namespace Elin_Mod
 		public static MethodInfo ToMethodInfo<T,T2>(System.Action<T,T2> act) => act.Method;
 		public static MethodInfo ToMethodInfo<T,T2,T3>(System.Action<T,T2,T3> act) => act.Method;
 		public static MethodInfo ToMethodInfo<T,T2,T3,T4>(System.Action<T,T2,T3,T4> act) => act.Method;
-		
+
+		public static MethodInfo ToMethodInfo(System.Func<bool> act) => act.Method;
+		public static MethodInfo ToMethodInfo<T>(System.Func<T,bool> act) => act.Method;
+		public static MethodInfo ToMethodInfo<T,T2>(System.Func<T, T2, bool> act) => act.Method;
+		public static MethodInfo ToMethodInfo<T,T2,T3>(System.Func<T, T2, T3, bool> act) => act.Method;
+		public static MethodInfo ToMethodInfo<T,T2,T3,T4>(System.Func<T, T2, T3, T4, bool> act) => act.Method;
+
 
 	}
 }

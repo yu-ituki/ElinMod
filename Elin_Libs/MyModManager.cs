@@ -32,7 +32,7 @@ namespace Elin_Mod
 		ModConfigBase m_Config;
 
 		System.Action m_OnLoadTable;
-		System.Action m_OnLoadThingCharaTable;
+		System.Action m_OnLoadCardTable;
 		System.Action m_OnStartGame;
 		
 
@@ -70,6 +70,8 @@ namespace Elin_Mod
 			m_Config.Initialize(plugin.Config);
 			DebugUtil.Initialize(logger);
 			CommonUtil.Initialize(plugin.Info);
+
+			ModTextManager.Instance.Initialize();
 		}
 
 		/// <summary>
@@ -90,7 +92,21 @@ namespace Elin_Mod
 			return m_Config;
 		}
 
+		/// <summary>
+		/// HarmonyPatch動的追加.
+		/// </summary>
+		/// <param name="info"></param>
+		public void AddPatch( ModPatchInfo info ) {
+			info.Patch(m_Harmony);
+		}
 
+		/// <summary>
+		/// HarmonyPatch動的削除.
+		/// </summary>
+		/// <param name="info"></param>
+		public void RemovePatch(ModPatchInfo info ) {
+			info.Unpatch(m_Harmony);
+		}
 
 
 		/// <summary>
@@ -110,11 +126,11 @@ namespace Elin_Mod
 		}
 
 		/// <summary>
-		/// ThingおよびCharaテーブル専用の読み込みコールバック登録.
+		/// Cardテーブル専用の読み込みコールバック登録.
 		/// </summary>
-		/// <param name="onLoadThingCharaTable"></param>
-		public void RegisterOnLoadThingCharaTableAction(System.Action onLoadThingCharaTable) {
-			m_OnLoadThingCharaTable += onLoadThingCharaTable;
+		/// <param name="onLoadCardTable"></param>
+		public void RegisterOnLoadCardTableAction(System.Action onLoadCardTable) {
+			m_OnLoadCardTable += onLoadCardTable;
 		}
 
 
@@ -126,7 +142,7 @@ namespace Elin_Mod
 		static void PreFix_SourceManagerInit() {
 			switch (Instance.m_State) {
 				case eState.Initializing:
-					Instance.m_OnLoadThingCharaTable?.Invoke();
+					Instance.m_OnLoadCardTable?.Invoke();
 					Instance.m_State = eState.Initializing_AfterOnStartCore;
 					break;
 			}
@@ -137,7 +153,6 @@ namespace Elin_Mod
 		static void PostFix_OnBeforeInstantiate() {
 			switch (Instance.m_State) {
 				case eState.Initializing_AfterOnStartCore:
-					ModTextManager.Instance.Initialize();
 					Instance.m_OnLoadTable?.Invoke();
 					break;
 			}

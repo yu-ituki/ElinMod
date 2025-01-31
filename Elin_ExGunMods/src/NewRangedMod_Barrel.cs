@@ -39,6 +39,7 @@ namespace Elin_Mod
 			}
 		}
 
+		
 
 		/// <summary>
 		/// TraittoolRangeのBestDistプロパティをフック.
@@ -52,12 +53,28 @@ namespace Elin_Mod
 			var things = __instance.owner.Thing;
 			if (things == null)
 				return;
+#if false
+			DebugUtil.LogError($"????? {things.Name} : {things.elements.dict.Count} : {things.sockets.Count} : {things.elements.list.Count}");
+			foreach ( var itr in things.elements.dict) {
+				DebugUtil.LogError($"|||| {itr.Key} : {itr.Value.Name}");
+			}
+
+			foreach (var itr in things.sockets) {
+				DebugUtil.LogError($"++++ id={itr / 100} : lv={itr % 100} ");
+			}
+
+			for ( int i = 0; i < things.elements.list.Count; i += 5 ) {
+				DebugUtil.LogError($"---- id={things.elements.list[i]} vBase={things.elements.list[i+1]} "); 
+			}
+#endif
+
 			var datas = Data.c_Datas;
 			for (int i = 0; i < datas.Length; ++i) {
 				var elem = things.elements.GetElement(datas[i].id);
 				if (elem == null)
 					continue;
 				__result = Mathf.Max(__result + datas[i].bestDist, 0 );
+	//			DebugUtil.LogError($"!!!! ---> {elem.Name} : {__result}");
 			}
 		}
 
