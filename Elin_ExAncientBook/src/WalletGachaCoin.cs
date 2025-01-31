@@ -37,7 +37,9 @@ namespace Elin_Mod
 			}
 
 			public void RefreshHaveRaw() {
-				m_HaveRaw = EClass.pc.GetCurrency(m_Thing);
+				int sum = 0;
+				SourceMaterial.Row mat = null;
+				m_HaveRaw = EClass.pc.things.GetCurrency(m_Thing, ref sum, mat );
 			}
 
 			public void ReserveUseNum( int num ) {
@@ -110,6 +112,65 @@ namespace Elin_Mod
 			return m_CoinDatas[index].GetHaveRaw();
 		}
 
+		/// <summary>
+		/// 取得.
+		/// </summary>
+		/// <param name="num"></param>
+		/// <returns></returns>
+		public bool Add( int num ) {
+
+			if (!_AddTransaction(num))
+				return false;
+
+			// 異常がなければ取得実行.
+			for (int i = 0; i < m_CoinDatas.Count; ++i) {
+				m_CoinDatas[i].Transaction();
+			}
+
+			return true;
+		}
+
+		bool _AddTransaction( int num ) {
+			// 取得処理.
+			// でかい順でもらっていく.
+			int remainNum = num;
+			for (int i = m_CoinDatas.Count - 1; i >= 0; --i) {
+				var coin = m_CoinDatas[i];
+				int cost = coin.GetCost();
+				if (cost <= 0)
+					continue;
+
+				int getNum = Mathf.FloorToInt((float)remainNum / (float)cost);
+				//			DebugUtil.LogError($"a2 : {cost} : {remainNum} : {getNum}");
+				if (getNum >= 1) {
+					// 払えそう.
+					coin.ReserveAddNum(getNum);
+					remainNum = remainNum % cost;   //< あまりを入れる.
+													//				DebugUtil.LogError($"a3 : {remainNum}");
+				} else {
+					// デカすぎなのでスルー.
+					//				DebugUtil.LogError($"a4");
+				}
+			}
+
+			// コンフィグ次第では余る. まだ余ってたら仕方ないので一番安い通貨を1枚あげよう.
+			if (remainNum > 0) {
+				m_CoinDatas[0].ReserveAddNum(1);
+			} else if (remainNum < 0) {
+				// 異常なンだわ.
+				DebugUtil.LogError($"[WalletGachaCoin] Error!!! invalid remain add num --> input={num}  ");
+				return false;
+			}
+
+			return true;
+		}
+
+
+		/// <summary>
+		/// 支払い.
+		/// </summary>
+		/// <param name="num"></param>
+		/// <returns></returns>
 		public bool Pay( int num ) {
 
 			int allHave = GetHave();
@@ -156,6 +217,8 @@ namespace Elin_Mod
 				}
 			}
 
+		
+
 			// お釣りチェック.
 			if ( changeNum == 0) {
 				// ジャストだった.
@@ -165,50 +228,19 @@ namespace Elin_Mod
 				DebugUtil.LogError( $"[WalletGachaCoin] Error!!! invalid changeNum --> input={num}  allHave={allHave}" );
 				return false;
 			} else {
-		//		DebugUtil.LogError($"a1 : {changeNum}");
-				// お釣り処理.
-				// でかい順でお釣りをもらっていく.
-				remainNum = changeNum;
-				for (int i = m_CoinDatas.Count - 1; i >= 0; --i) {
-					var coin = m_CoinDatas[i];
-					int cost = coin.GetCost();
-					if (cost <= 0)
-						continue;
-
-					int getNum = Mathf.FloorToInt((float)remainNum / (float)cost);
-		//			DebugUtil.LogError($"a2 : {cost} : {remainNum} : {getNum}");
-					if (getNum >= 1) {
-						// 払えそう.
-						coin.ReserveAddNum(getNum);
-						remainNum = remainNum % cost;   //< あまりを入れる.
-		//				DebugUtil.LogError($"a3 : {remainNum}");
-					} else {
-						// デカすぎなのでスルー.
-		//				DebugUtil.LogError($"a4");
-					}
-				}
-
-				// コンフィグ次第では余る. まだ余ってたら仕方ないので一番安い通貨を1枚あげよう.
-				if (remainNum > 0) {
-					m_CoinDatas[0].ReserveAddNum(1);
-				} else if (remainNum < 0) {
-					// 異常なンだわ.
-					DebugUtil.LogError($"[WalletGachaCoin] Error!!! invalid remain changeNum --> input={num}  allHave={allHave}");
+				// お釣りがあったらもらう.
+				if (!_AddTransaction(changeNum))
 					return false;
-				}
 			}
 
 			// 異常がなければ支払い実行.
-			for ( int i = 0; i < m_CoinDatas.Count; ++i ) {
+			for (int i = 0; i < m_CoinDatas.Count; ++i) {
 				m_CoinDatas[i].Transaction();
 			}
-
-			SE.Pay();
-
-
-			ModTextManager.Instance.SetUserData(0, num);
-			ModTextManager.Instance.SetUserData(1, changeNum);
-			Msg.SayRaw(ModTextManager.Instance.GetText( eTextID.Msg_PayEnd ) );
+			//	SE.Pay();
+			//	ModTextManager.Instance.SetUserData(0, num);
+			//	ModTextManager.Instance.SetUserData(1, changeNum);
+			//	Msg.SayRaw(ModTextManager.Instance.GetText(eTextID.Msg_PayEnd));
 			return true;
 		}
 

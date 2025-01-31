@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using BepInEx.Logging;
 
@@ -9,6 +10,7 @@ namespace Elin_Mod
 
 	class DebugUtil
 	{
+		static System.Text.StringBuilder s_sb = null;
 		private static ManualLogSource s_Logger;
 		 
 		public static void Initialize( ManualLogSource body )
@@ -24,11 +26,21 @@ namespace Elin_Mod
 			}
 		}
 
-		public static void LogError( object message )
+		public static void LogError( object message, bool isDumpStackTrace=false )
 		{
 			if (s_Logger != null)
 			{
-				s_Logger.LogError( (object)message );
+				if (s_sb == null)
+					s_sb = new System.Text.StringBuilder(100000);
+
+				s_sb.AppendLine(message as string);
+				if (isDumpStackTrace) {
+					var stackTrace = new System.Diagnostics.StackTrace(true);
+					s_sb.AppendLine(stackTrace.ToString());
+				}
+				s_Logger.LogError( (object)s_sb.ToString() );
+				s_sb.Length = 0;
+				//s_Logger.LogError((object)message );
 			}
 		}
 

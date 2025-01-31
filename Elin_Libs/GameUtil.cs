@@ -221,6 +221,18 @@ namespace Elin_Mod
 				min, max, isInt, false, false);
 		}
 
+		public static void ContextMenu_AddSlider(UIContextMenu menu, eTextID textID, BepInEx.Configuration.ConfigEntry<int> entry, float min, float max, bool isInt) {
+			var textMng = ModTextManager.Instance;
+			menu.AddSlider(
+					textMng.GetText(textID),
+					(v) => v.ToString(),
+					entry.Value,
+					(v) => {
+						entry.Value = ( int )v;
+					},
+				min, max, isInt, false, false);
+		}
+
 		public static UIContextMenuItem ContextMenu_AddToggle(UIContextMenu menu, eTextID textID, bool isDefault, System.Action<bool> act ) {
 			var textMng = ModTextManager.Instance;
 			return menu.AddToggle(

@@ -26,6 +26,8 @@ namespace Elin_Mod
 		/// <summary> 通貨. </summary>
 		public override CurrencyType CurrencyType => Const.c_CurrencyType_GachaCoin;
 
+		public override PriceType PriceType => PriceType.Default;
+
 		/// <summary> 売却可. </summary>
 		public override bool AllowSell => true;
 
@@ -33,62 +35,113 @@ namespace Elin_Mod
 		public override bool CanInvest => true;
 
 
-		static int c_CurrencyTypeIDHash;
-		
+		static bool s_IsOpenBatterMenu;
+
+
 		public static void Initialize() {
-			c_CurrencyTypeIDHash = Const.c_CurrencyType_GachaCoin.ToString().ToLower().GetHashCode();
 			// フォールバック機構が増えたよ、やったね.
 			// とりあえずパン屋にしておこう.
 			ModUtil.RegisterSerializedTypeFallback(ModInfo.c_ModName, "TraitMerchantEx_AncientResearcher", "TraitMerchantBread");
-
 		}
 
-		public static void LoadTable() {
-			//	var addCharaTable = CommonUtil.LoadTableNoneReset<SourceChara>("add_datas.xlsx", "chara");
-			//	CommonUtil.AddElinTableData(addCharaTable.map, EClass.sources.charas.map);
+		public static void LoadCards() {
 			CommonUtil.LoadTable("add_datas.xlsx", "chara", EClass.sources.charas);
-			
 		}
 
-		public static void OnGameStart() {
-			// キャラが既に登録されているかチェック.
-			var globalCharas = EClass.game.cards.globalCharas;
-			var chara = globalCharas.Find(Const.c_CharaID_AncientShop);
-			if (chara == null) {
-				// いなければ生成.
-				var zone = EClass.game.spatials.Find(Const.c_SpawnZone_AncientShop);
-				chara = CharaGen.Create(Const.c_CharaID_AncientShop);
-				var pos = Const.c_SpawnPos_AncientShop;
-				chara.SetGlobal(zone, pos.x, pos.y);
+		public static void OnStartGame() {
+			GameUtil.CreateModChara<TraitMerchantEx_AncientResearcher>(
+				Const.c_CharaID_AncientShop,
+				Const.c_SpawnZone_AncientShop,
+				Const.c_SpawnPos_AncientShop.x,
+				Const.c_SpawnPos_AncientShop.y
+			);
+		}
+
+		/// <summary>
+		/// ◯円の表記部分.
+		/// </summary>
+		[HarmonyPatch(typeof(Lang), "_currency", new Type[] { typeof(object), typeof(string) })]
+		[HarmonyPrefix]
+		public static bool Prefix_Lang_currency(object a, string IDCurrency, ref string __result) {
+			if (!s_IsOpenBatterMenu)
+				return true;
+
+			if (IDCurrency.GetHashCode() != Const.c_CurrencyTypeHash_GachaCoin)
+				return true;
+			ModTextManager.Instance.SetUserData(0, a.ToString());
+			__result = ModTextManager.Instance.GetText(eTextID.Say_HaveCoin);
+			return false;
+			//return  ("u_currency_" + IDCurrency).lang($"{a:#,0}");
+		}
+
+		/// <summary>
+		/// 所持金額の取得.
+		/// </summary>
+		[HarmonyPatch(typeof(Card), "GetCurrency")]
+		[HarmonyPrefix]
+		public static bool Prefix_CardGetCurrency(Card __instance, string id, ref int __result ) {
+			if (!s_IsOpenBatterMenu)
+				return true;
+			if (id.GetHashCode() != Const.c_CurrencyTypeHash_GachaCoin)
+				return true;
+			if (__instance == EClass.pc) {
+				__result = Plugin.Instance.MyWallet.GetHave();  //< 重かったら直す.
+				return false;
+			} else {
+				return true;	//< TODO...
 			}
 		}
 
-
-
-
+		/// <summary>
+		/// 所持金変動.
+		/// </summary>
 		[HarmonyPatch(typeof(Card), "ModCurrency")]
 		[HarmonyPrefix]
 		public static bool Prefix_CardModCurrency(Card __instance, int a, string id) {
-			if (id.GetHashCode() != c_CurrencyTypeIDHash)
-				return false;
+			if (id.GetHashCode() != Const.c_CurrencyTypeHash_GachaCoin)
+				return true;
 
+			DebugUtil.LogError( $" mod currency {a} : {id}", true );
 
-			// ガチャコインは専用支払い処理に流す.
-			Plugin.Instance.MyWallet.Pay(a);
-
-			return true;
+			// ガチャコインは専用処理に流す.
+			var wallet = Plugin.Instance.MyWallet;
+			if ( a > 0 ) {
+				wallet.Add(a);
+			} else {
+				wallet.Pay(-a);
+			}
+			return false;
 		}
 
+		/// <summary>
+		/// 支払い処理を閉じる.
+		/// </summary>
+		[HarmonyPatch(typeof(ShopTransaction), "OnEndTransaction")]
+		[HarmonyPostfix]
+		public static void Postfix_ShopClose() {
+			DebugUtil.LogError("!!!! Close Shop !!!!");
+			s_IsOpenBatterMenu = false;
+		}
 
-
+		/// <summary>
+		/// ショップメニューを開く.
+		/// </summary>
 		[HarmonyPatch(typeof(Trait), "OnBarter")]
 		[HarmonyPrefix]
 		public static bool Prefix_TraitOnBarter(Trait __instance) {
 			var trait = __instance as TraitMerchantEx_AncientResearcher;
 			if (trait == null)
-				return false;
+				return true;
 
+			// 現在の手持ち金額をログに流す.
+			s_IsOpenBatterMenu = true;
+			ModTextManager.Instance.SetUserData(0, Plugin.Instance.MyWallet.GetHave());
+			Msg.SayRaw(ModTextManager.Instance.GetText(eTextID.Msg_HaveCoin));
+
+			//-----
 			// この辺は元の処理のコピペ.
+			//-----
+			// 商人用のチェストを追加.
 			Thing traitInventory = trait.owner.things.Find("chest_merchant");
 			if (traitInventory == null) {
 				traitInventory = ThingGen.Create("chest_merchant");
@@ -96,22 +149,27 @@ namespace Elin_Mod
 			}
 			traitInventory.c_lockLv = 0;
 			if (!EClass.world.date.IsExpired(trait.owner.c_dateStockExpire)) {
-				return true;
+				return false;	//< 期限チェック.
 			}
+			// 新規期限設定.
 			trait.owner.c_dateStockExpire = EClass.world.date.GetRaw(24 * trait.RestockDay);
+			// チェストを一度空にする.
 			trait.owner.isRestocking = true;
 			traitInventory.things.DestroyAll((Thing _t) => _t.GetInt(101) != 0);
 			foreach (Thing thing7 in traitInventory.things) {
 				thing7.invX = -1;
 			}
 
+			//-----
+			// ここまでコピペ.
+			//-----
 			// ここからオリジナル.
 
 			// 並べる個数を決めて.
 			var config = Plugin.Instance.ModConfig;
-			int maxNum = config.SalesNum_SkillBook_Max.Value;
-			int minNum = config.SalesNum_SkillBook_Min.Value;
-			int salesNum = EClass.rnd(maxNum - minNum) + minNum;
+			int addNum = config.SalesNum_SkillBook_Add.Value;
+			int baseNum = config.SalesNum_SkillBook_Base.Value;
+			int salesNum = EClass.rnd(addNum) + baseNum;
 
 			// 並べる.
 			CardBlueprint.SetNormalRarity();
@@ -132,9 +190,10 @@ namespace Elin_Mod
 				traitInventory.AddThing(thing);
 			}
 
-			return true;
+			return false;
 		}
 
+		/// <summary> 技術書抽選処理. </summary>
 		static eSkillBookLv _LotSkillBookLv( ModConfig config ) {
 			int rateHigh = config.SalesLvLotRate_SkillBook_High.Value;
 			int rateMiddle = config.SalesLvLotRate_SkillBook_Middle.Value;
@@ -153,39 +212,64 @@ namespace Elin_Mod
 			return eSkillBookLv.Low;
 		}
 
+		/// <summary>
+		/// 手持ち金のUI.
+		/// </summary>
+		/// <param name="__instance"></param>
+		[HarmonyPatch(typeof(UICurrency), "Build", new Type[] {})]
+		[HarmonyPostfix]
+		public static void Postfix_UICurrencyBuild(UICurrency __instance ) {
+			if (!s_IsOpenBatterMenu)
+				return;
+			__instance.Add(__instance.icons[0], Const.c_ThingID_GachaCoin, () => { return Plugin.Instance.MyWallet.GetHave().ToString(); });
+			__instance.layout.RebuildLayout();
+		}
 
-
+		/// <summary>
+		/// Cardの値段チェック時処理.
+		/// </summary>
 		[HarmonyPatch(typeof(Card), "GetPrice")]
 		[HarmonyPrefix]
 		public static bool Prefix_CardGetPrice(Card __instance, CurrencyType currency, bool sell, PriceType priceType, Chara c, ref int __result ) {
+			if (!s_IsOpenBatterMenu)
+				return true;
+
 			// とりあえず整数値カリング.
 			if (currency != Const.c_CurrencyType_GachaCoin)
-				return false;
+				return true;
+#if false
 			// あとタイプでカリング.
 			var trait = c.trait as TraitMerchantEx_AncientResearcher;
 			if (trait == null)
 				return false;
-
+#endif
 			// 以降、古文書研究家の売買価格決定.
-			__result = 0;
-			var config = Plugin.Instance.ModConfig;
-			if (sell) {
-				// 売却(古文書以外は買わない).
-				if ( __instance.id == Const.c_ThingID_BookAncient ) {
-					// 売却価格は切り上げ.
-					__result = Mathf.CeilToInt(__instance.refVal * config.Worth_AncientBook.Value);
-				}
-			} else {
-				// 購入価格( 技術書以外は売らない ).
-				if ( __instance.id == Const.c_ThingID_BookSkill) {
-					// 購入価格は切り下げ.
-					__result = Mathf.FloorToInt( __instance.GetValue() * config.Worth_SkillBook.Value );
-				}
-			}
-
-			return true;
+			__result = _CalcPrice(__instance, sell);
+			
+			return false;
 		}
 
+
+		static int _CalcPrice( Card card, bool isSell ) {
+			int ret = 0;
+			var config = Plugin.Instance.ModConfig;
+			if (isSell) {
+				// 売却は古文書のみ.
+				if (card.id.GetHashCode() == Const.c_ThingIDHash_BookAncient) {
+					// 売却価格は切り上げ.
+					ret = Mathf.CeilToInt((card.refVal + 1 ) * config.Worth_AncientBook.Value);
+			//		DebugUtil.LogError($"{ret} = {card.refVal} : {config.Worth_AncientBook.Value}");
+				}
+			} else {
+				// 購入は技術書のみ.
+				if (card.id.GetHashCode() == Const.c_ThingIDHash_BookSkill) {
+					// 購入価格は切り下げ.
+					ret = Mathf.FloorToInt(card.GetValue() * config.Worth_SkillBook.Value);
+			//		DebugUtil.LogError($"{ret} = {card.GetValue()} : {config.Worth_SkillBook.Value}");
+				}
+			}
+			return ret;
+		}
 
 	}
 
