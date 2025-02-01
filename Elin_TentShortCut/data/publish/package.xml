@@ -6,7 +6,8 @@
   <builtin>false</builtin>
   <loadPriority>10</loadPriority>
   <version>1.0.0.0</version>
-  <description>
+  <tags>General,QoL</tags>
+<description>
 ■概要
 ホットバーに「バックパックのテントを使う」を追加します。
 
