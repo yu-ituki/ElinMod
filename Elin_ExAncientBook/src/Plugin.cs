@@ -27,8 +27,7 @@ namespace Elin_Mod
 			NyModManager.Instance.Initialize<ModConfig>(this, this.Logger, ModInfo.c_ModFullName, ModInfo.c_ModName, ModInfo.c_ModVersion);
 			NyModManager.Instance.RegisterOnStartGameAction(OnStartGame);
 			NyModManager.Instance.RegisterOnLoadTableAction(OnLoadTable);
-			NyModManager.Instance.RegisterOnLoadCardTableAction(OnLoadCard);
-
+	
 			TraitMerchantEx_AncientResearcher.Initialize();
 		}
 
@@ -40,18 +39,13 @@ namespace Elin_Mod
 			NyModManager.DeleteInstance();
 		}
 
-		/// <summary>
-		/// Card系テーブル読み込み専用タイミング.
-		/// </summary>
-		void OnLoadCard() {
-			TraitMerchantEx_AncientResearcher.LoadCards();
-		}
-
+	
 		/// <summary>
 		/// テーブル読み込みタイミング.
 		/// 各ゲーム内テーブル読み込み完了後、かつプレイヤー等の生成直前.
 		/// </summary>
 		void OnLoadTable() {
+			TraitMerchantEx_AncientResearcher.LoadCards();
 		}
 
 		/// <summary>

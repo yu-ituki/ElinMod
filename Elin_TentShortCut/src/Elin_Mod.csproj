@@ -103,7 +103,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Elin\Elin_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>.\..\elin_link\Elin_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
       <HintPath>.\..\elin_link\Elin_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>

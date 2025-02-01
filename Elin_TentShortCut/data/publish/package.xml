@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Meta>
-  <title>Elin_ModTemplate</title>
-  <id>yu-ituki.elin.mod-template</id>
+  <title>Elin_TentShortCut</title>
+  <id>yu-ituki.elin.tent-shortcut</id>
   <author>yu-ituki</author>
   <builtin>false</builtin>
   <loadPriority>10</loadPriority>
   <version>1.0.0.0</version>
   <description>
-    ■概要
-    ElinのModテンプレートプロジェクト
+■概要
+ホットバーに「バックパックのテントを使う」を追加します。
 
+■ソースコード
+https://github.com/yu-ituki/ElinMod/tree/main/Elin_TentShortCut
 
   </description>
 </Meta>

@@ -109,6 +109,10 @@
       <HintPath>.\..\elin_link\Elin_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>.\..\elin_link\Elin_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>.\..\elin_link\Elin_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
