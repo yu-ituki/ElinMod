@@ -1,7 +1,5 @@
 ﻿using BepInEx;
-
 using HarmonyLib;
-
 using UnityEngine.Windows;
 
 namespace Elin_Mod
@@ -51,8 +49,10 @@ namespace Elin_Mod
 		}
 
 
-#if false
+#if true
 		public void Update() {
+			if ( CommonUtil.GetKeyDown(UnityEngine.KeyCode.F10))
+				Debug_AnalyzeElin.Dump_ElinSprites("D:\\sprites\\");
 		}
 #endif
 	}

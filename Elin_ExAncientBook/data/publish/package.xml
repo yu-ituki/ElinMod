@@ -5,7 +5,8 @@
   <author>yu-ituki</author>
   <builtin>false</builtin>
   <loadPriority>10</loadPriority>
-  <version>1.0.0.0</version>
+  <version>1.0.0.1</version>
+  <tags>General,QoL,Balance</tags>
   <description>
 # ■概要
 古文書の使い道を増やす簡易的なシステムを追加するModです。  
@@ -23,7 +24,7 @@
 価値や値段を含め、各種設定はすべてコンフィグで調整可能です。  
   
 コンフィグは「プレイヤー中クリック」もしくは下記ファイルで編集可能です。  
-<Elinインストールフォルダ>>\BepInEx\config\yu-ituki.elin.ex-ancient-book.cfg
+[Elinインストールフォルダ]\BepInEx\config\yu-ituki.elin.ex-ancient-book.cfg
 
 ## ◯貨幣の値段
 コンフィグの

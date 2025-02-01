@@ -18,7 +18,6 @@ namespace Elin_Mod
 		public enum eState {
 			None,
 			Initializing,
-			Initializing_AfterOnStartCore,
 			Idle,
 		}
 
@@ -32,7 +31,6 @@ namespace Elin_Mod
 		ModConfigBase m_Config;
 
 		System.Action m_OnLoadTable;
-		System.Action m_OnLoadCardTable;
 		System.Action m_OnStartGame;
 		
 
@@ -63,15 +61,15 @@ namespace Elin_Mod
 			m_ModFullName = modFullName;
 			m_ModVersion = modVersion;
 
-			m_Harmony = new Harmony(modFullName);
-			m_Harmony.PatchAll();
+			DebugUtil.Initialize(logger);
+			CommonUtil.Initialize(plugin.Info);
+			ModTextManager.Instance.Initialize();
 
 			m_Config = new ModConfigType();
 			m_Config.Initialize(plugin.Config);
-			DebugUtil.Initialize(logger);
-			CommonUtil.Initialize(plugin.Info);
 
-			ModTextManager.Instance.Initialize();
+			m_Harmony = new Harmony(modFullName);
+			m_Harmony.PatchAll();
 		}
 
 		/// <summary>
@@ -118,23 +116,13 @@ namespace Elin_Mod
 		}
 
 		/// <summary>
-		/// テーブル読み込みコールバック登録.
+		/// テーブル読み込み開始前コールバック登録.
 		/// </summary>
 		/// <param name="onLoadTable"></param>
 		public void RegisterOnLoadTableAction(System.Action onLoadTable) {
 			m_OnLoadTable += onLoadTable;
 		}
 
-		/// <summary>
-		/// Cardテーブル専用の読み込みコールバック登録.
-		/// </summary>
-		/// <param name="onLoadCardTable"></param>
-		public void RegisterOnLoadCardTableAction(System.Action onLoadCardTable) {
-			m_OnLoadCardTable += onLoadCardTable;
-		}
-
-
-		//------
 		// 以下コールバック群....
 		//------
 		[HarmonyPatch(typeof(SourceManager), "Init")]
@@ -142,17 +130,6 @@ namespace Elin_Mod
 		static void PreFix_SourceManagerInit() {
 			switch (Instance.m_State) {
 				case eState.Initializing:
-					Instance.m_OnLoadCardTable?.Invoke();
-					Instance.m_State = eState.Initializing_AfterOnStartCore;
-					break;
-			}
-		}
-
-		[HarmonyPatch(typeof(Game), "OnBeforeInstantiate")]
-		[HarmonyPostfix]
-		static void PostFix_OnBeforeInstantiate() {
-			switch (Instance.m_State) {
-				case eState.Initializing_AfterOnStartCore:
 					Instance.m_OnLoadTable?.Invoke();
 					break;
 			}

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using UnityEngine;
+
 
 using static Lang;
 
@@ -14,6 +16,58 @@ namespace Elin_Mod
 		const string c_ElemSeparator = "\t";
 		const string c_ArraySeparator = ",";
 		const string c_StringEncloser = "\"";
+
+		static Texture2D _CopyTexture( Texture2D org ) {
+			RenderTexture renderTexture = RenderTexture.GetTemporary(
+					org.width,
+					org.height,
+					0,
+					RenderTextureFormat.Default,
+					RenderTextureReadWrite.Linear);
+
+			Graphics.Blit(org, renderTexture);
+			RenderTexture previous = RenderTexture.active;
+			RenderTexture.active = renderTexture;
+			Texture2D readableTextur2D = new Texture2D(org.width, org.height);
+			readableTextur2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
+			readableTextur2D.Apply();
+			RenderTexture.active = previous;
+			RenderTexture.ReleaseTemporary(renderTexture);
+			return readableTextur2D;
+		}
+
+
+		public static void Dump_ElinSprites(string dumpPath) {
+			var copyTextures = new Dictionary<string, Texture2D>();
+			foreach (var itr in SpriteSheet.dict) {
+				var orgTex = itr.Value.texture;
+				if ( !copyTextures.ContainsKey( orgTex.name ) ) {
+					copyTextures.Add(orgTex.name, _CopyTexture(orgTex));
+				}
+			}
+			foreach ( var itr in SpriteSheet.dict ) {
+				var sprite = itr.Value;
+				var texRect = sprite.textureRect;
+				var tex = new Texture2D((int)texRect.width, (int)texRect.height, TextureFormat.ARGB32, false );
+
+				Texture2D copyTex = null;
+				copyTextures.TryGetValue(sprite.texture.name, out copyTex);
+
+				var spritePixels = copyTex.GetPixels((int)texRect.x, (int)texRect.y, (int)texRect.width, (int)texRect.height);
+				tex.SetPixels( spritePixels );
+				
+				string path = $"{dumpPath}/{itr.Key}.png";
+				var png = tex.EncodeToPNG();
+				System.IO.File.WriteAllBytes(path, png);
+				GameObject.Destroy(tex);
+				tex = null;
+			}
+			foreach ( var itr in copyTextures) {
+				GameObject.Destroy(itr.Value);
+			}
+			copyTextures.Clear();
+			copyTextures = null;
+		}
 
 
 		public static void Dump_ElinZoneAll(string dumpPath) {
