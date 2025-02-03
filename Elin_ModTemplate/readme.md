@@ -1,76 +1,114 @@
 # Readme
-* This is a template project for creating Elin mods.
-* It contains a basic template, basic setup files, etc.
+* This is a template project for creating Mods for Elin.
+* It includes basic templates and setup files.
 
 # Description
-This template has the following.
-* A minimal basic project, a set of sources (entry points, templates, etc.)
-* Basic material data for distribution
-* Simple localization functionality for Mods (for all languages)
-* Simple Elin installation folder and DLL reference mechanism
-* Automatic copying of deliverables to Elin's Package folder (jump to Mod_Test folder)
+This template contains the following:
+* A minimal base project and source files (entry points, templates, etc.).
+* Basic materials for distribution.
+* A simple localization system for Mods (supports all languages).
+* A mechanism for easily referencing the Elin installation folder and DLLs.
+* An automatic process for copying build artifacts to the Elin Package folder (placed under the Mod_Test folder).
+* Basic lifecycle management during gameplay.
+* A simplified method for dynamic HarmonyPatch registration.
+* A function to dump in-game table data as TSV files.
 
-## How to use
-1. First, copy this folder. 
-2. Next, copy the Elin_Lib folder that exists in this repository. 
-   1. copy the library-like source code to another folder (. /... /Elin_Lib). 
-3. Next, replace “ModTemplate” and “mod-template” with your own mod name by using a tool such as a batch replacement tool under the folder of strings.
-    * VSCode, Hidemaru, Sakura Editor, or any other replacement tool will do. 
-4. After that, rename “Elin_ModTemplate.sln” to your own mod name.
-5. Write your environment information in config.bat.
-6. preparation is complete. You should now be able to build.
+## How to Use
+1. First, copy this folder.
+2. Next, copy the `Elin_Lib` folder from this repository.
+   1. Library-related source code is organized into a separate folder (`./../Elin_Lib`).
+3. Use a batch find-and-replace tool to replace all instances of `ModTemplate` and `mod-template` with your Mod's name.
+   * You can use VSCode, Hidemaru, Sakura Editor, or any other text editor.
+4. Rename `Elin_ModTemplate.sln` to match your Mod's name.
+5. Edit `config.bat` to include your environment details.
+6. Setup is complete. You should now be able to build the project.
 
-## System Requirements
-* Net Framework 4.8.    
-* If you have Visual Studio 2022 and .Net Framework 4.8, it will work anyway.  
-* Unity is not required for this project, but it is necessary if you want to generate prefabs, ScriptableObjects, AssetBundle, etc.  
-  * Even if you only use C#, if you just new GameObject() and AddComponent, or use Texture2D.LoadRawTextureData() or something like that, it might work.   
-    You may not need Unity, but if you want to add a new resource, it is better to have it.   
-* Then, you just need to buy and install Elin and you have a working environment. Please buy about 10 copies for proselytizing.  
+## Environment Requirements
+* Runs on .NET Framework 4.8.
+* Install Visual Studio 2022 and .NET Framework 4.8 to get started.
+* Unity is not required for this project. However, if you need to create prefabs, ScriptableObjects, or AssetBundles, Unity will be necessary.
+  * If you only use C#, you might be able to avoid Unity by using `new GameObject()`, `AddComponent()`, or `Texture2D.LoadRawTextureData()`.
+  * However, if you're adding new resources, having Unity is recommended.
+* Finally, buy and install Elin to complete your environment. Get around 10 copies for evangelism purposes.
 
 ## About Elin_Lib
-* This is a group of sources that can be used by all mods. 
-* There is a folder on top of this folder. 
-* By hitting config.bat, a symbolic link is created between Elin_Lib and the project's src/Lib directory. 
-* If you drop Elin_Lib together and put it in the same directory as the project folder,  
-  If you drop Elin_Lib with your project and place it in the same directory as your project folder, you can copy and paste the template and build it anyway.  
+* A set of source files designed for shared use across multiple Mods.
+* The folder is located one level above this project.
+* Running `config.bat` creates symbolic links between `Elin_Lib` and the `src/Lib` directory of your project.
+* If you download `Elin_Lib` and place it in the same directory as your project folder, you should be able to build without issues.
 
-## Minimum basic projects and sources
-* Minimum projects and sources for building a Mod are included.
-* DLL references are included in the “it wouldn't hurt to have them” type.
-* Plugin.cs is the entry point.
-* ModConfig.cs and ModConfigUI.cs contain sample configurations for mods.
-* DebugUtil.Log(), LogError(), etc. using the BepInEx logger. Debug.Log()-like.
-  * To view BepInEx logs, you must open the BepInEx console.
-  * ［Console］ in the Elin installation folder/BepInEx/config/BepInEx.cfg with Enabled = true.
+## Minimal Base Project and Source Files
+* Includes essential files for constructing a Mod.
+* DLL references include useful dependencies.
+* The entry point is `Plugin.cs`.
+* `ModConfig.cs` and `ModConfigUI.cs` contain sample configuration files.
+* The `DebugUtil.Log()` and `LogError()` functions are available for debugging, similar to `Debug.Log()`.
+  * To view BepInEx logs, enable the console in `BepInEx.cfg` (`Elin Installation Folder/BepInEx/config/BepInEx.cfg` under `[Logging.Console]`, set `Enabled = true`).
 
-## Basic material data for distribution
-* package.xml and preview.jpg are placed under data/publish
-* Rewrite the contents for your own mod and build it, and it will be automatically transferred to the deliverables folder (see below).
+## Basic Lifecycle Management in the Game
+* `MyModManager.cs` handles initialization and basic callbacks for in-game events.
+* `Plugin.cs` handles initialization and callback registration.
+* `RegisterOnLoadTableAction()` provides a callback for when tables are loaded.
+  * This runs just before the game loads its tables.
+  * At this stage, most game data is not yet loaded.
+  * You can import custom table data here to ensure proper integration into in-game tables like the Card table.
+* `RegisterOnStartGameAction()` provides a callback just before the game starts.
+  * This triggers right before a new game or a load begins.
+  * At this point, almost all game data is fully loaded.
+  * Use this callback for initializing data that needs access to various in-game elements.
 
-## Simple localization function for mods (for all languages)
-* Simple localization function using Excel.
-* Includes a mechanism to synchronize IDs defined in Excel with C# enums
-  * It is made with fossilized VBA so that anyone can use it as long as they have at least Excel.
-    * If you don't even have Excel, you can't even mess with the tables themselves.
-  * data/resource/tables/mod_texts.xlsm contains table definitions and VBA.
-* When you hit the button on excel, src/TextID.cs will be output.
-* Read in src/Lib/ModTextManager.cs
-* ModTextManager.Instance.GetText( eTextID ) automatically identifies the current language code and returns a string.
-* If you want to increase the number of languages, increase mod_texts.xlsm and eLanguage in Const.cs, and increase ModText.cs by modifying it appropriately.
-* Corresponds to in-sentence user data embedding. Corresponds to [0]-[8] in the statement and ModTextmanager.Instance.SetUserData() and is replaced according to the index.
+## Basic Materials for Distribution
+* The `data/publish` folder contains `package.xml` and `preview.jpg`.
+* Modify these for your Mod, and they will be automatically transferred to the output folder upon building.
 
-## Simple mechanism to refer to the Elin installation folder and DLLs
-* Go to the DLL of the installation folder written in config.bat.
-* Symbolic link in config.bat and reference in csproj.
-* You can add DLL references directly, or you can add them by directly modifying csproj and copying and pasting them in as you see fit.
+## Simple Localization System for Mods (Full Language Support)
+* Uses an Excel-based localization system.
+* Syncs defined IDs in Excel with a C# enum.
+  * Built using VBA for ease of use.
+  * If Excel is unavailable, table editing won't be possible, so it can be ignored.
+  * `data/resource/tables/mod_texts.xlsm` contains table definitions and VBA macros.
+* Pressing a button in the Excel file generates `src/TextID.cs`.
+* `ModTextManager.cs` loads this data.
+* `ModTextManager.Instance.GetText(eTextID)` automatically retrieves text based on the current language setting.
+* To add more languages, modify `mod_texts.xlsm`, update `eLanguage` in `Const.cs`, and adjust `ModText.cs`.
+* Supports embedding user data into text. `[0]` to `[8]` placeholders are replaced using `ModTextManager.Instance.SetUserData()`.
 
-## Mechanism for automatically copying artifacts to the Package folder of Elin's main unit
-* Copy the following into the installation folder written in config.bat
-  * DLL after build
-  * The entire data/resource folder
-  * All files under data/publish/
-* Now you can check the operation of Elin immediately by simply building -> launching it.
-* The copied files can be used as delivery data as they are.
-* The files copied can be used as delivery data.
+## Mechanism for Easy Reference to the Elin Installation Folder and DLLs
+* References DLLs based on the installation folder specified in `config.bat`.
+* Uses symbolic links for referencing DLLs.
+* To add more DLL references, modify the `.csproj` file or manually add references.
+
+## Automatic Copying of Build Artifacts to the Elin Package Folder
+* `config.bat` defines the installation folder and automatically copies the following:
+  * Built DLLs
+  * Entire `data/resource` folder
+  * All files under `data/publish/`
+* This allows immediate testing in Elin after building.
+* The copied files are ready for distribution.
+* Uses symbolic links and `xcopy` in a post-build event.
+
+## Simplified Dynamic HarmonyPatch Registration
+* Allows for registering patches dynamically, useful for local functions or performance optimization.
+* Example usage:
+```csharp
+// Example patch for Game.Init
+static void _OnInitGame() { }
+
+var info = new ModPatchInfo() {
+  m_TargetType = typeof(Game),
+  m_Regix = "Init",
+  m_Prefix = CommonUtil.ToMethodInfo(_OnInitGame)
+};
+
+// Apply the patch
+MyModManager.Instance.AddPatch(info);
+
+// Remove the patch
+MyModManager.Instance.RemovePatch(info);
+```
+
+## In-Game Table Dumping as TSV Files
+* Provides functionality to dump in-game tables as TSV files.
+* Use the `Debug_AnalyzeElin` class and its `Dump_~` methods to generate dumps.
+* Specify the full output path when calling the function.
 
