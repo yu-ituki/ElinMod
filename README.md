@@ -20,9 +20,24 @@ https://github.com/yu-ituki/ElinMod/tree/main/Elin_GunSmith
 
 ## Elin_ExGunMods
 Elin_GunSmithで増やしたスロットに入れるものが少なくて寂しかったので、   
-入れるものを増やすModを作ってみました。 
+入れるものを増やすModを作ってみました。   
 https://github.com/yu-ituki/ElinMod/tree/main/Elin_ExGunMods  
 
 ## Elin_AddFoodDistribution
 【不浄】がウザかったのでコンテナの振り分け設定を追加するModを作ってみました。    
 https://github.com/yu-ituki/ElinMod/tree/main/Elin_AddFoodDistribution    
+  
+## Elin_ExAncientBook
+古文書が余って仕方なかったので使い道を増やすModを作ってみました。  
+https://github.com/yu-ituki/ElinMod/tree/main/Elin_ExAncientBook  
+  
+## Elin_TentShortCut
+テントをいちいち入れたり出したりするのが面倒なのでショートカットを増やしました。  
+https://github.com/yu-ituki/ElinMod/tree/main/Elin_TentShortCut  
+
+
+----
+
+# このページやModがいいなと思ったら
+よかったらビール奢ってください。
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/C1C619ZTM8)
