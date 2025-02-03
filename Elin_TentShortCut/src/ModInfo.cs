@@ -7,6 +7,6 @@
 
 		public const string c_ModName = "Elin_TentShortCut";
 
-		public const string c_ModVersion = "1.0.0.0";
+		public const string c_ModVersion = "1.0.0.1";
 	}
 }

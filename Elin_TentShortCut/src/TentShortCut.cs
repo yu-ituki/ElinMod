@@ -35,15 +35,47 @@ namespace Elin_Mod
 		public override bool CanName => false;
 
 		public override void Perform() {
-			Thing tent = EClass.pc.things.Find<TraitTent>();
-			if ( tent == null ) {
-				tent = EClass._zone.map.FindThing(( v ) => v.trait is TraitTent);
-				if (tent == null)
-					return;
-				EClass.pc.AddCard(tent);
+			var pcPos = EClass.pc.pos;
+
+			// ゾーンにテントがあるかを調べる.
+			var zoneTents = EClass._zone.map.ListThing<TraitTent>();
+			if (zoneTents.Count > 0) {
+				// 自身の持ち物以外は除去.
+				for ( int i = 0; i < zoneTents.Count; ++i ) {
+					if (!zoneTents[i].isNPCProperty)
+						continue;
+					zoneTents.RemoveAt(i);
+					--i;
+				}
+				// プレイヤーに近い順にソート.
+				zoneTents.Sort((a, b) => {
+					var aDist = a.pos.Distance(pcPos);
+					var bDist = b.pos.Distance(pcPos);
+					if (aDist < bDist)
+						return -1;
+					if (aDist > bDist)
+						return 1;
+					return 0;
+				});
+			}
+			// 自身に近い位置にテントが既にあったら回収を優先する.
+			if (zoneTents.Count > 0 && zoneTents[0].pos.Distance(pcPos) <= 2 ) {
+				EClass.pc.AddCard(zoneTents[0]);
 			} else {
-				ItemPosition posTent = ItemPosition.Get(tent);
-				EClass._zone.AddCard(tent, EClass.pc.pos).Install();
+				// そうじゃなければテントを持っているか調べる.
+				var haveTents = EClass.pc.things.FindAll((v) => v.trait is TraitTent);
+				if (haveTents.Count > 0) {
+					// 持ってたら一つを優先.
+					var tent = haveTents[0];
+					if (tent.Num > 1) { //< 無いとは思うが複数持ってたら.
+						tent = tent.Split(1); //< 一個だけ使う.
+					}
+					ItemPosition posTent = ItemPosition.Get(tent);
+					EClass._zone.AddCard(tent, pcPos).Install();
+				} else {
+					// 一番近いものをしまって終了.
+					EClass.pc.AddCard(zoneTents[0]);
+				}
 			}
 		}
 	}
