@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Meta>
+  <title>Elin_AutoCrafter</title>
+  <id>yu-ituki.elin.auto-crafter</id>
+  <author>yu-ituki</author>
+  <builtin>false</builtin>
+  <loadPriority>10</loadPriority>
+  <version>1.0.0.0</version>
+  <version>1.0.0.0</version>
+  <tags>General,QoL</tags>
+  <description>
+■概要
+制作設備で L-Shift または R-Shift を押しながら制作を開始すると、  
+最後に作った物を自動で作り続けます。  
+大量の肉や魚の調理に毎回「制作」ボタンを押す必要が無くなります。  
+自動生成はなにかのキーを押すことで解除されます。  
+
+■ソースコード
+
+■🍺
+よかったらビール奢ってください
+https://ko-fi.com/ituki_yu
+
+  </description>
+</Meta>

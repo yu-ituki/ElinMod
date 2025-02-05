@@ -131,6 +131,16 @@ namespace Elin_Mod
 		}
 
 
+		public static bool GetMouseDown(int button) {
+			return UnityEngine.Input.GetMouseButtonDown(button);
+		}
+		public static bool GetMouseUp(int button) {
+			return UnityEngine.Input.GetMouseButtonUp(button);
+		}
+		public static bool GetMouse(int button) {
+			return UnityEngine.Input.GetMouseButton(button);
+		}
+
 		public static bool GetKeyDown( UnityEngine.KeyCode keyCode ) {
 			return UnityEngine.Input.GetKeyDown(keyCode);
 		}
@@ -142,7 +152,12 @@ namespace Elin_Mod
 		public static bool GetKey(UnityEngine.KeyCode keyCode) {
 			return UnityEngine.Input.GetKey(keyCode);
 		}
-
+		public static bool GetKeyAny() {
+			return UnityEngine.Input.anyKey;
+		}
+		public static bool GetKeyAnyDown() {
+			return UnityEngine.Input.anyKeyDown;
+		}
 
 		public static string CreateErrorReport() {
 			var reportPath = GetResourcePath("error_report_tmp/");

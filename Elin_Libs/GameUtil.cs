@@ -124,7 +124,13 @@ namespace Elin_Mod
 			return ELayer._zone.IsPlayerFaction;
 		}
 
-
+		public static bool IsHungerPlayer() {
+			return ( EClass.pc?.hunger?.GetPhase() ?? 0 ) >= 3;
+		}
+			
+		public static bool IsCanSleepPlayer() {
+			return (EClass.pc?.CanSleep() ?? false);
+		}
 
 
 
