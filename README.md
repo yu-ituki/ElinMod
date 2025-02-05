@@ -34,7 +34,10 @@ https://github.com/yu-ituki/ElinMod/tree/main/Elin_ExAncientBook
 ## Elin_TentShortCut
 テントをいちいち入れたり出したりするのが面倒なのでショートカットを増やしました。  
 https://github.com/yu-ituki/ElinMod/tree/main/Elin_TentShortCut  
-
+  
+## Elin_AutoCraft  
+ネフィアや戦争をはしごしたあとの大量の肉をすき焼きに変換する作業がダルかったので自動化しました。  
+https://github.com/yu-ituki/ElinMod/tree/main/Elin_AutoCrafter  
 
 ----
 
