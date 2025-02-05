@@ -6,7 +6,6 @@
   <builtin>false</builtin>
   <loadPriority>10</loadPriority>
   <version>1.0.0.0</version>
-  <version>1.0.0.0</version>
   <tags>General,QoL</tags>
   <description>
 ■概要
@@ -14,8 +13,10 @@
 最後に作った物を自動で作り続けます。  
 大量の肉や魚の調理に毎回「制作」ボタンを押す必要が無くなります。  
 自動生成はなにかのキーを押すことで解除されます。  
+また、疲労や空腹の際にも自動制作を解除します。  
 
 ■ソースコード
+https://github.com/yu-ituki/ElinMod/tree/main/Elin_AutoCrafter
 
 ■🍺
 よかったらビール奢ってください
