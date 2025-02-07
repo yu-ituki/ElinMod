@@ -107,7 +107,7 @@ namespace Elin_Mod
 					break;
 
 				case ModConfig.eEatPriority.HighNutrition:
-					_SortThings(foods, v => v.Evalue(10));
+					_SortThings(foods, v => v.Evalue(Const.c_ElemID_Nutrition));
 					break;
 
 		//		case ModConfig.eEatPriority.HighPrice:
@@ -115,7 +115,7 @@ namespace Elin_Mod
 		//			break;
 
 				case ModConfig.eEatPriority.LowNutrition:
-					_SortThings(foods, v => -v.Evalue(10));
+					_SortThings(foods, v => -v.Evalue(Const.c_ElemID_Nutrition));
 					break;
 
 		//		case ModConfig.eEatPriority.LowPrice:
@@ -137,6 +137,11 @@ namespace Elin_Mod
 			list.Sort((a, b) => {
 				int aa = func(a);
 				int bb = func(b);
+				// できたてチェック.
+				if ( config.IsPreferredJustCooked.Value) {
+					aa += (a.HasElement(Const.c_ElemID_JustCooked) ? 1000000 : 0);
+					bb += (b.HasElement(Const.c_ElemID_JustCooked) ? 1000000 : 0);
+				}
 				if (aa > bb)
 					return -1;
 				else if ( aa < bb )

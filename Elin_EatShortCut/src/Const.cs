@@ -3,6 +3,9 @@
 
 	public class Const
 	{
+		public const int c_ElemID_JustCooked = 757;
+		public const int c_ElemID_Nutrition = 10;
+
 
 		public static string[] s_ConfigTexts_StopEatState;
 		public static string[] s_ConfigTexts_EatPriority;
