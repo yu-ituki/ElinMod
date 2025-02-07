@@ -23,6 +23,7 @@ namespace Elin_Mod
 			NyModManager.Instance.Initialize<ModConfig>(this, this.Logger, ModInfo.c_ModFullName, ModInfo.c_ModName, ModInfo.c_ModVersion);
 			NyModManager.Instance.RegisterOnStartGameAction(OnStartGame);
 			NyModManager.Instance.RegisterOnLoadTableAction(OnLoadTable);
+			TentShortCut.Initialize();
 		}
 
 		/// <summary>

@@ -5,7 +5,7 @@
   <author>yu-ituki</author>
   <builtin>false</builtin>
   <loadPriority>10</loadPriority>
-  <version>1.0.0.1</version>
+  <version>1.0.0.2</version>
   <tags>General,QoL</tags>
 <description>
 ■概要
@@ -25,6 +25,11 @@
 ご了承ください。  
 このModはあくまでその場で置いたり回収したり、を想定しています。  
 
+■アンインストール方法  
+必ずホットバーからテントのショートカットを解除してからModを無効化してください。  
+Mod無効化状態でホットバーにショートカットが登録されたままだと  
+そのセーブデータがロードできなくなります。  
+解除を忘れた方は、再度Modをサブスクライブして、解除＆セーブした後に再度Mod無効化すれば大丈夫です。  
 
 ■ソースコード
 https://github.com/yu-ituki/ElinMod/tree/main/Elin_TentShortCut

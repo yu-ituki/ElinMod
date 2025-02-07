@@ -11,6 +11,10 @@ namespace Elin_Mod
 	[HarmonyLib.HarmonyPatch]
 	public class TentShortCut
 	{
+		public static void Initialize() {
+			ModUtil.RegisterSerializedTypeFallback(ModInfo.c_ModName, "Elin_Mod.HotItemActionTent", "HotItemActionSleep");
+		}
+
 		[HarmonyPatch(typeof(WidgetHotbar), "SetShortcutMenu")]
 		[HarmonyPostfix]
 		public static void Postfix_SetShortcutMenu(WidgetHotbar __instance, ButtonHotItem b, UIContextMenu m) {
