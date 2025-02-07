@@ -34,7 +34,7 @@ namespace Elin_Mod
 				GameUtil.ContextMenu_AddEnumSlider(menu, eTextID.Config_StopEatState, config.StopEatState, Const.s_ConfigTexts_StopEatState);
 				GameUtil.ContextMenu_AddEnumSlider(menu, eTextID.Config_EatPriority, config.EatPriority, Const.s_ConfigTexts_EatPriority);
 				GameUtil.ContextMenu_AddToggle(menu, eTextID.Config_IsPreferredJustCooked, true, v => config.IsPreferredJustCooked.Value = v);
-				GameUtil.ContextMenu_AddToggle(menu, eTextID.Config_IsInstantEat, true, v => config.IsInstantEat.Value = v);
+				GameUtil.ContextMenu_AddToggle(menu, eTextID.Config_IsInstantEat, false, v => config.IsInstantEat.Value = v);
 				menu.Show();
 				return false;
 			}, false);
