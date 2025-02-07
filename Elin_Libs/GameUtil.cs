@@ -215,7 +215,7 @@ namespace Elin_Mod
 			});
 		}
 
-		public static void ContextMenu_AddSlider(UIContextMenu menu, eTextID textID, BepInEx.Configuration.ConfigEntry<float> entry, float min, float max, bool isInt) {
+		public static void ContextMenu_AddSlider(UIContextMenu menu, eTextID textID, ConfigEntry<float> entry, float min, float max, bool isInt) {
 			var textMng = ModTextManager.Instance;
 			menu.AddSlider(
 					textMng.GetText(textID),
@@ -227,7 +227,23 @@ namespace Elin_Mod
 				min, max, isInt, false, false);
 		}
 
-		public static void ContextMenu_AddSlider(UIContextMenu menu, eTextID textID, BepInEx.Configuration.ConfigEntry<int> entry, float min, float max, bool isInt) {
+		public static void ContextMenu_AddEnumSlider<T>(UIContextMenu menu, eTextID textID, ConfigEntry<T> entry, string[] drawTexts)
+		{
+			int min = 0;
+			int max = drawTexts.Length -1;
+			var textMng = ModTextManager.Instance;
+			menu.AddSlider(
+					textMng.GetText(textID),
+					(v) => drawTexts[(int)v],
+					(int)(object)entry.Value,
+					(v) => {
+						int vI = (int)v;
+						entry.Value = (T)Enum.ToObject( typeof(T), vI );
+					},
+				min, max, true, false, false);
+		}
+
+		public static void ContextMenu_AddSlider(UIContextMenu menu, eTextID textID, ConfigEntry<int> entry, float min, float max, bool isInt) {
 			var textMng = ModTextManager.Instance;
 			menu.AddSlider(
 					textMng.GetText(textID),

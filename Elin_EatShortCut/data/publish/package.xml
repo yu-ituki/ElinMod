@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Meta>
+  <title>Elin_EatShortCut</title>
+  <id>yu-ituki.elin.eat-shortcut</id>
+  <author>yu-ituki</author>
+  <builtin>false</builtin>
+  <loadPriority>10</loadPriority>
+  <version>1.0.0.0</version>
+  <tags>General,QoL</tags>
+<description>
+■概要
+ホットバーに「食べ物を食べる」を追加します。
+使用するとバックパックの食べ物を自動で食べます。
+ワールドマップ上での食事の挙動をそのまま使用しています。 
+
+■ソースコード
+https://github.com/yu-ituki/ElinMod/tree/main/Elin_EatShortCut
+
+■🍺
+よかったらビール奢ってください
+https://ko-fi.com/ituki_yu
+
+  </description>
+</Meta>
