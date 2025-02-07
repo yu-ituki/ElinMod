@@ -39,6 +39,10 @@ https://github.com/yu-ituki/ElinMod/tree/main/Elin_TentShortCut
 ネフィアや戦争をはしごしたあとの大量の肉をすき焼きに変換する作業がダルかったので自動化しました。  
 https://github.com/yu-ituki/ElinMod/tree/main/Elin_AutoCrafter  
 
+## Elin_AutoEat  
+いちいちプレイヤーに耐久値の高い食事を手動で摂らせるのが面倒になったので自動化しました。  
+https://github.com/yu-ituki/ElinMod/tree/main/Elin_AutoEat  
+  
 ----
 
 # このページやModがいいなと思ったら
