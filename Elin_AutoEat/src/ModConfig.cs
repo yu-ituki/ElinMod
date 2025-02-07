@@ -50,18 +50,19 @@ namespace Elin_Mod
 			MAX
 		}
 
-		public ConfigEntry<eHungerState> StopEatState { get; set; }
+		public ConfigEntry<bool> IsAutoEat { get; set; }
+		public ConfigEntry<eHungerState> AutoEatState { get; set; }
 		public ConfigEntry<eEatPriority> EatPriority { get; set; }
-		public ConfigEntry<bool> IsPreferredJustCooked { get; set; }
-
 		public ConfigEntry<bool> IsInstantEat { get; set; }
+		public ConfigEntry<bool> IsPreferredJustCooked { get; set; }
 
 		public override void Initialize( ConfigFile config )
 		{
-			StopEatState = config.Bind( "General", "StopEatState", eHungerState.Bloated, "Hunger to stop eating");
+			IsAutoEat = config.Bind("General", "IsAutoEat", true, "Auto Eat Enable");
+			AutoEatState = config.Bind( "General", "AutoEatState", eHungerState.Bloated, "Hunger to auto eating");
 			EatPriority = config.Bind("General", "EatPriority", eEatPriority.Normal, "Eating Priority");
-			IsPreferredJustCooked = config.Bind("General", "IsPreferredJustCooked", true, "Priority is given to eating freshly prepared food.");
-			IsInstantEat = config.Bind("General", "IsInstantEat", false, "Instantly finishes the meal.");
+			IsInstantEat = config.Bind("General", "IsInstantEat", true, "Instantly finishes the meal.");
+			IsPreferredJustCooked = config.Bind("General", "IsPreferredJustCooked", false, "Priority is given to eating freshly prepared food.");
 		}
 	}
 }

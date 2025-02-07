@@ -84,18 +84,15 @@ namespace Elin_Mod
 		/// <returns></returns>
 		public static bool IsPlayingGame()
 		{
-			if (!EClass.core.IsGameStarted)
-			{
+			var core = EClass.core;
+			if (core == null)
 				return false;
-			}
+			if (!core.IsGameStarted)
+				return false;
 			if (ELayer.pc == null)
-			{
 				return false;
-			}
 			if (ELayer.pc.isDead)
-			{
 				return false;
-			}
 			return true;
 		}
 
@@ -262,6 +259,17 @@ namespace Elin_Mod
 					isDefault,
 					(v) => {
 						act(v);
+					}
+				);
+		}
+
+		public static UIContextMenuItem ContextMenu_AddToggle(UIContextMenu menu, eTextID textID, ConfigEntry<bool> entry ) {
+			var textMng = ModTextManager.Instance;
+			return menu.AddToggle(
+					textMng.GetText(textID),
+					entry.Value,
+					(v) => {
+						entry.Value = v;
 					}
 				);
 		}

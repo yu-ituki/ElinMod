@@ -7,17 +7,17 @@
 		public const int c_ElemID_Nutrition = 10;
 
 
-		public static string[] s_ConfigTexts_StopEatState;
+		public static string[] s_ConfigTexts_AutoEatState;
 		public static string[] s_ConfigTexts_EatPriority;
 		public static void Initialize() {
-			if (s_ConfigTexts_StopEatState == null) {
-				s_ConfigTexts_StopEatState = new string[(int)ModConfig.eHungerState.MAX];
-				_LoadConfigText(s_ConfigTexts_StopEatState, eTextID.Config_StopEatState_Normal, (int)ModConfig.eHungerState.Normal);
-				_LoadConfigText(s_ConfigTexts_StopEatState, eTextID.Config_StopEatState_Bloated, (int)ModConfig.eHungerState.Bloated);
-				_LoadConfigText(s_ConfigTexts_StopEatState, eTextID.Config_StopEatState_Filled, (int)ModConfig.eHungerState.Filled);
-				_LoadConfigText(s_ConfigTexts_StopEatState, eTextID.Config_StopEatState_Hungry, (int)ModConfig.eHungerState.Hungry);
-				_LoadConfigText(s_ConfigTexts_StopEatState, eTextID.Config_StopEatState_Starving, (int)ModConfig.eHungerState.Starving);
-				_LoadConfigText(s_ConfigTexts_StopEatState, eTextID.Config_StopEatState_VeryHungry, (int)ModConfig.eHungerState.VeryHungry);
+			if (s_ConfigTexts_AutoEatState == null) {
+				s_ConfigTexts_AutoEatState = new string[(int)ModConfig.eHungerState.MAX];
+				_LoadConfigText(s_ConfigTexts_AutoEatState, eTextID.Config_HungerState_Normal, (int)ModConfig.eHungerState.Normal);
+				_LoadConfigText(s_ConfigTexts_AutoEatState, eTextID.Config_HungerState_Bloated, (int)ModConfig.eHungerState.Bloated);
+				_LoadConfigText(s_ConfigTexts_AutoEatState, eTextID.Config_HungerState_Filled, (int)ModConfig.eHungerState.Filled);
+				_LoadConfigText(s_ConfigTexts_AutoEatState, eTextID.Config_HungerState_Hungry, (int)ModConfig.eHungerState.Hungry);
+				_LoadConfigText(s_ConfigTexts_AutoEatState, eTextID.Config_HungerState_Starving, (int)ModConfig.eHungerState.Starving);
+				_LoadConfigText(s_ConfigTexts_AutoEatState, eTextID.Config_HungerState_VeryHungry, (int)ModConfig.eHungerState.VeryHungry);
 			}
 			if (s_ConfigTexts_EatPriority == null) {
 				s_ConfigTexts_EatPriority = new string[(int)ModConfig.eEatPriority.MAX];

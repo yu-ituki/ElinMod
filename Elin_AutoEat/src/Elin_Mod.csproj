@@ -119,7 +119,7 @@
   <ItemGroup>
     <Compile Include="ModConfigUi.cs" />
     <Compile Include="Const.cs" />
-    <Compile Include="EatShortCut.cs" />
+    <Compile Include="AutoEat.cs" />
     <Compile Include="TextID.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModInfo.cs" />

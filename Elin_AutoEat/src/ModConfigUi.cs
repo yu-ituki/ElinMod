@@ -14,9 +14,6 @@ namespace Elin_Mod
 	[HarmonyPatch]
 	public class ModConfigUi
 	{
-
-
-
 		[HarmonyPatch(typeof(ActPlan), "ShowContextMenu")]
 		[HarmonyPrefix]
 		public static void Prefix(ActPlan __instance) {
@@ -31,10 +28,11 @@ namespace Elin_Mod
 			ModConfig config = Plugin.Instance.ModConfig;
 			DynamicAct act = new DynamicAct(textMng.GetText( eTextID.Config_Title ), ()=>{
 				var menu = GameUtil.CreateContextMenu();
-				GameUtil.ContextMenu_AddEnumSlider(menu, eTextID.Config_StopEatState, config.StopEatState, Const.s_ConfigTexts_StopEatState);
+				GameUtil.ContextMenu_AddToggle(menu, eTextID.Config_IsAutoEat, config.IsAutoEat );
+				GameUtil.ContextMenu_AddEnumSlider(menu, eTextID.Config_AutoEatState, config.AutoEatState, Const.s_ConfigTexts_AutoEatState);
 				GameUtil.ContextMenu_AddEnumSlider(menu, eTextID.Config_EatPriority, config.EatPriority, Const.s_ConfigTexts_EatPriority);
-				GameUtil.ContextMenu_AddToggle(menu, eTextID.Config_IsPreferredJustCooked, false, v => config.IsPreferredJustCooked.Value = v);
-				GameUtil.ContextMenu_AddToggle(menu, eTextID.Config_IsInstantEat, false, v => config.IsInstantEat.Value = v);
+				GameUtil.ContextMenu_AddToggle(menu, eTextID.Config_IsInstantEat, config.IsInstantEat);
+				GameUtil.ContextMenu_AddToggle(menu, eTextID.Config_IsPreferredJustCooked, config.IsPreferredJustCooked );
 				menu.Show();
 				return false;
 			}, false);

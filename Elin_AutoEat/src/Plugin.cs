@@ -25,6 +25,7 @@ namespace Elin_Mod
 			NyModManager.Instance.RegisterOnLoadTableAction(OnLoadTable);
 
 			Const.Initialize();
+			AutoEat.Instance.Initialize();
 		}
 
 		/// <summary>
@@ -51,10 +52,13 @@ namespace Elin_Mod
 		}
 
 
+		
+
 #if true
 		public void Update() {
-			if ( CommonUtil.GetKeyDown(UnityEngine.KeyCode.F10))
-				Debug_AnalyzeElin.Dump_ElinSprites("D:\\sprites\\");
+			if (!GameUtil.IsPlayingGame())
+				return;
+			AutoEat.Instance.CheckAutoEat();
 		}
 #endif
 	}
