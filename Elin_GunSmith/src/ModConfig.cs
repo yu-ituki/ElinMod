@@ -6,7 +6,7 @@ namespace Elin_Mod
 	/// <summary>
 	/// Modコンフィグ用.
 	/// </summary>
-	public class ModConfig
+	public class ModConfig : ModConfigBase
 	{
 		public ConfigEntry<float> AddSlotCost { get; set; }
 		public ConfigEntry<float> PowerUpModCost { get; set; }
@@ -14,7 +14,7 @@ namespace Elin_Mod
 
 		public ConfigEntry<bool> IsEnableGunBlade { get; set; }
 
-		public ModConfig( ConfigFile config )
+		public override void Initialize( ConfigFile config )
 		{
 			AddSlotCost = config.Bind("Regen", "AddSlotCost", 100.0f, "Cost required to add one slot.");
 			PowerUpModCost = config.Bind("Regen", "PowerUpModCost", 2.0f, "Cost required to power up a mod by +1.");

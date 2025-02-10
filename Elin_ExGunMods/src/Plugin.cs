@@ -16,7 +16,7 @@ namespace Elin_Mod
 	{
 		public static Plugin Instance { get; private set; }
 
-		public ModConfig ModConfig { get => NyModManager.Instance.GetConfig() as ModConfig; }
+		public ModConfig ModConfig { get => MyModManager.Instance.GetConfig() as ModConfig; }
 
 
 
@@ -25,17 +25,17 @@ namespace Elin_Mod
 		/// </summary>
 		private void Awake() {
 			Instance = this;
-			NyModManager.Instance.Initialize<ModConfig>(this, this.Logger, ModInfo.c_ModFullName, ModInfo.c_ModName, ModInfo.c_ModVersion);
-			NyModManager.Instance.RegisterOnStartGameAction(OnStartGame);
-			NyModManager.Instance.RegisterOnLoadTableAction(OnLoadTable);
+			MyModManager.Instance.Initialize<ModConfig>(this, this.Logger, ModInfo.c_ModFullName, ModInfo.c_ModName, ModInfo.c_ModVersion);
+			MyModManager.Instance.RegisterOnStartGameAction(OnStartGame);
+			MyModManager.Instance.RegisterOnLoadTableAfterAction(OnLoadTableAfter);
 		}
 
 		/// <summary>
 		/// Mod開放タイミング.
 		/// </summary>
 		void Unload() {
-			NyModManager.Instance?.Terminate();
-			NyModManager.DeleteInstance();
+			MyModManager.Instance?.Terminate();
+			MyModManager.DeleteInstance();
 		}
 
 		void OnStartCore() {
@@ -46,8 +46,8 @@ namespace Elin_Mod
 		/// テーブル読み込みタイミング.
 		/// 各ゲーム内テーブル読み込み完了後、かつプレイヤー等の生成直前.
 		/// </summary>
-		void OnLoadTable() {
-			NewRangedModManager.Instance.OnLoadTable();
+		void OnLoadTableAfter() {
+			NewRangedModManager.Instance.OnLoadTableAfter();
 		}
 
 		/// <summary>

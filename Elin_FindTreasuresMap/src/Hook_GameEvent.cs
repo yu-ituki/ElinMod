@@ -66,6 +66,7 @@ namespace Elin_Mod
 			var textMng = ModTextManager.Instance;
 			var currentZone = EClass._zone;
 
+			// NOTE: 近くのゾーンをヒントとして出そうとしたがウザそうなのでやめた.
 #if false
 			Zone nearestZone = null;
 			int nearestDist = int.MaxValue;

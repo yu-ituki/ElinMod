@@ -7,9 +7,6 @@ using UnityEngine.Events;
 
 namespace Elin_Mod
 {
-	// プレイヤーをホイールクリックしたときのコンフィグUIサンプル.
-
-
 #if true
 	[HarmonyPatch]
 	public class ModConfigUi
@@ -21,14 +18,13 @@ namespace Elin_Mod
 			if (!__instance.pos.Equals(EClass.pc.pos)) {
 				return;
 			}
-
 			var textMng = ModTextManager.Instance;
 			var config = Plugin.Instance.ModConfig;
 			DynamicAct act = new DynamicAct(textMng.GetText(eTextID.Config_Title), ()=> {
-				var val2 = EClass.ui.CreateContextMenu("ContextMenu");
-				_AddSlider(val2, eTextID.Config_CostAddSocket, config.AddSlotCost, 0, 500.0f, true);
-				_AddSlider(val2, eTextID.Config_CostPowerUpMod, config.PowerUpModCost, 0, 10.0f, false);
-				_AddSlider(val2, eTextID.Config_CostCombineMod, config.CombineModCost, 0, 10.0f, false);
+				var val2 = GameUtil.CreateContextMenu();
+				GameUtil.ContextMenu_AddSlider(val2, eTextID.Config_CostAddSocket, config.AddSlotCost, 0, 500.0f, 1.0f);
+				GameUtil.ContextMenu_AddSlider(val2, eTextID.Config_CostPowerUpMod, config.PowerUpModCost, 0, 10.0f, 0.1f);
+				GameUtil.ContextMenu_AddSlider(val2, eTextID.Config_CostCombineMod, config.CombineModCost, 0, 10.0f, 0.1f);
 				val2.Show();
 				return false;
 			}, false);
@@ -37,18 +33,7 @@ namespace Elin_Mod
 			});
 		}
 
-		static void _AddSlider( UIContextMenu menu, eTextID textID, BepInEx.Configuration.ConfigEntry<float> entry, float min, float max, bool isInt ) {
-			var textMng = ModTextManager.Instance;
-			menu.AddSlider(
-					textMng.GetText(textID),
-					(v) => v.ToString(),
-					entry.Value,
-					(v) => {
-						entry.Value = v;
-					},
-				min, max, isInt, false, false);
-		}
-
+	
 		[HarmonyPatch(typeof(ActPlan.Item), "Perform")]
 		[HarmonyPrefix]
 		public static bool Prefix(ActPlan.Item __instance) {

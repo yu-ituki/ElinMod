@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Reflection;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Net.Security;
 
 namespace Elin_Mod
 {
@@ -210,6 +211,17 @@ namespace Elin_Mod
 		public static void ApplyHarmonyPatches(Harmony harmony, ModPatchInfo[] infos) {
 			foreach (var itr in infos)
 				itr.Patch(harmony);
+		}
+
+
+		const float c_Epsilon = 0.0001f;
+
+		public static bool IsEqual( float a, float b ) {
+			return Mathf.Abs(a - b) <= c_Epsilon;
+		}
+
+		public static bool IsEqual(Vector3 a, Vector3 b) {
+			return Mathf.Abs(Vector3.Distance(a,b)) <= c_Epsilon;
 		}
 
 

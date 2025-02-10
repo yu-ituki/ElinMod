@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Security.Policy;
 
+using UnityEngine;
+
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.UI.GridLayoutGroup;
 
@@ -12,6 +14,8 @@ namespace Elin_Mod
 
 	public class GameUtil
 	{
+	
+
 
 		/// <summary>
 		/// Trait生成.
@@ -212,16 +216,89 @@ namespace Elin_Mod
 			});
 		}
 
-		public static void ContextMenu_AddSlider(UIContextMenu menu, eTextID textID, ConfigEntry<float> entry, float min, float max, bool isInt) {
+
+		class ConfigNumberValue
+		{
+			int m_Num;
+			float[] m_Values;
+			int m_FloatDigit;
+
+			public void Setup(float min, float max, float incrementsValue) {
+				// 小数点以下の桁数を調べる.
+				// もうこれでいいや.
+				m_FloatDigit = 0;
+				var digitStrs = incrementsValue.ToString().Split('.');
+				if (digitStrs.Length > 1) {
+					m_FloatDigit = digitStrs[1].Length;
+				}
+
+				// 刻み数値を格納.
+				m_Num = Mathf.CeilToInt((max - min) / incrementsValue) + 1;
+				m_Values = new float[m_Num];
+				for (int i = 0; i < m_Num; ++i) {
+					m_Values[i] = min + (i * incrementsValue);
+				}
+			}
+
+			public string GetDispString( int index ) {
+				return m_Values[index].ToString($"F{m_FloatDigit}");
+			}
+
+			public float GetValue(int index) {
+				return m_Values[index];
+			}
+
+			public int GetValueCount() {
+				return m_Values.Length;
+			}
+
+			public int CalcIndex( float val ) {
+				int currentIndex = System.Array.FindIndex(m_Values, v => CommonUtil.IsEqual(v, val));
+				if (currentIndex < 0)
+					currentIndex = 0;
+				return currentIndex;
+			}
+		}
+
+		static Dictionary<eTextID, ConfigNumberValue> s_ConfigNumbers;
+
+		public static void ContextMenu_AddSlider(UIContextMenu menu, eTextID textID, ConfigEntry<float> entry, float min, float max, float incrementsValue = 0.1f) {
 			var textMng = ModTextManager.Instance;
+
+			if (s_ConfigNumbers == null)
+				s_ConfigNumbers = new Dictionary<eTextID, ConfigNumberValue>();
+
+			ConfigNumberValue countValues = null;
+			if (!s_ConfigNumbers.TryGetValue(textID, out countValues)) {
+				countValues = new ConfigNumberValue();
+				countValues.Setup(min, max, incrementsValue);
+				s_ConfigNumbers.Add(textID, countValues);
+			}
+
+			var currentIndex = countValues.CalcIndex(entry.Value);
+			// スライダーに刻み数値を設定.
 			menu.AddSlider(
-					textMng.GetText(textID),
-					(v) => v.ToString(),
-					entry.Value,
-					(v) => {
-						entry.Value = v;
-					},
-				min, max, isInt, false, false);
+				textMng.GetText(textID),
+				(v) => countValues.GetDispString((int)v),
+				currentIndex,
+				(v) => {
+					entry.Value = countValues.GetValue((int)v);
+				},
+				0, countValues.GetValueCount() -1, true, false, false
+			);
+		}
+
+		public static void ContextMenu_AddSlider(UIContextMenu menu, eTextID textID, ConfigEntry<int> entry, int min, int max) {
+			var textMng = ModTextManager.Instance;
+
+			menu.AddSlider(
+				textMng.GetText(textID),
+				(v) => v.ToString(),
+				entry.Value,
+				(v) => {
+					entry.Value = (int)v;
+				},
+				min, max, true, false, false);
 		}
 
 		public static void ContextMenu_AddEnumSlider<T>(UIContextMenu menu, eTextID textID, ConfigEntry<T> entry, string[] drawTexts)
@@ -240,17 +317,7 @@ namespace Elin_Mod
 				min, max, true, false, false);
 		}
 
-		public static void ContextMenu_AddSlider(UIContextMenu menu, eTextID textID, ConfigEntry<int> entry, float min, float max, bool isInt) {
-			var textMng = ModTextManager.Instance;
-			menu.AddSlider(
-					textMng.GetText(textID),
-					(v) => v.ToString(),
-					entry.Value,
-					(v) => {
-						entry.Value = ( int )v;
-					},
-				min, max, isInt, false, false);
-		}
+		
 
 		public static UIContextMenuItem ContextMenu_AddToggle(UIContextMenu menu, eTextID textID, bool isDefault, System.Action<bool> act ) {
 			var textMng = ModTextManager.Instance;

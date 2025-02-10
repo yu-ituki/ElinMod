@@ -31,11 +31,12 @@ namespace Elin_Mod
 						(v) => {
 							if (v)
 								Uninstall();
-						});
+						}
+					);
 				});
 
-				GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_ElemDmgFactor, config.ModElement_DmgFactor, 0.1f, 5.0f, false);
-				GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_BarrelDistReductFactor, config.ModBarrel_DistReductionFactor, 0.1f, 5.0f, false);
+				GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_ElemDmgFactor, config.ModElement_DmgFactor, 0.1f, 5.0f);
+				GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_BarrelDistReductFactor, config.ModBarrel_DistReductionFactor, 0.1f, 5.0f );
 
 				menu.Show();
 				return false;

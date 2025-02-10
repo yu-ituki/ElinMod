@@ -14,7 +14,7 @@ namespace Elin_Mod
 	{
 		public static Plugin Instance { get; private set; }
 
-		public ModConfig ModConfig { get => NyModManager.Instance.GetConfig() as ModConfig; }
+		public ModConfig ModConfig { get => MyModManager.Instance.GetConfig() as ModConfig; }
 		public WalletGachaCoin MyWallet { get; private set; }
 
 
@@ -24,9 +24,9 @@ namespace Elin_Mod
 		/// </summary>
 		private void Awake() {
 			Instance = this;
-			NyModManager.Instance.Initialize<ModConfig>(this, this.Logger, ModInfo.c_ModFullName, ModInfo.c_ModName, ModInfo.c_ModVersion);
-			NyModManager.Instance.RegisterOnStartGameAction(OnStartGame);
-			NyModManager.Instance.RegisterOnLoadTableAction(OnLoadTable);
+			MyModManager.Instance.Initialize<ModConfig>(this, this.Logger, ModInfo.c_ModFullName, ModInfo.c_ModName, ModInfo.c_ModVersion);
+			MyModManager.Instance.RegisterOnStartGameAction(OnStartGame);
+			MyModManager.Instance.RegisterOnLoadTableAction(OnLoadTable);
 	
 			TraitMerchantEx_AncientResearcher.Initialize();
 		}
@@ -35,8 +35,8 @@ namespace Elin_Mod
 		/// Mod開放タイミング.
 		/// </summary>
 		void Unload() {
-			NyModManager.Instance?.Terminate();
-			NyModManager.DeleteInstance();
+			MyModManager.Instance?.Terminate();
+			MyModManager.DeleteInstance();
 		}
 
 	

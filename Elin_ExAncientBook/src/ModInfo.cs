@@ -7,6 +7,6 @@
 
 		public const string c_ModName = "ExAncientBook";
 
-		public const string c_ModVersion = "1.0.0.1";
+		public const string c_ModVersion = "1.0.0.2";
 	}
 }

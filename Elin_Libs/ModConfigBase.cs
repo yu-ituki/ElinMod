@@ -8,6 +8,6 @@ namespace Elin_Mod
 {
 	public abstract class ModConfigBase
 	{
-		public abstract void Initialize(BepInEx.Configuration.ConfigFile config);
+		public virtual void Initialize(BepInEx.Configuration.ConfigFile config) { }
 	}
 }

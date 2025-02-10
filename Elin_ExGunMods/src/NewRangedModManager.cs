@@ -62,7 +62,7 @@ namespace Elin_Mod
 		/// <summary>
 		/// ゲーム開始直前に呼ばれる.
 		/// </summary>
-		public void OnLoadTable() {
+		public void OnLoadTableAfter() {
 			// SourceManager::Init()後の処理はここ.
 			// ゲーム中の全Elementのハッシュテーブルを作っておく.
 			var elems = EClass.sources.elements;

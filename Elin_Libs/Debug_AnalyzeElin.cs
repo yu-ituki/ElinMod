@@ -81,7 +81,7 @@ namespace Elin_Mod
 			_AddHeader("LV", "Int");
 			_AddHeader("chance", "Int");
 			_AddHeader("faction", "String");
-			_AddHeader("value", "Int");
+			_AddHeader("m_Values", "Int");
 			_AddHeader("idProfile", "String");
 			_AddHeader("idFile", "String[]");
 			_AddHeader("idBiome", "String");
@@ -271,7 +271,7 @@ namespace Elin_Mod
 			_AddHeader( "disassemble", "string[]");
 			_AddHeader( "defMat" , "string" );
 			_AddHeader( "tierGroup" , "string" );
-			_AddHeader( "value" , "int" );
+			_AddHeader( "m_Values" , "int" );
 			_AddHeader( "LV" , "int" );
 			_AddHeader( "chance", "int");
 			_AddHeader( "quality", "int");
@@ -378,7 +378,7 @@ namespace Elin_Mod
 			_AddHeader( "mtp" , "int" );
 			_AddHeader( "LV" , "int" );
 			_AddHeader( "chance" , "int" );
-			_AddHeader( "value" , "int" );
+			_AddHeader( "m_Values" , "int" );
 			_AddHeader( "cost" , "int[]" );
 			_AddHeader( "geneSlot" , "int" );
 			_AddHeader( "sort" , "int" );
@@ -498,7 +498,7 @@ namespace Elin_Mod
 			_AddHeader( "factory" , "string" );
 			_AddHeader( "type" , "string" );
 			_AddHeader( "m_Thing" , "string");
-			_AddHeader( "num" , "string" );
+			_AddHeader( "m_Num" , "string" );
 			_AddHeader( "sp" , "int" );
 			_AddHeader( "time" , "int" );
 			_AddHeader( "ing1" , "string[]" );

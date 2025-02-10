@@ -13,7 +13,7 @@ namespace Elin_Mod
 	/// <summary>
 	/// Mod管理クラス.
 	/// </summary>
-	public class NyModManager : Singleton<NyModManager>
+	public class MyModManager : Singleton<MyModManager>
 	{
 		public enum eState {
 			None,
@@ -31,6 +31,7 @@ namespace Elin_Mod
 		ModConfigBase m_Config;
 
 		System.Action m_OnLoadTable;
+		System.Action m_OnLoadTableAfter;
 		System.Action m_OnStartGame;
 		
 
@@ -123,6 +124,14 @@ namespace Elin_Mod
 			m_OnLoadTable += onLoadTable;
 		}
 
+		/// <summary>
+		/// テーブル読み込み開始前コールバック登録.
+		/// </summary>
+		/// <param name="onLoadTable"></param>
+		public void RegisterOnLoadTableAfterAction(System.Action onLoadTable) {
+			m_OnLoadTableAfter += onLoadTable;
+		}
+
 		// 以下コールバック群....
 		//------
 		[HarmonyPatch(typeof(SourceManager), "Init")]
@@ -131,6 +140,16 @@ namespace Elin_Mod
 			switch (Instance.m_State) {
 				case eState.Initializing:
 					Instance.m_OnLoadTable?.Invoke();
+					break;
+			}
+		}
+
+		[HarmonyPatch(typeof(SourceManager), "Init")]
+		[HarmonyPostfix]
+		static void PostFix_SourceManagerInit() {
+			switch (Instance.m_State) {
+				case eState.Initializing:
+					Instance.m_OnLoadTableAfter?.Invoke();
 					break;
 			}
 		}

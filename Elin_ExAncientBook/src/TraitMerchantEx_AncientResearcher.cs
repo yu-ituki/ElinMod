@@ -101,7 +101,7 @@ namespace Elin_Mod
 			if (id.GetHashCode() != Const.c_CurrencyTypeHash_GachaCoin)
 				return true;
 
-			DebugUtil.LogError( $" mod currency {a} : {id}", true );
+		//	DebugUtil.LogError( $" mod currency {a} : {id}", true );
 
 			// ガチャコインは専用処理に流す.
 			var wallet = Plugin.Instance.MyWallet;
@@ -119,7 +119,7 @@ namespace Elin_Mod
 		[HarmonyPatch(typeof(ShopTransaction), "OnEndTransaction")]
 		[HarmonyPostfix]
 		public static void Postfix_ShopClose() {
-			DebugUtil.LogError("!!!! Close Shop !!!!");
+		//	DebugUtil.LogError("!!!! Close Shop !!!!");
 			s_IsOpenBatterMenu = false;
 		}
 
@@ -253,19 +253,24 @@ namespace Elin_Mod
 		static int _CalcPrice( Card card, bool isSell ) {
 			int ret = 0;
 			var config = Plugin.Instance.ModConfig;
+			int idHash = card.id.GetHashCode();
 			if (isSell) {
 				// 売却は古文書のみ.
-				if (card.id.GetHashCode() == Const.c_ThingIDHash_BookAncient) {
+				if (idHash == Const.c_ThingIDHash_BookAncient) {
 					// 売却価格は切り上げ.
 					ret = Mathf.CeilToInt((card.refVal + 1 ) * config.Worth_AncientBook.Value);
 			//		DebugUtil.LogError($"{ret} = {card.refVal} : {config.Worth_AncientBook.Value}");
 				}
 			} else {
 				// 購入は技術書のみ.
-				if (card.id.GetHashCode() == Const.c_ThingIDHash_BookSkill) {
+				if (idHash == Const.c_ThingIDHash_BookSkill) {
 					// 購入価格は切り下げ.
 					ret = Mathf.FloorToInt(card.GetValue() * config.Worth_SkillBook.Value);
 			//		DebugUtil.LogError($"{ret} = {card.GetValue()} : {config.Worth_SkillBook.Value}");
+				}
+				// 売った古文書もあったわ.
+				if ( idHash == Const.c_ThingIDHash_BookAncient ) {
+					ret = Mathf.CeilToInt((card.refVal + 1) * config.Worth_AncientBook.Value); //< 同額かな...
 				}
 			}
 			return ret;
