@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 
+using System.Collections.Generic;
 
 using UnityEngine;
 
@@ -63,6 +64,18 @@ namespace Elin_Mod
 			EatPriority = config.Bind("General", "EatPriority", eEatPriority.Normal, "Eating Priority");
 			IsInstantEat = config.Bind("General", "IsInstantEat", true, "Instantly finishes the meal.");
 			IsPreferredJustCooked = config.Bind("General", "IsPreferredJustCooked", false, "Priority is given to eating freshly prepared food.");
+
+			var textMng = ModTextManager.Instance;
+			ModConfigMenu.Instance.AddMenu(new ModConfigMenu.MenuInfo() {
+				m_TabName = textMng.GetText(eTextID.Config_Title),
+				m_Menus = new List<System.Action<UIContextMenu>>() {
+					v => GameUtil.ContextMenu_AddToggle(v, eTextID.Config_IsAutoEat, IsAutoEat),
+					v => GameUtil.ContextMenu_AddEnumSlider(v, eTextID.Config_AutoEatState, AutoEatState, Const.s_ConfigTexts_AutoEatState),
+					v => GameUtil.ContextMenu_AddEnumSlider(v, eTextID.Config_EatPriority, EatPriority, Const.s_ConfigTexts_EatPriority),
+					v => GameUtil.ContextMenu_AddToggle(v, eTextID.Config_IsInstantEat, IsInstantEat ),
+					v => GameUtil.ContextMenu_AddToggle(v, eTextID.Config_IsPreferredJustCooked, IsPreferredJustCooked ),
+				}
+			});
 		}
 	}
 }

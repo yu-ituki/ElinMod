@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if false
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using ReflexCLI;
@@ -67,3 +68,5 @@ namespace Elin_Mod
 		}
 	}
 }
+
+#endif

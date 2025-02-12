@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Security.Policy;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.UI.GridLayoutGroup;
+using UnityEngine.UI;
 
 namespace Elin_Mod
 {
@@ -217,6 +219,9 @@ namespace Elin_Mod
 		}
 
 
+		/// <summary>
+		/// 一定数値刻みの値を保持するやつ.
+		/// </summary>
 		class ConfigNumberValue
 		{
 			int m_Num;
@@ -277,7 +282,7 @@ namespace Elin_Mod
 
 			var currentIndex = countValues.CalcIndex(entry.Value);
 			// スライダーに刻み数値を設定.
-			menu.AddSlider(
+			var slider = menu.AddSlider(
 				textMng.GetText(textID),
 				(v) => countValues.GetDispString((int)v),
 				currentIndex,
@@ -286,12 +291,13 @@ namespace Elin_Mod
 				},
 				0, countValues.GetValueCount() -1, true, false, false
 			);
+			_AddSliderKeyMover(slider, 1);
 		}
 
 		public static void ContextMenu_AddSlider(UIContextMenu menu, eTextID textID, ConfigEntry<int> entry, int min, int max) {
 			var textMng = ModTextManager.Instance;
 
-			menu.AddSlider(
+			var slider = menu.AddSlider(
 				textMng.GetText(textID),
 				(v) => v.ToString(),
 				entry.Value,
@@ -299,6 +305,7 @@ namespace Elin_Mod
 					entry.Value = (int)v;
 				},
 				min, max, true, false, false);
+			_AddSliderKeyMover(slider, 1);
 		}
 
 		public static void ContextMenu_AddEnumSlider<T>(UIContextMenu menu, eTextID textID, ConfigEntry<T> entry, string[] drawTexts)
@@ -306,7 +313,7 @@ namespace Elin_Mod
 			int min = 0;
 			int max = drawTexts.Length -1;
 			var textMng = ModTextManager.Instance;
-			menu.AddSlider(
+			var slider = menu.AddSlider(
 					textMng.GetText(textID),
 					(v) => drawTexts[(int)v],
 					(int)(object)entry.Value,
@@ -315,9 +322,20 @@ namespace Elin_Mod
 						entry.Value = (T)Enum.ToObject( typeof(T), vI );
 					},
 				min, max, true, false, false);
+			_AddSliderKeyMover(slider, 1);
 		}
 
-		
+
+		static void _AddSliderKeyMover( UIContextMenuItem item, float incrementValue ) {
+			// キー操作したいのでAddComponentさせてもらう.
+			if (item.slider == null)
+				return;
+			var mover = item.slider.GetOrCreate<UISliderKeyMover>();
+			mover.Setup(item.slider, incrementValue);
+		}
+
+
+
 
 		public static UIContextMenuItem ContextMenu_AddToggle(UIContextMenu menu, eTextID textID, bool isDefault, System.Action<bool> act ) {
 			var textMng = ModTextManager.Instance;

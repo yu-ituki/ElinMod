@@ -1,5 +1,7 @@
 ﻿using BepInEx.Configuration;
 
+using System.Collections.Generic;
+
 using UnityEngine;
 
 namespace Elin_Mod
@@ -51,6 +53,27 @@ namespace Elin_Mod
 			SalesLv_SkillBook_High = config.Bind("General", "Bulk level value of high-level technical books", 10, "Bulk level value of high-level technical books.");
 			SalesLv_SkillBook_Middle = config.Bind("General", "Bulk level value of middle-level technical books", 0, "Bulk level value of middle-level technical books.");
 			SalesLv_SkillBook_Low = config.Bind("General", "Bulk level value of low-level technical books", -10, "Bulk level value of low-level technical books.");
+
+			var textMng = ModTextManager.Instance;
+			ModConfigMenu.Instance.AddMenu(new ModConfigMenu.MenuInfo() {
+				m_TabName = textMng.GetText(eTextID.Config_Title),
+				m_Menus = new List<System.Action<UIContextMenu>>() {
+					menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_Worth_GachaCoin_Copper, Worth_GachaCoin_Copper, 0, 1000),
+					menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_Worth_GachaCoin_Silver, Worth_GachaCoin_Silver, 0, 1000),
+					menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_Worth_GachaCoin_Gold, Worth_GachaCoin_Gold, 0, 1000),
+					//menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_Worth_GachaCoin_Plat, Worth_GachaCoin_Plat, 0, 1000),
+					menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_Worth_AncientBook, Worth_AncientBook, 0.01f, 20.0f, 0.1f),
+					menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_Worth_SkillBook, Worth_SkillBook, 0.01f, 10.0f, 0.01f),
+					//menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_SalesNum_SkillBook_Base, SalesNum_SkillBook_Base, 1, 10),
+					//menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_SalesNum_SkillBook_Add, SalesNum_SkillBook_Add, 1, 15),
+					menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_SalesLvLotRate_SkillBook_High, SalesLvLotRate_SkillBook_High, 0, 1000),
+					menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_SalesLvLotRate_SkillBook_Middle, SalesLvLotRate_SkillBook_Middle, 0, 1000),
+					menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_SalesLvLotRate_SkillBook_Low, SalesLvLotRate_SkillBook_Low, 0, 1000),
+					//menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_SalesLv_SkillBook_High, SalesLv_SkillBook_High, -99, 99),
+					//menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_SalesLv_SkillBook_Middle, SalesLv_SkillBook_Middle, -99, 99),
+					//menu => GameUtil.ContextMenu_AddSlider(menu, eTextID.Config_SalesLv_SkillBook_Low, SalesLv_SkillBook_Low, -99, 99),
+				}
+			});
 		}
 	}
 }

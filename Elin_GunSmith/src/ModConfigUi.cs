@@ -7,7 +7,7 @@ using UnityEngine.Events;
 
 namespace Elin_Mod
 {
-#if true
+#if false
 	[HarmonyPatch]
 	public class ModConfigUi
 	{

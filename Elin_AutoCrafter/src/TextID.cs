@@ -4,4 +4,7 @@ public enum eTextID {
 	No,
 	Cancel,
 	Config_Title,
+	Config_IsStopCanSleep,
+	Config_IsStopHunger,
+	Config_IsStopZeroStumina,
 }

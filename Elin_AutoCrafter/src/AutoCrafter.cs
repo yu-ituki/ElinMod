@@ -21,6 +21,21 @@ namespace Elin_Mod
 
 		IEnumerator m_CraftCoroutine;
 
+		// AI_UseCrafterが食材足りないときにCancelにならないっぽくて.
+		// AutoCraferが停止しないので仕方なくHarmonyPatchに頼る...
+		[HarmonyPatch(typeof(LayerCraft), "ClearButtons")]
+		[HarmonyPostfix]
+		static void _Postfix_LayerCraftClearbuttons() {
+			Instance?._EndAutoCraft();
+		}
+
+		[HarmonyPatch(typeof(LayerCraft), "RefreshCurrentGrid")]
+		[HarmonyPostfix]
+		static void _Postfix_LayerCraftRefreshCurrentGrid() {
+			Instance?._EndAutoCraft();
+		}
+		
+
 		[HarmonyPatch(typeof(LayerCraft), "OnClickCraft")]
 		[HarmonyPostfix]
 		static void _Postfix_LayerCraftOnClickCraft(LayerCraft __instance) {
@@ -67,23 +82,25 @@ namespace Elin_Mod
 			m_LastUseCrafter = null;
 			m_LastUseRecipe = null;
 			m_LastCraftLayer = null;
+			ActionMode.Adv.EndTurbo();
 		}
 
 		IEnumerator _Run() {
 			var pc = EClass.pc;
-			
+
+			var config = Plugin.Instance.ModConfig;
 			while ( true ) {
 			//	DebugUtil.LogWarning("!!!! run !!!!!");
 				yield return null;
 
 				// 寝そうなら止める.
-				if (GameUtil.IsCanSleepPlayer())
+				if (config.IsStopCanSleep.Value && GameUtil.IsCanSleepPlayer())
 					break;
 				// 腹減ってたら止める.
-				if (GameUtil.IsHungerPlayer())
+				if (config.IsStopHunger.Value && GameUtil.IsHungerPlayer())
 					break;
 				// 疲れてても止める.
-				if (pc.stamina.value <= 0)
+				if (config.IsStopZeroStumina.Value && pc.stamina.value <= 0)
 					break;
 				// ボタン押したら強制解除.
 				if (CommonUtil.GetKeyAnyDown() )
@@ -101,8 +118,9 @@ namespace Elin_Mod
 
 				// UIのアクティブ待ち(tweenでやってるっぽいのでこっちでポーリング待ちする).
 				var layerGo = m_LastCraftLayer.gameObject;
-				while (layerGo != null && !layerGo.activeSelf)
+				while (layerGo != null && !layerGo.activeSelf) {
 					yield return null;
+				}
 				if (layerGo == null)
 					break;
 

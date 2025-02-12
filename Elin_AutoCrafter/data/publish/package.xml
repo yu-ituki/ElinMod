@@ -5,7 +5,7 @@
   <author>yu-ituki</author>
   <builtin>false</builtin>
   <loadPriority>10</loadPriority>
-  <version>1.0.0.0</version>
+  <version>1.0.0.2</version>
   <tags>General,QoL</tags>
   <description>
 ■概要
@@ -14,6 +14,10 @@
 大量の肉や魚の調理に毎回「制作」ボタンを押す必要が無くなります。  
 自動生成はなにかのキーを押すことで解除されます。  
 また、疲労や空腹の際にも自動制作を解除します。  
+
+■コンフィグ  
+いくつかの停止条件をコンフィグで設定できます。
+
 
 ■ソースコード
 https://github.com/yu-ituki/ElinMod/tree/main/Elin_AutoCrafter

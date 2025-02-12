@@ -29,6 +29,13 @@ namespace Elin_Mod
 		}
 
 		/// <summary>
+		/// コンフィグメニュー表示コールバック.
+		/// </summary>
+		void _ModConfigMenu_OnAddCallback(object menu) {
+			ModConfigMenu.Instance.OnCallback_AddMenu(menu);
+		}
+
+		/// <summary>
 		/// Mod開放タイミング.
 		/// </summary>
 		void Unload() {

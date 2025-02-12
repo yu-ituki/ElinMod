@@ -10,7 +10,7 @@ namespace Elin_Mod
 	// プレイヤーをホイールクリックしたときのコンフィグUIサンプル.
 
 
-#if true
+#if false
 	[HarmonyPatch]
 	public class ModConfigUi
 	{

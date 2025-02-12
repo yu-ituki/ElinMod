@@ -117,7 +117,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModConfigUi.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="AutoEat.cs" />
     <Compile Include="TextID.cs" />

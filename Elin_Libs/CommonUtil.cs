@@ -160,6 +160,18 @@ namespace Elin_Mod
 			return UnityEngine.Input.anyKeyDown;
 		}
 
+		public static void SendMessageForAllMod( string msgName, object arg ) {
+			
+			foreach (object item in ModManager.ListPluginObject) {
+				Component component = item as Component;
+				if (component == null)
+					continue;
+				GameObject obj = component.gameObject;
+				obj.SendMessage( msgName, arg, SendMessageOptions.DontRequireReceiver );
+				break;
+			}
+		}
+
 		public static string CreateErrorReport() {
 			var reportPath = GetResourcePath("error_report_tmp/");
 			var reportZipPath = GetResourcePath("error_report.zip");
@@ -224,6 +236,7 @@ namespace Elin_Mod
 			return Mathf.Abs(Vector3.Distance(a,b)) <= c_Epsilon;
 		}
 
+	
 
 		public static MethodInfo ToMethodInfo( System.Action act ) => act.Method;
 		public static MethodInfo ToMethodInfo<T>(System.Action<T> act) => act.Method;

@@ -116,7 +116,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModConfigUi.cs" />
     <Compile Include="Const.cs" />
     <Compile Include="TextID.cs" />
     <Compile Include="ModConfig.cs" />
