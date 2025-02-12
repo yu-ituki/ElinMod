@@ -11,6 +11,7 @@ This template contains the following:
 * An automatic process for copying build artifacts to the Elin Package folder (placed under the Mod_Test folder).
 * Basic lifecycle management during gameplay.
 * A simplified method for dynamic HarmonyPatch registration.
+* Configuration Menu Features
 * A function to dump in-game table data as TSV files.
 
 ## How to Use
@@ -106,6 +107,26 @@ MyModManager.Instance.AddPatch(info);
 // Remove the patch
 MyModManager.Instance.RemovePatch(info);
 ```
+
+## Configuration Menu Features
+* You can create a hierarchical configuration menu from the player's middle-click menu.
+* You can add a menu using `ModConfigMenu.Instance.AddMenu()`.
+  * A sample is available in `ModConfig.cs`.
+  * When added through this method, parent-child relationships are automatically established among different mods, generating a hierarchical menu.
+* The following explains the internal program structure:
+  * `ModConfigMenu.cs` is the core file, containing various operations for `UIContextMenu`.
+  * Synchronization between mods is handled with a "whatever works" approach using `GameObject.SendMessage()`.
+    * `ModConfigMenu` sends the message "_ModConfigMenu_OnAddCallback".
+    * `Plugin.cs` receives the message and passes it to `ModConfigMenu`.
+  * Key input is implemented for sliders.
+    * You can adjust sliders using "W", "←", "D", and "→".
+    * Holding "L-Shift" or "R-Shift" moves the value 10 times faster.
+    * The `UISliderKeyMover.cs` component handles slider monitoring and key input.
+      * Allocations and spikes are ignored under the "whatever works" mindset.
+      * `GameUtil._AddSliderKeyMover()` adds the component to each slider.
+    * `ModInput.cs` is responsible for key operations and was created for handling repeat inputs.
+      * This wasn't originally planned… At this point, it's practically a job.
+
 
 ## In-Game Table Dumping as TSV Files
 * Provides functionality to dump in-game tables as TSV files.

@@ -11,6 +11,7 @@
 * Elin本体のPackageフォルダに成果物を自動コピーする仕組み（Mod_Testフォルダ以下に飛ぶ）
 * ゲーム中の基本的なライフサイクルの管理
 * 動的HarmonyPatch登録の簡易化機能
+* コンフィグメニュー機能
 * ゲーム中各テーブルのtsvダンプ機能
 
 ## 使い方
@@ -42,7 +43,7 @@
 * Mod構築用の最小限のプロジェクトやソースが入っています。
 * DLL参照は「まああっても損はないやろ」的な物が入っています。
 * Plugin.cs がエントリポイントです。
-* ModConfig.cs、ModConfigUI.cs にMod用コンフィグのサンプルが置いてあります。
+* ModConfig.cs にMod用コンフィグのサンプルが置いてあります。
 * BepInExロガーを使用して、DebugUtil.Log()、LogError() などを用意しました。 Debug.Log() 的に使用できます。
   * BepInExログを閲覧するにはBepInExコンソールを開く必要があります。
   * Elinインストールフォルダ/BepInEx/config/BepInEx.cfg の [Logging.Console] にて、Enabled = true でゲーム起動時に開きます
@@ -112,6 +113,25 @@ MyModManager.Instance.AddPatch(info);
 MyModManager.Instance.RemovePatch(info);
 
 ```
+
+## コンフィグメニュー機能
+* プレイヤー中クリックから親子階層からなるコンフィグメニューを作ることが出来ます。
+* ModConfigMenu.Instance.AddMenu() でメニューが追加できます。
+  * ModConfig.cs にサンプルが置いてあります。
+  * これを通して追加すると勝手に各Modで親子関係が構築され、階層メニューが生成されます。
+* 下記はプログラム内部の仕組みです。
+  * ModConfigMenu.cs が本体で、ここにUIContextMenuを様々操作する処理が書かれています。
+  * 各Modとの同期はまあもうどうでもええやろの精神でGameObjectのSendMessage()を使ってます。
+    * ModConfigMenuにて"_ModConfigMenu_OnAddCallback"のメッセージを飛ばしてます。
+    * Plugin.csでそれを受取、ModConfigMenuにパスしてます。
+  * スライダーにはキー入力が実装されています。
+    * 「W」「←」「D」「→」で操作できます。
+    * 「L-Shift」「R-Shift」を押しっぱなしにすると10倍量移動します。
+    * UISliderKeyMover.cs コンポーネントでスライダーの監視とキーハンドリングをしてます。
+      * まあもうどうでもええやろの精神でアロケーションやスパイクなどは無視してます。
+      * GameUtil._AddSliderKeyMover() で各SliderにAddComponentしてます。
+    * ModInput.cs がキー操作の根幹を担っています。リピート入力用に作りました。
+      * ここまで作る予定はなかったです。これもう業務だろ。
 
 ## ゲーム中各テーブルのtsvダンプ機能
 * ゲーム中のテーブルをtsvダンプする機能を用意しました。
