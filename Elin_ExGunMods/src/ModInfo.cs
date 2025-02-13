@@ -7,6 +7,6 @@
 
 		public const string c_ModName = "ExGunMods";
 
-		public const string c_ModVersion = "1.0.0.6";
+		public const string c_ModVersion = "1.0.0.7";
 	}
 }
