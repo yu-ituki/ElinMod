@@ -204,6 +204,19 @@ namespace Elin_Mod
 		}
 
 
+		public static Dialog OpenDialog_Buttons(string body, System.Action<int> onResult, params string[] btnTexts ) {
+			Dialog d = Layer.Create<Dialog>();
+			d.textDetail.SetText(body + " ");
+			for ( int i = 0; i < btnTexts.Length; ++i ) {
+				int index = i;
+				d.list.AddButton(null, btnTexts[i], () => {
+					onResult(index);
+					d.Close();
+				});
+			}
+			ELayer.ui.AddLayer(d);
+			return d;
+		}
 
 
 

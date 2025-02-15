@@ -60,6 +60,20 @@ namespace Elin_Mod
 
 #if false
 		public void Update() {
+			if (CommonUtil.GetKeyDown(UnityEngine.KeyCode.F10)) {
+				Debug_AnalyzeElin.Dump_ElinCategoriesAll("D:\\categories.tsv");
+				Debug_AnalyzeElin.Dump_ElinCharaAll("D:\\charas.tsv");
+				Debug_AnalyzeElin.Dump_ElinElementAll("D:\\elements.tsv");
+				Debug_AnalyzeElin.Dump_ElinFactionAll("D:\\factions.tsv");
+				Debug_AnalyzeElin.Dump_ElinZoneAll("D:\\zones.tsv");
+				Debug_AnalyzeElin.Dump_ElinRecipeAll("D:\\recipies.tsv");
+				Debug_AnalyzeElin.Dump_ElinThingAll("D:\\things.tsv");
+				Debug_AnalyzeElin.Dump_ElinLangGame("D:\\lang_game.tsv");
+				Debug_AnalyzeElin.Dump_ElinLangGeneral("D:\\lang_general.tsv");
+				Debug_AnalyzeElin.Dump_ElinLangList("D:\\lang_list.tsv");
+				Debug_AnalyzeElin.Dump_ElinLangNote("D:\\lang_note.tsv");
+				Debug_AnalyzeElin.Dump_ElinLangWord("D:\\lang_word.tsv");
+			}
 		}
 #endif
 	}
