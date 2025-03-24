@@ -1,4 +1,4 @@
-﻿namespace Elin_Mod
+namespace Elin_Mod
 {
 
 	public class ModInfo
@@ -7,6 +7,6 @@
 
 		public const string c_ModName = "Search ScrollMap Treasure";
 
-		public const string c_ModVersion = "1.0.0.2";
+		public const string c_ModVersion = "1.0.0.3";
 	}
 }

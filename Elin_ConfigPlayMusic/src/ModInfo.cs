@@ -1,4 +1,4 @@
-﻿namespace Elin_Mod
+namespace Elin_Mod
 {
 
 	public class ModInfo
@@ -7,6 +7,6 @@
 
 		public const string c_ModName = "ConfigPlayMusic";
 
-		public const string c_ModVersion = "1.0.0.0";
+		public const string c_ModVersion = "1.0.0.1";
 	}
 }

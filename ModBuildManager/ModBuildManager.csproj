@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="rd /s /q $(SolutionDir)\exe\(SolutionName)\&#xD;&#xA;copy $(SolutionDir)\__build.bat $(SolutionDir)\exe\&#xD;&#xA;xcopy $(TargetDir) $(SolutionDir)\exe\ /s /e /h /y /i" />
+  </Target>
+
+</Project>
