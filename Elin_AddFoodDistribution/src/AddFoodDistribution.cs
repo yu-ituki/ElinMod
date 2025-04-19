@@ -87,8 +87,12 @@ namespace Elin_Mod
 			int hash = idLang.GetHashCode();
 			if ( hash == c_HashOnlyRottable) {
 				s_LastAddToggleContextMenu = __instance;
-				m_IsGuardRecursiveCall = true;	//< AddToggle無限ループガード.
-				
+				m_IsGuardRecursiveCall = true;  //< AddToggle無限ループガード.
+
+				// 子メニュー化する？.
+			//	var child = __instance.AddChild();
+			//	child.popper.textName.text = ModTextManager.Instance.GetText(eTextID.);
+
 				// 「腐敗が進まないアイテムのみ入れる」を追加.
 				_AddOptionToggle(__instance, eTextID.Option_OnlyNoRottable, Const.c_FlagIndex_OnlyNoRottable, (v) => {
 					if (v) {
@@ -98,10 +102,13 @@ namespace Elin_Mod
 						}
 					}
 				});
+
 				// 【不浄】チェック.
 				_AddOptionToggle(__instance, eTextID.Option_NoUndead, Const.c_FlagIndex_NoUndead );
 				// 【人肉】チェック.
 				_AddOptionToggle(__instance, eTextID.Option_NoHuman, Const.c_FlagIndex_NoHuman);
+				// 【猫】チェック.
+				_AddOptionToggle(__instance, eTextID.Option_NoCat, Const.c_FlagIndex_NoCat);
 
 				// 無限ループガード解除.
 				m_IsGuardRecursiveCall = false;
@@ -187,15 +194,19 @@ namespace Elin_Mod
 
 			// 不浄.
 			if (saveData.b1[Const.c_FlagIndex_NoUndead])
-				if (FoodEffect.IsUndeadFlesh(s_LastGetDestThing))
+				if (_IsFoodOfUndead(s_LastGetDestThing))
 					_RemoveThingContainerThings(s_LastGetDestThingContainer, c);
 			// 人肉.
 			if (saveData.b1[Const.c_FlagIndex_NoHuman]) 
-				if (FoodEffect.IsHumanFlesh(s_LastGetDestThing))
+				if (_IsFoodOfHuman(s_LastGetDestThing))
 					_RemoveThingContainerThings(s_LastGetDestThingContainer, c);
 			// 腐敗が進まない.
 			if (saveData.b1[Const.c_FlagIndex_OnlyNoRottable]) 
 				if (s_LastGetDestThing.trait?.Decay != 0)
+					_RemoveThingContainerThings(s_LastGetDestThingContainer, c);
+			// 猫.
+			if (saveData.b1[Const.c_FlagIndex_NoCat])
+				if (_IsFoodOfCat(s_LastGetDestThing))
 					_RemoveThingContainerThings(s_LastGetDestThingContainer, c);
 		}
 
@@ -213,14 +224,30 @@ namespace Elin_Mod
 			if (saveData != null) {
 				// 不浄.
 				if (saveData.b1[Const.c_FlagIndex_NoUndead]) 
-					_RemoveThings(__result, FoodEffect.IsUndeadFlesh);
+					_RemoveThings(__result, _IsFoodOfUndead);
 				// 人肉.
 				if (saveData.b1[Const.c_FlagIndex_NoHuman])
-					_RemoveThings(__result, FoodEffect.IsHumanFlesh);
+					_RemoveThings(__result, _IsFoodOfHuman);
+				// 猫.
+				if (saveData.b1[Const.c_FlagIndex_NoCat])
+					_RemoveThings(__result, _IsFoodOfCat);
 				// 腐敗が進まない.
 				if (saveData.b1[Const.c_FlagIndex_OnlyNoRottable])
 					_RemoveThings(__result, (v) => v.trait?.Decay != 0);
 			}
+		}
+
+
+		static bool _IsFoodOfUndead(Thing t) {
+			return t.HasElement(FOOD.food_undead);
+		}
+
+		static bool _IsFoodOfHuman(Thing t) {
+			return t.HasElement(FOOD.food_human);
+		}
+
+		static bool _IsFoodOfCat(Thing t) {
+			return t.HasElement(FOOD.food_cat);
 		}
 
 

@@ -7,4 +7,5 @@ public enum eTextID {
 	Option_NoUndead,
 	Option_NoHuman,
 	Option_OnlyNoRottable,
+	Option_NoCat,
 }
