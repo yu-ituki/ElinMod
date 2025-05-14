@@ -41,6 +41,10 @@ namespace Elin_Mod
 		public override void Perform() {
 			var pcPos = EClass.pc.pos;
 
+			// ワールドマップ上では使えないようにする.
+			if (EClass._zone.IsRegion)
+				return;
+
 			// ゾーンにテントがあるかを調べる.
 			var zoneTents = EClass._zone.map.ListThing<TraitTent>();
 			if (zoneTents.Count > 0) {
@@ -67,20 +71,37 @@ namespace Elin_Mod
 				EClass.pc.AddCard(zoneTents[0]);
 			} else {
 				// そうじゃなければテントを持っているか調べる.
-				var haveTents = EClass.pc.things.FindAll((v) => v.trait is TraitTent);
-				if (haveTents.Count > 0) {
-					// 持ってたら一つを優先.
-					var tent = haveTents[0];
-					if (tent.Num > 1) { //< 無いとは思うが複数持ってたら.
-						tent = tent.Split(1); //< 一個だけ使う.
+				var haveTent = _FindTent(EClass.pc.things);
+				if (haveTent != null) {
+					if (haveTent.Num > 1) { //< 無いとは思うが複数持ってたら.
+						haveTent = haveTent.Split(1); //< 一個だけ使う.
 					}
-					ItemPosition posTent = ItemPosition.Get(tent);
-					EClass._zone.AddCard(tent, pcPos).Install();
-				} else {
+					ItemPosition posTent = ItemPosition.Get(haveTent);
+					EClass._zone.AddCard(haveTent, pcPos).Install();
+				} else if (zoneTents.Count > 0 ) {
 					// 一番近いものをしまって終了.
 					EClass.pc.AddCard(zoneTents[0]);
 				}
 			}
+		}
+
+		static Thing _FindTent( ThingContainer things ) {
+			// インベ直のチェック.
+			var haveTents = things.FindAll((v) => v.trait is TraitTent);
+			if (haveTents.Count > 0)
+				return haveTents[0];
+
+			// インベ内インベをチェック.
+			var invInInvs = things.FindAll((v) => v.trait is TraitContainer);
+			foreach (var itr in invInInvs) {
+				var ret = _FindTent(itr.things);
+				if (ret == null)
+					continue;
+				return ret;
+			}
+
+			// ねンだわ.
+			return null;
 		}
 	}
 
