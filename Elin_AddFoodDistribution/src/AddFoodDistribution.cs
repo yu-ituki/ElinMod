@@ -247,7 +247,13 @@ namespace Elin_Mod
 		}
 
 		static bool _IsFoodOfCat(Thing t) {
-			return t.HasElement(FOOD.food_cat);
+			if (t.HasElement(FOOD.food_cat))
+				return true;
+			if (!string.IsNullOrEmpty(t.c_idRefCard) && EClass.sources.charas.map.ContainsKey(t.c_idRefCard)) {
+				string race = EClass.sources.charas.map[t.c_idRefCard].race;
+				return race == "cat" || race == "catsister";
+			}
+			return false;
 		}
 
 

@@ -37,9 +37,9 @@ namespace Elin_Mod
 			}
 
 			public void RefreshHaveRaw() {
-				int sum = 0;
+				long sum = 0;
 				SourceMaterial.Row mat = null;
-				m_HaveRaw = EClass.pc.things.GetCurrency(m_Thing, ref sum, mat );
+				m_HaveRaw = (int)EClass.pc.things.GetCurrency(m_Thing, ref sum, mat );
 			}
 
 			public void ReserveUseNum( int num ) {
